@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load mptt_tags %}
+{% block title %}漫画 - 2zzy 爱钻研{% endblock %}
+{% block content %}
+    <div class="layui-row layui-card layui-card-body">
+        {% include 'comic/slider.html' %}
+    </div>
+{% endblock %}

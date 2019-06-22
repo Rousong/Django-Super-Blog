@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}404 - 2zzy 爱钻研{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'mystyle.css' %}">
+    <br/>
+    <br/>
+    <br/>
+    <div style="text-align: center">
+        <i class="fas fa-exclamation-triangle mb-4" style="color: orange; font-size: 8em"></i>
+        <h3>你要找的页面走丢了...</h3>
+        <h5>点击<a href="{% url 'article:article_list' %}" style="color: #01a252">首页</a>看看别的精彩内容吧~</h5>
+    </div>
+    <br/>
+{% endblock %}

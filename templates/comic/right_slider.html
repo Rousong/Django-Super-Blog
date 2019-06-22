@@ -1,0 +1,66 @@
+<div class="card-body" style="padding: 10px 0 0 0;">
+
+    <!-- 目录 -->
+    <div id="sidebar" style="overflow: hidden">
+        <div class="markdown-body editormd-preview-container" id="custom-toc-container">
+            {{ toc|safe }}
+        </div>
+    </div>
+
+    <style>
+        #sidebar a {
+            color: #b8b8b8;
+        }
+
+        #sidebar ul {
+            list-style-type: none;
+        }
+
+        #sidebar div div > ul {
+            padding-left: 0;
+        }
+
+        #sidebar div div ul ul {
+            padding-left: 1em;
+        }
+    </style>
+
+    <!-- GitHub仓库的小卡片 -->
+    {% if article.comic.github_repo %}
+        <div class="card">
+            <div class="card-body">
+                {% with article.comic.github_repo as repo %}
+                    <h6 class="card-title">
+
+                        <a href="https://github.com/{{ repo.user }}/{{ repo.repo }}"
+                           target="_blank"
+                           style="word-break: break-all; color: dimgray;"
+                        >
+                            {{ repo.repo }}
+                        </a>
+                    </h6>
+
+                    <p class="card-text text-muted">{{ repo.description }}</p>
+                    <p class="card-text mb-0">
+                        <iframe src="https://ghbtns.com/github-btn.html?user={{ repo.user }}&repo={{ repo.repo }}&type=star&count=true"
+                                frameborder="0"
+                                scrolling="0"
+                                width="100px"
+                                height="30px"
+                                style="margin-top: 8px"
+                        ></iframe>
+                    </p>
+                    <p class="card-text">
+                        <iframe src="https://ghbtns.com/github-btn.html?user={{ repo.user }}&repo={{ repo.repo }}&type=fork&count=true&v=2"
+                                frameborder="0"
+                                scrolling="0"
+                                width="100px"
+                                height="20px"
+                        ></iframe>
+                    </p>
+                {% endwith %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+

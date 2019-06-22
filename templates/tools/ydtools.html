@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}运动工具，帮助你更了解自己{% endblock %}
+{% block metas %}
+<meta name="description" content="运动工具集，各类身体指标检测工具，提高运动健身效率，工具持续增加中">
+<meta name="keywords" content="在线工具,运动,健身,BMI,标准体重,基础代谢,燃脂,最大维度,体脂率,最终体重,蛋白质,运动心率,肌肉潜力,最大肌力,热量计算">
+{% endblock %}
+
+
+{% block top-file %}
+<link href="{% static 'css/tool.css' %}?v=20180107.08" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<br>
+    <div class="row tool-list">
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="TDEE计算器">
+                        <h5 class="card-title">TDEE计算器</h5>
+                    </a>
+                    <p class="mb-0">[热量计算]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <a href="#">
+                    <p class="card-text">Total Daily Energy Expenditure，每日总能量消耗，代表的是一个人维持体重每日所需热量</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="热量消耗计算器">
+                        <h5 class="card-title">热量消耗计算器</h5>
+                    </a>
+                    <p class="mb-0">[热量计算]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">比较精准的算法，是由性别、年龄、体重及运动时心跳率来计算热量</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="最大肌力計算機">
+                        <h5 class="card-title">最大肌力計算機</h5>
+                    </a>
+                    <p class="mb-0">[力量计算]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">1RM，是 One-repetition Maximum 的缩写，代表的是肌肉收缩时能产生的最大力量</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="心跳计算器">
+                        <h5 class="card-title">心跳计算器</h5>
+                    </a>
+                    <p class="mb-0">[身体指标]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">MHR（Maxium Heart Rate），也就是最高心跳率，代表的是一个人的心血管系统每分钟能承受的最高心跳值</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="MACRO宏量营养计算">
+                        <h5 class="card-title">宏量营养计算</h5>
+                    </a>
+                    <p class="mb-0">[营养计算]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">Macronutrients，翻成中文就是宏量营养素，指的就是蛋白质、脂肪及碳水化合物</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="一分钟了解自已">
+                        <h5 class="card-title">一分钟了解自已</h5>
+                    </a>
+                    <p class="mb-0">[健身工具]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">1分钟彻底了解自己的标准体重、健康体重范围、BMI指数等等</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="最大围度计算">
+                        <h5 class="card-title">最大围度计算</h5>
+                    </a>
+                    <p class="mb-0">[健身工具]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">下列计算器可按你的体型计算出不用药优秀运动员的身体最大围度（大概8%-10%的体脂率）</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="最终体重计算">
+                        <h5 class="card-title">最终体重计算</h5>
+                    </a>
+                    <p class="mb-0">[健身工具]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">下面的计算器将会计算出通过控制过饮食达到你所期望的体脂率时的体重</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="肌肉潜力计算器">
+                        <h5 class="card-title">肌肉潜力计算器</h5>
+                    </a>
+                    <p class="mb-0">[健身工具]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">可计算在不使用药物的情况下，你的身体最大肌肉量和肌肉围度（大概8%-10%的体脂率）</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="蛋白质计算器">
+                        <h5 class="card-title">蛋白质计算器</h5>
+                    </a>
+                    <p class="mb-0">[健身工具]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">每公斤最少需要1克，1.5克是最标准的</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="饮食计算器">
+                        <h5 class="card-title">饮食计算器</h5>
+                    </a>
+                    <p class="mb-0">[健身工具]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">三分练，七分吃。</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
+                    <a href="#">
+                        <img class="w-25 float-left mr-2" src="{% static 'img/build.png' %}"
+                             alt="补水计算器">
+                        <h5 class="card-title">补水计算器</h5>
+                    </a>
+                    <p class="mb-0">[健身工具]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">可以根据你的体重，计算出每天你的最佳喝水量</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block title %}重置密码 - 2zzy 爱钻研{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'mystyle.css' %}">
+    <div class="container">
+        <br>
+        <br>
+        <h3 class="alert alert-danger">修改基础资料</h3>
+       <form class="change_profile" method="post" enctype="multipart/form-data"
+                          action="{% url 'userinfo:change_profile'%}">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="btn btn-info btn-sm rounded-0" type="submit">更新资料</button>
+                    </form>
+{% endblock %}

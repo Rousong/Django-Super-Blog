@@ -1,0 +1,136 @@
+{% load staticfiles %}
+
+<style>
+    div#article_body p img {
+        max-width: 95%;
+        box-shadow: 0 0 50px grey;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border-radius: 20px;
+    }
+
+    div#article_body pre {
+        color: white;
+    }
+
+    div#article_body span.err {
+        color: white;
+    }
+
+    div#article_body h2 {
+        margin-top: 1.2em;
+        margin-bottom: 0.6em;
+        padding-bottom: 6px;
+        border-bottom: 1px solid lightgrey;
+    }
+
+    div#article_body h3 {
+        margin-top: 1em;
+        margin-bottom: 0.4em;
+    }
+
+    div#article_body blockquote p {
+        color: grey;
+        font-style: italic;
+        background-color: #f5f5f5;
+        padding: 10px;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+
+    .progress-indicator {
+        z-index: 100;
+    }
+</style>
+
+<div class="mt-4">
+    <div>
+        <div>
+            <h1>{{ article.title }}</h1>
+            <p class="text-muted">
+                {{ article.total_views }}阅读 ·
+                {{ article.comments.count }}评论 ·
+                {{ article.created|date:"Y/m/d" }}发布 &nbsp;
+                <a href="#Fcomments"
+                   style="color: cornflowerblue;
+                   text-decoration-line: underline;"
+                >
+                    前往评论
+                </a>
+            </p>
+        </div>
+        <div id="article_body">
+            {{ article.body|safe }}
+        </div>
+    </div>
+
+
+    <!-- 知识产权署名 -->
+    {% include 'utils/license.html' %}
+
+
+<div style="text-align: center">
+<a class="btn btn-warning text-white btn-sm" data-toggle="modal" data-target="#myModal"
+           role="button"
+           style="text-align: center"
+        ><img src="{% static 'img/danbai.PNG' %}" class="img-rounded" style="max-width: 80px">
+        </a>
+</div>
+{#<div align='center'><p>投喂蛋白粉</p></div>#}
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="padding-top: 100px">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="myModalLabel">
+                    投喂蛋白粉
+                </h2>
+            </div>
+            <div class="modal-body" align="center">
+                <img style="display:inline;margin-right:10px;max-width: 200px" src="{% static 'img/zanshangma.jpeg' %}" alt="weixin">
+                <img style="display:inline;margin-left:10px;max-width: 200px" src="{% static 'img/zhifubao.jpeg' %}" alt="zhifubao">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+    <br/>
+    <br/>
+
+    {% if pre_article %}
+        <a class="btn btn-info btn-sm"
+           href="{{ pre_article.get_absolute_url }}"><< {{ pre_article.comic_title }}</a>
+    {% endif %}
+    {% if next_article %}
+        <a class="btn btn-info btn-sm" style="float: right;"
+           href="{{ next_article.get_absolute_url }}">{{ next_article.comic_title }} >></a>
+        <br>
+    {% endif %}
+
+    <hr/>
+
+    <!-- 评论模块 -->
+    {% include 'comments/comment_module.html' %}
+</div>
+
+{% block script %}
+
+    <script src="{% static 'progress_indicator/progress_indicator.js' %}"></script>
+
+    <script>
+        $('div#article_body img').parent('p').css({'text-align': 'center'});
+        $('div#article_body table').addClass('table table-bordered');
+        $('div#article_body thead').addClass('thead-light');
+
+        <!-- Author: mqyqingfeng -->
+        $(document).ready(function () {
+            let progressBar = new ProgressIndicator({color: '#1e90ff'});
+        })
+    </script>
+{% endblock %}

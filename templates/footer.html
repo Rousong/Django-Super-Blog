@@ -1,0 +1,85 @@
+{% load staticfiles %}
+<nav class="bg-white py-5 mt-5 text-small text-muted" id="nav-footer">
+{#    <div class="row col justify-content-center">#}
+{#        <h3 class="mr-3">#}
+{#            <a href="mailto:beaock@gmail.com">#}
+{#                <i class="fas fa-envelope" style="color: lightskyblue;" id="layer_email"></i>#}
+{#            </a>#}
+{#        </h3>#}
+{#        <h3 class="mr-3">#}
+{#            <a href="https://github.com/Rousong" style="color: #f0c674;" target="_blank">#}
+{#                <i class="fab fa-github" id="layer_github"></i>#}
+{#            </a>#}
+{#        </h3>#}
+{#        <h3 class="mr-3">#}
+{#            <a href="http://weibo.com/40937117" style="color: indianred;" target="_blank">#}
+{#                <i class="fab fa-weibo" id="layer_weibo"></i>#}
+{#            </a>#}
+{#        </h3>#}
+{#        <h3>#}
+{#            <a href="{% url 'aboutme:footpoint' %}#wechart_qr" style="color: yellowgreen;">#}
+{#                <i class="fab fa-weixin" id="footer_wechart"></i>#}
+{#            </a>#}
+{#        </h3>#}
+{#    </div>#}
+
+    <div class="row col-12 justify-content-center">
+        <div style="text-align: center; color: #858585;">
+            <p class="mb-0">CopyRight &copy; 2019 2zzy 爱钻研</p>
+            <p class="mb-0">Powered by
+                <a href="https://www.djangoproject.com/" target="_blank">
+                    Django
+                </a> &
+                <a target="_blank" href="https://getbootstrap.com/">
+                    Bootstrap
+                </a>
+                <!-- 站长统计代码 -->
+                <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277680282'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1277680282%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+            </p>
+        </div>
+    </div>
+</nav>
+<script>
+    $('#layer_email').on('mouseenter', function () {
+        this.index = layer.tips('给博主发邮件', this, {
+            time: -1,
+            maxWidth: 280,
+            tips: [1, 'lightskyblue']
+        });
+    }).on('mouseleave', function () {
+        layer.close(this.index);
+    });
+
+    $('#layer_weibo').on('mouseenter', function () {
+        this.index = layer.tips('关注博主微博', this, {
+            time: -1,
+            maxWidth: 280,
+            tips: [1, 'indianred']
+        });
+    }).on('mouseleave', function () {
+        layer.close(this.index);
+    });
+
+    $('#layer_github').on('mouseenter', function () {
+        this.index = layer.tips('在GitHub查看博主代码', this, {
+            time: -1,
+            maxWidth: 280,
+            tips: [1, '#f0c674']
+        });
+    }).on('mouseleave', function () {
+        layer.close(this.index);
+    });
+
+    $('#footer_wechart').on('mouseenter', function () {
+        this.index = layer.tips('博主微博二维码', this, {
+            time: -1,
+            maxWidth: 280,
+            tips: [1, 'yellowgreen']
+        });
+    }).on('mouseleave', function () {
+        layer.close(this.index);
+    });
+</script>
+
+
+

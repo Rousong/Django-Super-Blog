@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}500 - 2zzy 爱钻研{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'mystyle.css' %}">
+
+    <br/>
+    <div style="text-align: center">
+        <i class="fas fa-exclamation-triangle mb-4" style="color: orange; font-size: 8em"></i>
+        <br/>
+        <br/>
+        <h3>ERROR 500</h3>
+        <h3>服务器内部错误..</h3>
+        <br/>
+        <h5 class="layui-text">好心人快<a href="mailto:beaock@gmail.com">通知博主</a>来修bug啦！</h5>
+    </div>
+    <br/>
+    <hr/>
+{% endblock %}

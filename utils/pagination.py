@@ -1,9 +1,9 @@
 from django.utils.safestring import mark_safe
-from v2ex.settings import PRE_PAGE_COUNT, PAGER_NUMS
+from django.conf import settings
 
 
 class Paginator:
-    def __init__(self, current_page, data_count, per_page_count=PRE_PAGE_COUNT, pager_num=PAGER_NUMS):
+    def __init__(self, current_page, data_count, per_page_count=settings.PRE_PAGE_COUNT, pager_num=settings.PAGER_NUMS):
         # 当前页码
         self.current_page = current_page
         # 总数据有多少条

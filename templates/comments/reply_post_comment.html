@@ -1,0 +1,80 @@
+{% extends 'base_with_rslider.html' %}
+{% load staticfiles %}
+{% block title %}回复{{ comment.user }} - 2zzy 爱钻研{% endblock %}
+{% block content %}
+    <!-- ckeditor -->
+    <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/prism/css/prism.css' %}">
+
+    <div>
+        <div class="mt-4" style="word-break: break-all">
+            <h4>{{ comment.user }} 说：</h4>
+            <!-- 正文 -->
+            {% if comment.is_deleted %}
+                {% if comment.is_deleted_by_staff %}
+                    <div style="text-align: center;"
+                         class="alert alert-danger"
+                    >
+                        本回复已被 [博主] 删除
+                    </div>
+                {% else %}
+
+                    <div style="text-align: center;"
+                         class="alert alert-danger"
+                    >
+                        本回复已被 {{ comment.user }} 删除
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>{{ comment.body|safe }}</p>
+            {% endif %}
+        </div>
+        <hr>
+        <form id="comment_form"
+              action="{% url 'comments:reply_post_comment' article_id node_id article_type %}"
+              method="post"
+        >
+            {% csrf_token %}
+            <div>
+                <h5>
+                    我的回复：
+                </h5>
+                <!-- ckeditor 正文 -->
+                {{ comment_form.body }}
+
+            </div>
+            <input type="hidden"
+                   name="article_type"
+                   value="{{ article_type }}"
+            >
+            <button id="comment_submit"
+                    type="submit"
+                    name="submit"
+                    hidden
+            ></button>
+        </form>
+        <div class="mt-2 mb-4">
+            <button class="btn btn-primary btn-sm"
+                    onclick="submit_comment('{% url 'comments:count_validate' %}')"
+                    id="on_submit"
+            ><i class="fas fa-paper-plane"></i> 发布
+            </button>
+            <button class="btn btn-secondary btn-sm ml-2"
+                    onclick="window.history.back(); return false;"
+            >
+                返回
+            </button>
+            <span id="comment_char_count" class="text-muted ml-2"></span>
+            {% include 'utils/comment_submit.html' %}
+        </div>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <!-- ckeditor -->
+    <script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script>$(".django-ckeditor-widget").removeAttr('style');</script>
+
+{% endblock %}

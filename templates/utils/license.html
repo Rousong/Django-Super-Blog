@@ -1,0 +1,65 @@
+<!-- 知识产权署名 -->
+<div class="alert alert-secondary text-muted mt-4 mb-4">
+    <div>
+        <span>本文标题：
+            <a href="{{ DOMAIN }}{{ request.path }}" style="color: gray;">
+                {{ article.title }}
+            </a>
+        </span>
+    </div>
+    <div>
+        <span>本文作者：
+            <a href="{{ DOMAIN }}" style="color: gray;">
+                肉松君
+            </a>
+        </span>
+    </div>
+    <div>
+        <span>发布时间：
+            {{ article.created|date:"Y年m月d日 - H:i" }}
+        </span>
+    </div>
+    <div>
+        <span>最后更新：
+            {{ article.updated|date:"Y年m月d日 - H:i" }}
+        </span>
+    </div>
+    <div>
+        <span>
+            原始链接：
+            <a href="{{ DOMAIN }}{{ request.path }}"
+               style="word-break: break-all; color: gray;"
+            >
+                {{ DOMAIN }}{{ request.path }}
+            </a>
+        </span>
+    </div>
+    <div>
+        <span>
+            许可协议：
+            <a rel="license"
+               href="https://creativecommons.org/licenses/by-nc/4.0/"
+               target="_blank"
+               style="color: gray;"
+            >
+                署名-非商业性使用 4.0 国际许可协议
+            </a>
+        </span>
+    </div>
+    <div style="margin-top: 6px">
+        <a rel="license"
+           href="https://creativecommons.org/licenses/by-nc/4.0/"
+           target="_blank"
+        >
+            <img alt="知识共享许可协议"
+                 style="border-width:0"
+                 src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"
+                 title="知识共享署名/非商业性使用"
+            />
+        </a>
+        <span>
+            &nbsp;&nbsp;<u>转载请保留原文链接及作者</u>
+        </span>
+    </div>
+
+</div>

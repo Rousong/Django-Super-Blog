@@ -1,0 +1,58 @@
+{% extends 'base_with_rslider.html' %}
+{% load staticfiles %}
+{% load mptt_tags %}
+{% load weibo_utils %}
+
+{% block title %}{{ article.title }} - 2zzy 爱钻研{% endblock %}
+{% block content %}
+    <div>
+        <div class="mt-4">
+            <div>
+                <div>
+                    <h1>
+                        {{ article.title }}
+                    </h1>
+                    <p class="text-muted">
+                        {{ article.total_views }}阅读 ·
+                        {{ article.comments.count }}评论 ·
+                        {{ article.created|date:"Y/m/d" }}发布 &nbsp;
+                        <a href="#Fcomments"
+                           style="color: cornflowerblue;
+                                    text-decoration-line: underline;"
+                        >
+                            前往评论
+                        </a>
+                    </p>
+                    {% if article.video_url %}
+                     <video src="{{ article.video_url }}"
+                           controls
+                           style="max-width: 100%;"
+                    >
+                        您的浏览器太老，无法运行视频哦
+                    </video>
+                    {% endif %}
+
+                    {# 嵌入代码#}
+                    {{ article.iframe|safe}}
+
+                    <pre style="color: #8D8D8D;">{{ article.body }}</pre>
+                </div>
+            </div>
+            <br/>
+            <div style="text-align: center">
+                <a href="/admiration/" target="_blank"
+                   class="btn btn-warning text-white btn-sm"
+                   role="button"
+                   style="text-align: center"
+                >投喂蛋白粉
+                </a>
+            </div>
+            <br>
+            <br>
+
+            {% include 'comments/comment_module.html' %}
+        </div>
+    </div>
+    <br>
+
+{% endblock %}

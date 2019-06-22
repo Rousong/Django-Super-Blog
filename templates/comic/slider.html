@@ -1,0 +1,23 @@
+<div class="card-body" style="padding: 20px 0 0 0; overflow: auto;">
+    <!-- 目录 -->
+    <div class="card-text" style="overflow: hidden">
+        {% for article_c in comic_articles %}
+            {% if article_c.id == article.id %}
+                <h5 style="color: #8a8a8a;"
+                    class="mb-0"
+                >
+                    {{ article_c.comic_title }}
+                </h5>
+            {% else %}
+                <p class="mb-0">
+                    <a href="{{ article_c.get_absolute_url }}"
+                       style="color: #b8b8b8;"
+                    >
+                        {{ article_c.comic_title }}
+                    </a>
+                </p>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+

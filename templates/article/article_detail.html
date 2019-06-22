@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ article.title }} - 2zzy 爱钻研{% endblock %}
+{% block content %}
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- 左目录 -->
+            <div class="col-3 col-lg-2 card d-none d-md-block" id="left-sidebar">
+                <div class="sidebar" id="sidebar">
+                    <div class="sidebar__inner">
+                        {% include 'article/slider.html' %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 正文 -->
+            <div class="col-lg-8 col-12 col-md-9" id="main">
+                {% include 'article/detail_base.html' %}
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="{% static 'sticky_sidebar/jquery.sticky-sidebar.min.js' %}"></script>
+    <script>
+        $('#sidebar').stickySidebar({
+            topSpacing: 0,
+            bottomSpacing: 20
+        });
+
+
+    </script>
+    <style>
+        .sidebar {
+            will-change: min-height;
+        }
+
+        .sidebar__inner {
+            transform: translate(0, 0);
+            will-change: position, transform;
+        }
+
+    </style>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base_with_rslider.html' %}
+{% load staticfiles %}
+{% load mptt_tags %}
+{% load comictags %}
+{% block title %}漫画 - 2zzy 爱钻研{% endblock %}
+{% block content %}
+    <div class="row mt-4 justify-content-center">
+        <div class="card-deck">
+            {% for comic in comics %}
+                <div class="">
+                    <div class="card mb-4 bg-dark text-white">
+                        {% if comic.avatar_thumbnail %}
+                            <img src="{{ comic.avatar_thumbnail.url }}"
+                                 class="card-img-top"
+                            >
+                        {% endif %}
+                        <div class="card-body" style="padding-bottom: 0">
+                            <h5 class="card-title">
+                                <a href="{% url 'comic:comic_articles_list' comic.id %}"
+                                   style="color: white;"
+                                >
+                                    {{ comic.title }}
+                                </a>
+                            </h5>
+                            <p class="card-text mb-0">
+                                <i class="fas fa-eye" style="color: lightskyblue;"></i>
+                                {% comic_total_views comic.id %}&nbsp;&nbsp;
+                                <i class="fas fa-file" style="color: #f0c674;"></i>
+                                {% comic_total_articles comic.id %}&nbsp;&nbsp;
+                                {% if comic.is_finished %}
+                                    <span style="color: greenyellow">[<i class="fas fa-check-circle"></i>已完结]</span>
+                                {% else %}
+                                    <span style="color: lightpink">[连载中]</span>
+                                {% endif %}
+                            </p>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

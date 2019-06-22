@@ -1,8 +1,15 @@
-# pycache
-/__pycache__
+.vscode/
+.idea/
+.idea
+bin/
+whoosh_index/
+/env.json
+nginx_static/
 
-# .idea
-/.idea
-
-#db.sqlite3
-db.sqlite3
+__pycache__/
+*.py[cod]
+*$py.class
+media/image/
+media/user/
+logs/
+media/images/

@@ -1,7 +1,7 @@
 import os
 import random
 from uuid import uuid4
-from v2ex.settings import AVATAR_FILE_PATH
+from django.conf import settings
 
 
 def gender_topic_sn():
@@ -25,7 +25,7 @@ def save_avatar_file(file):
     random_code = gender_random_code()
     file_type = file.name.split('.')[-1]
     save_file_name = random_code + '.' + file_type
-    file_path = os.path.join(AVATAR_FILE_PATH, save_file_name)
+    file_path = os.path.join(settings.AVATAR_FILE_PATH, save_file_name)
     # print(file_path)
     with open(file_path, 'wb') as f:
         for chunk in file.chunks():

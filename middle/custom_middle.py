@@ -1,6 +1,6 @@
 from django.utils.deprecation import MiddlewareMixin
 from django.core.cache import cache
-from v2ex.settings import SESSION_COOKIE_AGE
+from django.conf import settings
 from django.db import connection
 
 
@@ -24,7 +24,7 @@ class CountOnlineMiddlewareMixin(MiddlewareMixin):
             online_key = 'count_online_id_{_id}_session_{_session}'.format(
                 _id=request.session.get('user_info')['uid'], _session=session_key)
             # 设置过期时间，或者重新设置过期时间
-            cache.set(online_key, 'online', timeout=SESSION_COOKIE_AGE)
+            cache.set(online_key, 'online', timeout=settings.SESSION_COOKIE_AGE)
 
         # 把统计数放入请求中，方便在模板中使用
         # 通过通配符获取 count_online 的key 有多少个

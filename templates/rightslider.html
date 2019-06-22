@@ -1,0 +1,140 @@
+{% load staticfiles %}
+
+<!-- Modal -->
+<div class="modal fade" id="rss" tabindex="-1" role="dialog" aria-labelledby="rss" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rss_title">您想订阅哪个栏目？</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <a href="{% url 'rss' %}" class="btn btn-success btn-block mb-2">综合</a>
+                <p id="rss-columns"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 工具箱 -->
+<div class="card mb-4 mt-4">
+    <div class="card-body">
+        <p class="card-title text-muted">
+            <i class="fa fa-wrench" style="color: #5ecaff;"></i> Tools
+        </p>
+   <div class="row text-center">
+            <div class="col">
+                <a href="#" target="_blank" title="进入博主的Github查看博客源码">
+                    <img style="max-width:40px" alt="博主的github" src="{% static 'img/build.png' %}">
+                    <p class="mt-2">Gayhub</p>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{% url 'timeline' %}"  title="查看网站建站历程">
+                    <img style="max-width:40px" alt="网站的建站历程" src="{% static 'img/build.png' %}">
+                    <p class="mt-2">Timeline</p>
+                </a>
+            </div>
+            <div class="col">
+{#                <a href="#" target="_blank" title="订阅博客">#}
+                <a href="#" class="cark-link" data-toggle="modal" data-target="#rss">
+                    <img style="max-width:40px" alt="订阅博客RSS" src="{% static 'img/build.png' %}">
+                    <p class="mt-2">RSS</p>
+                </a>
+
+            </div>
+        </div>
+</div>
+</div>
+<!-- 站点通知 -->
+{% include 'utils/notice_card.html' %}
+<!-- 友情链接-->
+<div class="card mb-4  d-none d-lg-block">
+    <div class="card-body">
+        <p class="card-title text-muted">
+            <i class="fas fa-link" style="color: lightpink;"></i> Links
+        </p>
+        <p class="card-text">
+            <img src="#" alt=""
+                style="max-width: 12%; border-radius: 50%">
+            <a href="https://do1024.com/" target="_blank" class=" text-muted">
+                DO1024
+            </a>
+        </p>
+        <p class="card-text">
+            <img src="#" alt="" style="max-width: 12%; border-radius: 50%">
+            <a href="https://www.wondernavi.com/" target="_blank" class=" text-muted">
+                WONDER NAVI
+            </a>
+        </p>
+        <p class="card-text">
+            <img src="#" alt="" style="max-width: 12%; border-radius: 50%">
+            <a href="https://huaien.me/" target="_blank" class=" text-muted">
+                Wyane’s Blog
+            </a>
+        </p>
+
+    </div>
+</div>
+<!-- 推广 -->
+<div class="card  d-none d-lg-block">
+    <div class="card-body">
+        <p class="card-text text-muted">
+            <i class="fas fa-envelope" style="color: yellowgreen;"></i> 推广</p>
+{#        <p class="mb-0" style="text-align: center">#}
+{#            <a href="mailto:beaock@gmail.com" class="text-muted">赞助/友链</a>#}
+{#        </p>#}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 2zzy -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5936110306932801"
+     data-ad-slot="4845082741"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <!-- 谷歌推广 -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-5936110306932801",
+          enable_page_level_ads: true
+     });
+</script>
+    </div>
+</div>
+
+<!-- RSS -->
+{#<div class="card mb-4 mt-4  d-none d-lg-block">#}
+{#    <div class="card-body">#}
+{#        <p class="card-title text-muted">#}
+{#            <i class="fas fa-rss" style="color: darkorange;"></i> RSS订阅#}
+{#        </p>#}
+{#        <!-- Button trigger modal -->#}
+{#        <div class="text-center">#}
+{#            <a href="#" class="cark-link" data-toggle="modal" data-target="#rss">#}
+{#                有新文章时通知我#}
+{#            </a>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#<br />#}
+{#<br />#}
+
+{% block script %}
+<script>
+    $(() => {
+
+        $.get('{% url "article:get_columns_data" %}', (data) => {
+            for (let item in data) {
+                let context = "<a href='/all/rss/" + data[item] + "' class=\"btn btn-outline-dark btn-block\">" + item + "</a>";
+                $('#rss-columns').append(context)
+            }
+        })
+    })
+</script>
+{% endblock %}

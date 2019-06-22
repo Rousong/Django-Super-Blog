@@ -1,0 +1,51 @@
+{% extends 'base_with_rslider.html' %}
+{% load staticfiles %}
+{% block title %}视频 - 2zzy 爱钻研{% endblock %}
+{% block content %}
+    <div class="mb-4">
+
+        {% for article in articles %}
+            <div class="card mt-4">
+                <div class="row no-gutters align-items-center">
+
+                    <div class="col-4 d-none d-md-block">
+                        <img src="{{ article.avatar_url }}"
+                             alt="avatar"
+                             class="card-img"
+                        >
+                    </div>
+
+                    <div class="col">
+                        <div class="card-body">
+                            <h4 class="mt-0">
+                                <a href="{{ article.get_absolute_url }}"
+                                   style="font-weight: bold; color: black;"
+                                >
+                                    {{ article.title }}
+                                </a>
+                            </h4>
+                            <!-- 附加信息 -->
+                            <p class="text-monospace mb-0" style="color: grey;">
+                                <i class="fas fa-eye" style="color: lightskyblue;"></i>
+                                {{ article.total_views }}
+                                <i class="fas fa-comments" style="color: yellowgreen;"></i>
+                                {{ article.comments.count }}
+                                <i class="fas fa-clock" style="color: pink;"></i>
+                                {{ article.created|date:"Y/m/d" }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+        {% include 'utils/paginator.html' %}
+
+    </div>
+    <style>
+        a:hover {
+            color: #01a252;
+        }
+    </style>
+{% endblock %}

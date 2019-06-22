@@ -1,0 +1,150 @@
+{% extends 'base_with_rslider.html' %}
+{% load staticfiles %}
+{% load my_haystack_hight_tags %}
+{% block title %}搜索{% endblock %}
+
+{% block content %}
+    <div class="mt-4">
+
+        <!-- 提示语 -->
+        <h3>
+            <i class="fas fa-search"></i>
+            "<span style="color: red;">
+            {{ query }}
+        </span>"的相关文章如下：
+        </h3>
+
+        {% if query %}
+            {% for result in page.object_list %}
+                {% with article=result.object %}
+                    <div class="card mb-2">
+                        <div class="row no-gutters align-items-center">
+                            {% if article.avatar_thumbnail %}
+                                <div class="col-4 d-none d-md-block">
+                                    <img src="{{ article.avatar_thumbnail.url }}"
+                                         class="card-img"
+                                         alt="缩略图"
+                                    >
+                                </div>
+                            {% endif %}
+
+                            <div class="col">
+                                <div class="card-body">
+                                    <!-- 标题 -->
+                                    <h4 class="mt-0">
+                                        <a href="{{ article.get_absolute_url }}"
+                                           style="font-weight: bold; color: black;"
+                                        >
+                                            {% myhighlight article.title with query start_head True %}
+                                        </a>
+                                    </h4>
+
+                                    <p class="layui-text" style="color: #8D8D8D;">
+                                        <!-- 文章标题的栏目 -->
+                                    <div class="mb-2 ">
+                                        {% if article.column.id %}
+                                            <a href="?column_id={{ article.column.id }}"
+                                               role="button"
+                                               class="
+                                    btn
+                                    btn-sm
+                                    {% if article.column.title == '编程' %}
+                                    btn-outline-success
+                                    {% elif article.column.title == '摄影' %}
+                                    btn-outline-warning
+                                    {% elif article.column.title == '光学' %}
+                                    btn-outline-primary
+                                    {% elif article.column.title == '闲聊' %}
+                                    btn-outline-secondary
+                                    {% endif %}
+                                    "
+                                            >
+                                                {{ article.column }}
+                                            </a>
+                                        {% endif %}
+
+                                        <!-- 标签 -->
+                                        {% for tag in article.tags.all %}
+                                            <a class="badge badge-pill badge-light"
+                                               href="https://www.2zzy.com/?tag={{ tag }}"
+                                               style="color: grey;"
+                                            >
+                                                {{ tag }}</a>
+                                        {% endfor %}
+                                    </div>
+
+
+                                    <div class="card-text text-muted">
+                                        {% myhighlight article.body with query %}...
+                                    </div>
+
+                                    <!-- 附加信息 -->
+                                    <p class="text-monospace mb-0" style="color: grey;">
+                                        <i class="fas fa-eye" style="color: lightskyblue;"></i>
+                                        {{ article.total_views }}
+                                        <i class="fas fa-comments" style="color: yellowgreen;"></i>
+                                        {{ article.comments.count }}
+                                        <i class="fas fa-clock" style="color: pink;"></i>
+                                        {{ article.created|date:"Y/m/d" }}
+                                        <!-- 漫画 -->
+                                        {% if article.comic_id %}
+                                            <i class="fas fa-book" style="color: #f0c674;"></i>
+                                            <a href="{% url 'comic:comic_articles_list' article.comic_id %}"
+                                               style="color: #8D8D8D;">
+                                                {{ article.comic.title }}
+                                            </a>
+                                        {% endif %}
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                {% endwith %}
+            {% empty %}
+                <div class="layui-row">没有搜索到相关文章</div>
+            {% endfor %}
+
+
+
+
+
+            {% if page.has_previous or page.has_next %}
+                <div>
+                    {% if page.has_previous %}
+                        <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}"
+                           style="color: green;"
+                        >
+                    {% endif %}
+                    &laquo; 前页
+                    {% if page.has_previous %}
+                        </a>
+                    {% endif %}
+                    |
+                    {% if page.has_next %}
+                        <a href="?q={{ query }}&amp;page={{ page.next_page_number }}"
+                           style="color: green;"
+                        >
+                    {% endif %}
+                    后页
+                    &raquo;
+                    {% if page.has_next %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            请输入搜索关键词，例如 django
+        {% endif %}
+    </div>
+
+    <style>
+        span.highlighted {
+            color: red;
+        }
+    </style>
+{% endblock content %}

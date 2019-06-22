@@ -1,0 +1,85 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    {% block metas %}
+    <meta name="description" content="{{ site_description }}">
+    <meta name="keywords" content="{{ site_keywords }}">
+    {% endblock %}
+    <link rel="bookmark" type="image/x-icon" href="{% static 'img/favicon.ico' %}"/>
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'monokai.css' %}">
+    <link rel="stylesheet" href="{% static 'personal_style.css' %}">
+    <!-- blog CSS -->
+    <link href="{% static 'css/base.css' %}?v=20171223.05" rel="stylesheet">
+    <!--ios用户的桌面图标-->
+    <link rel="apple-touch-icon-precomposed" href="{% static 'img/ios_icon.png'%}">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123957004-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-123957004-1');
+    </script>
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?f1ad3aa5133d41495a918468cab623d4";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+<script src="{% static 'layer/layer.js' %}"></script>
+
+
+{% include "utils/back_top_func.html" %}
+{% include "header.html" %}
+<!--消息块-->
+{% if messages %}
+{% include "utils/messages.html" %}
+{% endif %}
+<div class="container" id="wrapper">
+    <div class="row">
+        <div class="col-12 col-lg-9">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="col-lg-3 ">
+            {% include 'rightslider.html' %}
+        </div>
+    </div>
+    <div id="push"></div>
+</div>
+{% include "footer.html" %}
+
+{% block script %}{% endblock %}
+</body>
+</html>

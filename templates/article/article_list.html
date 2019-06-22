@@ -1,0 +1,108 @@
+{% extends 'base_with_rslider.html' %}
+{% load staticfiles %}
+{% block title %}2zzy 爱钻研{% endblock %}
+{% block content %}
+    <div class="">
+    <br>
+    <!-- 图片轮播 -->
+    <div class="card mb-2">
+    {% include 'article/carousel.html' %}
+    </div>
+        <!-- 栏目导航 -->
+        {% include 'article/navigator.html' %}
+
+        <!-- 提示语 -->
+        {% if tag %}
+            <h5>
+                <i class="fas fa-search"></i>
+                标签 "<span style="color: red;">{{ tag }}</span>" 的相关文章如下：
+            </h5>
+        {% endif %}
+
+
+        <!-- 列表循环 -->
+        {% for article in articles %}
+            <div class="card mb-2">
+                <div class="row no-gutters align-items-center">
+                    {% if article.avatar_thumbnail %}
+                        <div class="col-4 d-none d-md-block">
+                            <img src="{{ article.avatar_thumbnail.url }}"
+                                 class="card-img"
+                                 alt="缩略图"
+                            >
+                        </div>
+                    {% endif %}
+                    <div class="col">
+
+                        <div class="card-body">
+                            <!-- 标题 -->
+                            <h3 class="mt-0">
+                                <a href="{{ article.get_absolute_url }}"
+                                   style="font-weight: bold; color: black;"
+                                >
+                                    {{ article.title }}
+                                </a>
+                            </h3>
+                        <!-- 内容缩略 -->
+                        <p class="mb-2 f-15">{{ article.summary|truncatechars:100 }}</p>
+
+                            <!-- 文章标题的栏目 -->
+                            <div class="mb-2 ">
+                                {% if article.column.id %}
+                                    <a href="?column_id={{ article.column.id }}"
+                                       role="button"
+                                       class="
+                                    btn
+                                    btn-sm
+                                    {% if article.column.title == '编程' %}
+                                    btn-outline-success
+                                    {% elif article.column.title == '摄影' %}
+                                    btn-outline-warning
+                                    {% elif article.column.title == '光学' %}
+                                    btn-outline-primary
+                                    {% elif article.column.title == '闲聊' %}
+                                    btn-outline-secondary
+                                    {% endif %}
+                                    "
+                                    >
+                                        {{ article.column }}
+                                    </a>
+                                {% endif %}
+
+                                <!-- 标签 -->
+                                {% for tag in article.tags.all %}
+                                    <a class="badge badge-pill badge-light"
+                                       href="?tag={{ tag }}"
+                                       style="color: grey;"
+                                    >
+                                        {{ tag }}</a>
+                                {% endfor %}
+                            </div>
+
+
+                            <!-- 附加信息 -->
+                            <p class="text-monospace mb-0" style="color: grey;">
+                                <i class="fas fa-eye" style="color: grey;"></i>
+                                {{ article.total_views }}
+                                <i class="fas fa-comments" style="color: grey;"></i>
+                                {{ article.comments.count }}
+                                <i class="fas fa-clock" style="color: grey;"></i>
+                                {{ article.created|date:"Y/m/d" }}
+                                <!-- 漫画-->
+                                {% if article.comic_id %}
+                                    <i class="fas fa-book" style="color: #f0c674;"></i>
+                                    <a href="{% url 'comic:comic_articles_list' article.comic_id %}"
+                                       style="color: #8D8D8D;">
+                                        {{ article.comic.title }}
+                                    </a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% include 'utils/paginator.html' %}
+    </div>
+{% endblock %}

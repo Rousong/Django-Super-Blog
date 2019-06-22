@@ -1,7 +1,7 @@
 from django.contrib.sessions.backends.cache import SessionStore
 from django.db.models import F
 from django.urls import reverse
-from operation.models import BalanceInfo, UserDetails
+from apps.operation.models import BalanceInfo, UserDetails
 
 
 def update_balance(request, update_type, obj=None):

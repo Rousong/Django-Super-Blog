@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}赞赏 - 2zzy 爱钻研{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'mystyle.css' %}">
+    <div class="container">
+        <div class="">
+            <h3 class="alert alert-success mt-4">小额赞赏</h3>
+
+            <div class="row mb-4">
+                <h5 class="text-muted mb-4 col-12" style="text-align: center">
+                    感谢你的鼓励，我会继续努力写出高质量文章
+                </h5>
+                <div style="text-align: center" class="col">
+                    <h3>微信赞赏码</h3>
+                    <img src="{% static 'img/zanshangma.jpeg' %}" style="max-width: 300px">
+                </div>
+                <div style="text-align: center" class="col">
+                    <h3>支付宝赞赏码</h3>
+                    <img src="{% static 'img/zhifubao.jpeg' %}" style="max-width: 300px">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
