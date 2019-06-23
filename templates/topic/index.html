@@ -1,6 +1,121 @@
-{% extends 'topic/master.html' %}
-{% block main %}
-    <div class="box">
+{% extends "base.html" %}
+
+
+{% block content %}
+<div id="Wrapper">
+    <div class="content">
+        <div id="Leftbar"></div>
+        <div id="Rightbar">
+            <div class="sep20"></div>
+                
+                {% block rightbar %}
+
+    {% if request.session.user_info %}
+        <div class="box">
+            <div class="cell">
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tbody>
+                    <tr>
+                        <td width="48" valign="top"><a href="{% url 'member' request.session.user_info.username %}"><img
+                                src="{{ request.session.user_info.avatar }}"
+                                class="rounded" border="0" align="default"
+                                style="max-width: 48px; max-height: 48px;"></a></td>
+                        <td width="10" valign="top"></td>
+                        <td width="auto" align="left"><span class="bigger"><a
+                                href="{% url 'member' request.session.user_info.username %}">{{ request.session.user_info.username }}</a></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="sep10"></div>
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tbody>
+                    <tr class="no_hove_line">
+                        <td width="33%" align="center"><a href="{% url 'my_nodes' %}" class="dark" style="display: block;"><span
+                                class="bigger">{{ request.session.user_info.favorite_node_num }}</span>
+                            <div class="sep3"></div>
+                            <span>节点收藏</span></a></td>
+                        <td width="34%"
+                            style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);"
+                            align="center"><a href="{% url 'my_topics' %}" class="dark" style="display: block;"><span
+                                class="bigger">{{ request.session.user_info.favorite_topic_num }}</span>
+                            <div class="sep3"></div>
+                            <span>主题收藏</span></a></td>
+                        <td width="33%" align="center"><a href="{% url 'my_following' %}" class="dark"
+                                                          style="display: block;"><span class="bigger">{{ request.session.user_info.following_user_num }}</span>
+                            <div class="sep3"></div>
+                            <span>特别关注</span></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="cell">
+                <div style="width: 250px; background-color: #f0f0f0; height: 3px; display: inline-block; vertical-align: middle;">
+                    <div style="width: 40px; background-color: #ccc; height: 3px; display: inline-block;"></div>
+                </div>
+            </div>
+            <div class="cell" style="padding: 5px;">
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tbody>
+                    <tr>
+                        <td width="32"><a href="{% url 'new' %}"><img
+                                src="/static/img/flat_compose.png" width="32"
+                                border="0"></a></td>
+                        <td width="10"></td>
+                        <td width="auto" valign="middle" align="left"><a href="{% url 'new' %}">创作新主题</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="inner">
+                {% if request.session.user_info.show_balance == 1 %}
+                    <div class="fr" id="money">
+                        <a href="{% url 'balance' %}" class="badge badge-pill badge-light">
+                            {{ request.session.user_info.balance }}
+                            <img src="/static/img/bronze.png" border="0">
+                        </a>
+                    </div>
+                {% endif %}
+                <a href="/notifications">0 条未读提醒</a></div>
+        </div>
+        <div class="sep20"></div>
+        <div class="box">
+            <div class="inner">
+                {% if not request.session.user_info.daily_mission %}
+                    <li class="fa fa-gift" style="color: #f90;"></li> &nbsp;
+                    <a href="{% url 'daily_mission' %}">领取今日的登录奖励</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="sep20"></div>
+    {% else %}
+        <div class="box">
+            <div class="cell">
+                <strong>V2EX = way to explore</strong>
+                <div class="sep5"></div>
+                <span>V2EX 是一个关于分享和探索的地方</span>
+            </div>
+            <div class="inner">
+                <div class="sep5"></div>
+                <div align="center"><a href="{% url 'signup' %}" class="btn btn-sm btn-secondary">现在注册</a>
+                    <div class="sep5"></div>
+                    <div class="sep10"></div>
+                    已注册用户请 &nbsp;<a href="{% url 'signin' %}">登录</a></div>
+            </div>
+        </div>
+        <div class="sep20"></div>
+        <div class="box">
+            <div class="inner">
+            </div>
+        </div>
+        <div class="sep20"></div>
+    {% endif %}
+{% endblock %}
+        </div>
+        <div id="Main">
+            <div class="sep20"></div>
+            {% block main %}
+                 <div class="box">
         <div class="inner" style="background-color: #fff; border-top-left-radius: 3px; border-top-right-radius: 3px;" id="Tabs">
             {% for obj in category_obj %}
                 {% if current_tab == obj.code %}
@@ -59,4 +174,65 @@
             <span class="chevron">→</span> <a href="{% url 'recent' %}">更多新主题</a>
         </div>
     </div>
+            {% endblock %}
+        </div>
+        <div class="sep20"></div>
+    </div>
+    <div class="c"></div>
+    {% if is_login %}
+        {% csrf_token %}
+    {% endif %}
+<div id="Bottom">
+    <div class="content">
+        <div class="inner">
+            <div class="sep10"></div>
+            <strong><a href="/about" class="dark" target="_self">关于</a> &nbsp; <span class="snow">·</span> &nbsp; <a
+                    href="/faq" class="dark" target="_self">FAQ</a> &nbsp; <span class="snow">·</span> &nbsp; <a
+                    href="/p/7v9TEc53" class="dark" target="_self">API</a> &nbsp; <span class="snow">·</span> &nbsp; <a
+                    href="/mission" class="dark" target="_self">我们的愿景</a> &nbsp; <span class="snow">·</span> &nbsp; <a
+                    href="/advertise" class="dark" target="_self">广告投放</a> &nbsp; <span class="snow">·</span> &nbsp; <a
+                    href="/advertise/2016.html" class="dark" target="_self">鸣谢</a> &nbsp; <span class="snow">·</span>
+                    &nbsp; {{ request.online_member_count }} 人在线</strong>&nbsp;<span
+                    class="snow">·</span> &nbsp; <span>您的IP是: {{ request.current_visitor_ip }}</span></a>
+            <div class="sep20"></div>
+            创意工作者们的社区
+            <div class="sep5"></div>
+            World is powered by solitude
+            <div class="sep20"></div>
+            <div class="sep10"></div>
+        </div>
+    </div>
+    {% block footer %} {% endblock %}
+</div>
+</div>
+
+
+<script src="/static/js/jquery-3.3.1.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/bootstrap.js"></script>
+<script src="/static/plugin/highlight/highlight.pack.js"></script>
+
+<script>
+    /* Ajax 初始化请求操作*/
+    $(function () {
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader('X-CSRFtoken', $.cookie('csrftoken'));
+            }
+        });
+    });
+    /* title 变化 */
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            $('title').text('V2EX');
+        } else {
+            $('title').text('欢迎回来ヽ(✿ﾟ▽ﾟ)ノ');
+            setTimeout("$('title').text('V2EX');", 3000);
+        }
+    }, false);
+
+</script>
+<script>hljs.initHighlightingOnLoad();</script>
+{% block JS %} {% endblock %}
+
 {% endblock %}

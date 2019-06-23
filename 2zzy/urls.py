@@ -4,7 +4,7 @@ from django.conf.urls import url
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from utils import check_code
+from apps.userinfo.views import check_code
 
 from apps.article.views import ArticlePostView,TimelineView
 from apps.article.feeds import ArticlesPostRssFeed, ArticlesPostColumnRssFeed
@@ -15,13 +15,16 @@ from apps.operation.views import TopicVoteView, FavoriteTopicView, FavoriteNodeV
     DailyMissionView, SettingView, AvatarSettingView, PhoneSettingView, EmailSettingView, PasswordSettingView, \
     SendActivateCodeView, ActivateEmailView, FollowingView, BlockView, DailyRandomBalanceView
 from apps.topic.views import RecentView, NewTopicView, NodeView, NodeLinkView, TopicView, MarkdownPreView, \
-    MyFollowingView, MyFavoriteNodeView, MyFavoriteTopicView
+    MyFollowingView, MyFavoriteNodeView, MyFavoriteTopicView, IndexView
 from apps.userinfo.views import MemberView, SigninView, SignupView, SignoutView
-from utils import check_code
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
+
+path('topic/', IndexView.as_view(), name='index'),
+
+
 
     path('admin/', admin.site.urls),
     url(r'^$', ArticlePostView.as_view(), name='home'),
@@ -126,7 +129,7 @@ path('recent', RecentView.as_view(), name='recent'),
     # 我关注的人的信息
     path('my/following', MyFollowingView.as_view(), name='my_following'),
     # 生成图形验证码
-    # path('check_code', check_code, name='check_code'),
+    path('check_code', check_code, name='check_code'),
     # 发帖时markdown 格式预览
     path('preview/markdown', MarkdownPreView.as_view(), name='markdown_preview'),
     # 每日金币奖励

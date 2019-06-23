@@ -17,7 +17,7 @@ def create_validate_code(size=(120, 35),
                          bg_color=(255, 255, 255),
                          fg_color=(0, 0, 255),
                          font_size=18,
-                         font_type="Monaco.ttf",
+                         font_type="ae_AlArabiya.ttf",
                          length=4,
                          draw_lines=True,
                          n_line=(1, 2),
@@ -76,8 +76,8 @@ def create_validate_code(size=(120, 35),
         """绘制验证码字符"""
         c_chars = get_chars()
         strs = ' %s ' % ' '.join(c_chars)  # 每个字符前后以空格隔开
-
-        font = ImageFont.truetype(font_type, font_size)
+        font = ImageFont.load_default().font
+        # font = ImageFont.truetype(font_type, font_size)
         font_width, font_height = font.getsize(strs)
 
         draw.text(((width - font_width) / 3, (height - font_height) / 3),

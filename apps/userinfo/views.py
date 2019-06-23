@@ -1,15 +1,23 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib.auth.hashers import check_password
 from django.views.generic import View
+from django.urls import reverse
+from datetime import datetime
+from django.db.models import Q
+from io import BytesIO
+from utils.check_code import create_validate_code
 
+from apps.topic.models import Topic
 from .forms import PhotoForm
-from .models import UserInfo, get_default_avatar_url
+from .models import UserInfo, get_default_avatar_url, UserFollowing
 from apps.workout.models import BodyManage
 from .forms import UserInfoForm,BodyForm
-
+from .forms import SignupForm, SigninForm
+from apps.operation.models import UserDetails, SignedInfo, FavoriteNode, TopicVote
+from django.core.cache import cache
 
 from allauth.account.views import EmailView
 from braces.views import LoginRequiredMixin
@@ -18,6 +26,19 @@ from .models import UserProfile
 from allauth.account.models import EmailAddress
 from django.contrib import messages
 
+
+
+def check_code(request):
+    """
+    验证码
+    :param request:
+    :return:
+    """
+    stream = BytesIO()
+    img, code = create_validate_code()
+    img.save(stream, 'PNG')
+    request.session['CheckCode'] = code
+    return HttpResponse(stream.getvalue())
 
 def user_signup_validate(request):
     """登录/注册验证"""
@@ -316,3 +337,6 @@ class MemberView(View):
         # 没有此用户，指向没有的连接，返回404
         except UserProfile.DoesNotExist:
             raise Http404("Not Find This User")
+
+
+

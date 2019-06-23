@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 # from apps.workout.models import BodyManage,WeightManage
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -164,7 +164,7 @@ class UserFollowing(models.Model):
         return UserFollowing.objects.filter(following=self, is_following=1).count()
 
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=UserProfile)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         default_avatar_url = get_default_avatar_url()

@@ -276,9 +276,9 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional'
 SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 
 # 设置邮件相关
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 这是django默认的邮件后台
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 这是django默认的邮件后台
 # 使用django-celery-email更改默认邮件发送为异步发送
-EMAIL_BACKEND ='djcelery_email.backends.CeleryEmailBackend'
+# EMAIL_BACKEND ='djcelery_email.backends.CeleryEmailBackend'
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_HOST_USER = 'do_1024@163.com'
 EMAIL_HOST_PASSWORD = ENV.get('EMAIL_HOST_KEY')
