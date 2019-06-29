@@ -6,7 +6,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from apps.userinfo.views import check_code
 
-from apps.article.views import ArticlePostView,TimelineView
+from apps.article.views import ArticlePostView, TimelineView
 from apps.article.feeds import ArticlesPostRssFeed, ArticlesPostColumnRssFeed
 
 import notifications.urls
@@ -22,9 +22,7 @@ urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
 
-path('topic/', IndexView.as_view(), name='index'),
-
-
+    path('topic/', IndexView.as_view(), name='index'),
 
     path('admin/', admin.site.urls),
     url(r'^$', ArticlePostView.as_view(), name='home'),
@@ -47,7 +45,7 @@ path('topic/', IndexView.as_view(), name='index'),
 
     path('my-notifications/', include('apps.mynotifications.urls', namespace='my_notifications')),
     url(r'^timeline/$', TimelineView.as_view(), name='timeline'),  # timeline页面
-    url(r'^tool/', include('workout.urls',namespace='workout')), # 运动工具
+    url(r'^tool/', include('workout.urls', namespace='workout')),  # 运动工具
 
     # RSS订阅
     url(r'^all/rss/$', ArticlesPostRssFeed(), name='rss'),
@@ -76,8 +74,7 @@ path('topic/', IndexView.as_view(), name='index'),
     # api-comments
     path('api/comments/', include('apps.comments.api.urls', namespace='api_comments')),
 
-
-path('recent', RecentView.as_view(), name='recent'),
+    path('recent', RecentView.as_view(), name='recent'),
     # 发布新主题
     path('new', NewTopicView.as_view(), name='new'),
     # notes

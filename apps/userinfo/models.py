@@ -21,9 +21,47 @@ def user_directory_path(instance, filename):
     ext = filename.split('.')[-1]
     filename = '{}.{}'.format(uuid.uuid4().hex[:10], ext)
     # 这里的id是User表的id
-    return os.path.join('user', str(instance.user_id), "avatar", filename)
+    return os.path.join('user', str(instance.id), "avatar", filename)
 
-class UserInfo(models.Model):
+# class UserInfo(models.Model):
+#     gender_choices = (
+#         (0, ''),
+#         (1, '男♂'),
+#         (2, '女♀'),
+#         (3, '⚧')
+#     )
+#
+#     blood_choices = (
+#         (0, ''),
+#         (1, 'A'),
+#         (2, 'B'),
+#         (3, 'AB'),
+#         (4, 'O'),
+#     )
+#     # User.id OntToOneField
+#     user_id = models.PositiveIntegerField()
+#
+#
+#
+#
+#     gender = models.SmallIntegerField(default=0, choices=gender_choices, verbose_name='性别')
+#     blood = models.SmallIntegerField(default=0, choices=blood_choices, verbose_name='血型')
+#     startWorkout = models.DateField(null=True, blank=True, verbose_name='开始健身日')
+#
+#     def __str__(self):
+#         user = UserProfile.objects.get(id=self.user_id)
+#         return user.username
+#
+
+def get_default_avatar_url():
+    return '/static/img/user_default_avatar/0' + str(randint(1, 9)) + '.svg'
+
+
+
+class UserProfile(AbstractUser):
+    """
+    用户表
+    """
     gender_choices = (
         (0, ''),
         (1, '男♂'),
@@ -38,38 +76,6 @@ class UserInfo(models.Model):
         (3, 'AB'),
         (4, 'O'),
     )
-    # User.id OntToOneField
-    user_id = models.PositiveIntegerField()
-
-    link = models.URLField('个人网址', blank=True, help_text='提示：网址必须填写以http开头的完整形式')
-
-    # avatar
-    avatar = ProcessedImageField(
-        upload_to=user_directory_path,
-        format='JPEG',
-        options={'quality': 100},
-        blank=True,
-        null=True,
-        verbose_name='头像',
-    )
-    gender = models.SmallIntegerField(default=0, choices=gender_choices, verbose_name='性别')
-    blood = models.SmallIntegerField(default=0, choices=blood_choices, verbose_name='血型')
-    startWorkout = models.DateField(null=True, blank=True, verbose_name='开始健身日')
-
-    def __str__(self):
-        user = UserProfile.objects.get(id=self.user_id)
-        return user.username
-
-
-def get_default_avatar_url():
-    return '/static/img/user_default_avatar/0' + str(randint(1, 9)) + '.svg'
-
-
-
-class UserProfile(AbstractUser):
-    """
-    用户表
-    """
     GENDER_TYPE = (
         ("male", "男"),
         ("female", "女"),
@@ -89,10 +95,20 @@ class UserProfile(AbstractUser):
     location = models.CharField(max_length=30, null=True, blank=True, default="", verbose_name="所在城市")
     mobile = models.CharField(max_length=11, null=True, blank=True, default="", verbose_name="电话")
     email = models.CharField(max_length=100, null=True, blank=True, default="", verbose_name="邮箱")
+    gender = models.SmallIntegerField(default=0, choices=gender_choices, verbose_name='性别')
+    blood = models.SmallIntegerField(default=0, choices=blood_choices, verbose_name='血型')
+    startWorkout = models.DateField(null=True, blank=True, verbose_name='开始健身日')
     email_verify = models.IntegerField(choices=VERIFY_STATUS, default=0, verbose_name="Email是否已经验证")
     mobile_verify = models.IntegerField(choices=VERIFY_STATUS, default=0, verbose_name="Mobile是否已经验证")
-    avatar = models.CharField(max_length=50, null=True, blank=True, default="/static/img/default-avatar.png",
-                              verbose_name="头像")
+    link = models.URLField('个人网址', blank=True, help_text='提示：网址必须填写以http开头的完整形式')
+    avatar = ProcessedImageField(
+        upload_to=user_directory_path,
+        format='JPEG',
+        options={'quality': 100},
+        blank=True,
+        null=True,
+        verbose_name='头像',
+    )
     session = models.CharField(max_length=50, null=True, blank=True, default="",
                                verbose_name="用户登录时会写入当前session_key")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
@@ -104,7 +120,6 @@ class UserProfile(AbstractUser):
 
     def __str__(self):
         return self.username
-
 
 class VerifyCode(models.Model):
     """
@@ -168,5 +183,5 @@ class UserFollowing(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         default_avatar_url = get_default_avatar_url()
-        UserInfo.objects.create(user_id=instance.id, avatar=default_avatar_url)
+        UserProfile.objects.create(id=instance.id, avatar=default_avatar_url)
 

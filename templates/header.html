@@ -113,7 +113,8 @@
 
 
             <!-- 用户下拉条avatar -->
-            {% if user.is_authenticated %}
+{#            {% if user.is_authenticated %}#}
+        {% if request.session.user_info %}
             <li class="nav-item dropdown" style="float: right;">
                 {% if user.socialaccount_set.all.0.get_avatar_url %}
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
@@ -124,14 +125,14 @@
                     {% endif %}
                     <img src="{% translate_avatar_ssl user.socialaccount_set.all.0.get_avatar_url %}"
                         style="max-height: 40px; border-radius: 20%" alt="{{ user.username }}">
-                </a> {% elif userinfo.avatar %} {% if 'static' in userinfo.avatar.url %}
+                </a> {% elif request.session.user_info.avatar %} {% if 'static' in request.session.user_info.avatar.url %}
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
                     {% if unread_count %}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
                         <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
                     </svg>
                     {% endif %}
-                    <img src="{{ userinfo.avatar }}" alt="avatar" style="max-height: 40px; border-radius: 20%">
+                    <img src="{{ request.session.user_info.avatar }}" alt="avatar" style="max-height: 40px; border-radius: 20%">
                 </a> {% else %}
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" style="color: gray;">
                     {% if unread_count %}
@@ -139,7 +140,7 @@
                         <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
                     </svg>
                     {% endif %}
-                    <img src="{{ userinfo.avatar.url }}" alt="{{ user.username }}"
+                    <img src="{{ request.session.user_info.avatar }}" alt="{{ user.username }}"
                         style="max-height: 40px; border-radius: 20%">
                 </a> {% endif %} {% else %}
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" style="color: gray;">
@@ -198,7 +199,7 @@
                     确认退出吗？
                 </h5>
                 <div class="modal-footer">
-                    <form method="post" action="{% url 'account_logout' %}">
+                    <form method="post" action="{% url 'signout' %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">退出登录</button>
                     </form>

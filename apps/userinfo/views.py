@@ -1,18 +1,24 @@
+from allauth.account.utils import sync_user_email_addresses
+from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib.auth.hashers import check_password
+from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.urls import reverse
 from datetime import datetime
 from django.db.models import Q
 from io import BytesIO
 from utils.check_code import create_validate_code
+from utils.auth_decorator import login_auth
+from django.contrib.auth import login
+
 
 from apps.topic.models import Topic
 from .forms import PhotoForm
-from .models import UserInfo, get_default_avatar_url, UserFollowing
+from .models import UserProfile, get_default_avatar_url, UserFollowing
 from apps.workout.models import BodyManage
 from .forms import UserInfoForm,BodyForm
 from .forms import SignupForm, SigninForm
@@ -22,11 +28,10 @@ from django.core.cache import cache
 from allauth.account.views import EmailView
 from braces.views import LoginRequiredMixin
 
-from .models import UserProfile
 from allauth.account.models import EmailAddress
 from django.contrib import messages
 
-
+User = get_user_model()
 
 def check_code(request):
     """
@@ -77,12 +82,60 @@ def user_signup_validate(request):
     return HttpResponse('200')
 
 
-class UserInfoView(LoginRequiredMixin, EmailView):
+class UserIn222foView(EmailView):
     """
     展示个人信息
     """
+    @method_decorator(login_auth)
+    def dispatch(self, request, *args, **kwargs):
+        # user=User.objects.filter(id=self.request.session.get('user_info')['uid']).first()
+        sync_user_email_addresses(request.user)
+        return super(UserInfoView, self).dispatch(request, *args, **kwargs)
+
     success_url = reverse_lazy('userinfo:detail')
     login_url = "/accounts/login"
+
+
+    # def get_context_data(self, **kwargs):
+    #     """
+    #     添加或新建userinfo上下文
+    #     """
+    #     context = super(UserInfoView, self).get_context_data(**kwargs)
+    #     # id = self.request.user.id
+    #
+    #     try:u
+    #     #         userinfo = User.objects.filter(id=self.request.session.get('user_info')['id']).first()
+    #
+    #     except:
+    #         userinfo = UserProfile.objects.create(id=id)
+    #
+    #     if not userinfo.avatar:
+    #         userinfo.avatar = get_default_avatar_url()
+    #         userinfo.save()
+    #
+    #     userinfo_form = UserInfoForm()
+    #     data = {
+    #         'userinfo': userinfo,
+    #         'userinfo_form': userinfo_form,
+    #     }
+    #     context.update(data)
+    #
+    #     return context
+class UserInfoView(EmailView):
+    """
+    展示个人信息
+    """
+
+    @method_decorator(login_auth)
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserInfoView, self).dispatch(request, *args, **kwargs)
+
+    success_url = reverse_lazy('userinfo:detail')
+    login_url = "/accounts/login"
+
+    def get(self, request):
+
+        user = User.objects.filter(id=request.session.get('user_info')['uid']).first()
 
     def get_context_data(self, **kwargs):
         """
@@ -92,10 +145,10 @@ class UserInfoView(LoginRequiredMixin, EmailView):
         user_id = self.request.user.id
 
         try:
-            userinfo = UserInfo.objects.get(user_id=user_id)
+            userinfo = User.objects.get(user_id=user_id)
 
         except:
-            userinfo = UserInfo.objects.create(user_id=user_id)
+            userinfo = User.objects.create(user_id=user_id)
 
         if not userinfo.avatar:
             userinfo.avatar = get_default_avatar_url()
@@ -110,16 +163,39 @@ class UserInfoView(LoginRequiredMixin, EmailView):
 
         return context
 
+
+class ProfileView(View):
+    @method_decorator(login_auth)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProfileView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+
+        user = User.objects.filter(id=request.session.get('user_info')['uid']).first()
+
+        # print(user)
+        if not user.avatar:
+            user.avatar = get_default_avatar_url()
+            user.save()
+
+
+        form = UserInfoForm(instance=user)
+        user_body_info = BodyManage.objects.get(user=user)
+        body_form = BodyForm(instance=user_body_info)
+        return render(request, 'account/profile.html',
+                      context={'form': form, 'userinfo': user, 'body_form': body_form})
+
+
 @login_required
 def test(request):
 
     user_id = request.user.id
 
     try:
-        userinfo = UserInfo.objects.get(user_id=user_id)
+        userinfo = UserProfile.objects.get(user_id=user_id)
 
     except:
-        userinfo = UserInfo.objects.create(user_id=user_id)
+        userinfo = UserProfile.objects.create(user_id=user_id)
 
     if not userinfo.avatar:
         userinfo.avatar = get_default_avatar_url()
@@ -139,23 +215,41 @@ def test(request):
     return render(request,'account/profile.html',context={'form':form,'userinfo': userinfo,'body_form':body_form})
 
 
-@login_required(login_url='/accounts/login')
-def crop_upload_handler(request):
-    """
-    裁剪并上传用户头像
-    """
-    if request.method == 'POST':
+
+
+
+class Crop_upload_handler(View):
+    @method_decorator(login_auth)
+    def dispatch(self, request, *args, **kwargs):
+        return super(Crop_upload_handler, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
         form = PhotoForm(request.POST, request.FILES)
         if form.is_valid():
-            user_id = request.user.id
-            form.save(user_id=user_id)
-    return redirect('userinfo:detail')
+            # user_id = request.user.id
+            id = request.session.get('user_info')['uid']
+            form.save(id=id)
+
+        return redirect('userinfo:detail')
+
+
+# @login_required(login_url='/accounts/login')
+# def crop_upload_handler(request):
+#     """
+#     裁剪并上传用户头像
+#     """
+#     if request.method == 'POST':
+#         form = PhotoForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             user_id = request.user.id
+#             form.save(user_id=user_id)
+#     return redirect('userinfo:detail')
 
 @login_required
 def updata_view(request):
     if request.method == 'POST':
         user_id = request.user.id
-        userinfo = UserInfo.objects.get(user_id=user_id)
+        userinfo = UserProfile.objects.get(user_id=user_id)
         user_body_info = BodyManage.objects.get(user=request.user)
         # 更新哪一个表单就一定要有  request.POST这个参数!!!
         body_form = BodyForm(request.POST,instance=user_body_info)
@@ -170,15 +264,36 @@ def updata_view(request):
 
     # return render(request,'oauth/profile.html',context={'detailForm':detailForm,'form':form})
 
-@login_required
-def change_profile_view(request):
-    if request.method == 'POST':
-        user_id = request.user.id
-        userinfo = UserInfo.objects.get(user_id=user_id)
-        user_body_info = BodyManage.objects.get(user=request.user)
+# @login_required
+# def change_profile_view(request):
+#     if request.method == 'POST':
+#         user_id = request.user.id
+#         userinfo = UserProfile.objects.get(user_id=user_id)
+#         user_body_info = BodyManage.objects.get(user=request.user)
+#         body_form = BodyForm(instance=user_body_info)
+#         # 更新哪一个表单就一定要有  request.POST这个参数!!!
+#         form = UserInfoForm(request.POST,instance=userinfo)
+#         if form.is_valid():
+#             form.save()
+#             # 添加一条信息,表单验证成功就重定向到个人信息页面
+#             messages.add_message(request,messages.SUCCESS,'个人信息更新成功！')
+#             return redirect('userinfo:detail')
+#         else:
+#             return render(request, 'account/profile.html', context={'form':form,'body_form': body_form})
+
+class Change_profile(View):
+    @method_decorator(login_auth)
+    def dispatch(self, request, *args, **kwargs):
+        return super(Change_profile, self).dispatch(request, *args, **kwargs)
+
+    def post(self,request):
+        user = User.objects.filter(id=request.session.get('user_info')['uid']).first()
+        # user_id = request.user.id
+        # userinfo = UserProfile.objects.get(user=user_id)
+        user_body_info = BodyManage.objects.get(user=user)
         body_form = BodyForm(instance=user_body_info)
         # 更新哪一个表单就一定要有  request.POST这个参数!!!
-        form = UserInfoForm(request.POST,instance=userinfo)
+        form = UserInfoForm(request.POST,instance=user)
         if form.is_valid():
             form.save()
             # 添加一条信息,表单验证成功就重定向到个人信息页面
@@ -221,7 +336,7 @@ class SignupView(View):
                 code_error = "验证码错误"
         else:
             code_error = "请输入验证码"
-        return render(request, 'user/signup.html', locals())
+        return render(request, 'account/login.html', locals())
 
 
 class SigninView(View):
@@ -265,8 +380,9 @@ class SigninView(View):
                             user_info = {
                                 'username': username,
                                 'uid': user_obj.id,
-                                'avatar': user_obj.avatar,
+                                'avatar': user_obj.avatar.url,
                                 'mobile': user_obj.mobile,
+                                'email': user_obj.email,
                                 'favorite_node_num': FavoriteNode.objects.filter(favorite=1, user=user_obj).count(),
                                 'favorite_topic_num': TopicVote.objects.filter(favorite=1, user=user_obj).count(),
                                 'following_user_num': UserFollowing.objects.filter(is_following=1,
@@ -275,6 +391,7 @@ class SigninView(View):
                                 'balance': user_detail.balance,
                                 'daily_mission': signed_status,
                             }
+
                             # 登陆后页面跳转
                             if request.POST.get('next', None):
                                 next_url = request.POST.get('next')
@@ -294,11 +411,12 @@ class SigninView(View):
                 code_error = "验证码错误"
         else:
             code_error = "请输入验证码"
-        return render(request, 'user/signin.html', locals())
+        login(request, user_obj)
+        return render(request, 'account/login.html', locals())
 
 
 class SignoutView(View):
-    def get(self, request):
+    def post(self, request):
         # 如果用户登录了
         if request.session.get('user_info', None):
             # 删除登录用户统计信息
@@ -307,7 +425,7 @@ class SignoutView(View):
             cache.delete(online_key)
             # 清除 session 信息
             request.session.flush()
-        return render(request, 'user/signout.html')
+        return render(request, 'article/article_list.html')
 
 
 class MemberView(View):

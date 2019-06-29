@@ -1,17 +1,17 @@
 from django import template
 
-from apps.userinfo.models import UserInfo
+from apps.userinfo.models import UserProfile
 
 register = template.Library()
 
 @register.simple_tag
-def get_userinfo(user_id):
+def get_userinfo(id):
     """
     获取UserInfo实例
     :param user_id: User的id
     """
     try:
-        userinfo = UserInfo.objects.get(user_id=user_id)
+        userinfo = UserProfile.objects.get(id=id)
     except:
         userinfo = None
     return userinfo

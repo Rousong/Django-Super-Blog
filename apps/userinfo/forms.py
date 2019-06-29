@@ -1,12 +1,11 @@
 import re
 
 from django import forms
-from .models import UserInfo, UserProfile
+from .models import  UserProfile
 from django.core.exceptions import ValidationError
 from PIL import Image
 from django import forms
 from django.core.files import File
-from .models import UserInfo
 from apps.workout.models import BodyManage
 
 from crispy_forms.helper import FormHelper
@@ -17,7 +16,7 @@ from crispy_forms.bootstrap import AppendedText
 
 class UserInfoForm(forms.ModelForm):
     class Meta:
-        model = UserInfo
+        model = UserProfile
         fields = ['link','blood','gender','startWorkout']
 
     def __init__(self, *args, **kwargs):
@@ -111,7 +110,7 @@ class PhotoForm(forms.ModelForm):
     height = forms.FloatField(widget=forms.HiddenInput())
 
     class Meta:
-        model = UserInfo
+        model = UserProfile
         fields = (
             'avatar',
             'x',
@@ -120,14 +119,14 @@ class PhotoForm(forms.ModelForm):
             'height',
         )
 
-    def save(self, commit=True, user_id=None):
+    def save(self, commit=True, id=None):
 
-        if UserInfo.objects.get(user_id=user_id):
-            userinfo = UserInfo.objects.get(user_id=user_id)
+        if UserProfile.objects.get(id=id):
+            userinfo = UserProfile.objects.get(id=id)
             userinfo.avatar = super(PhotoForm, self).save(commit=False).avatar
         else:
             userinfo = super(PhotoForm, self).save(commit=False)
-            userinfo.user_id = user_id
+            userinfo.id = id
 
         userinfo.save()
 
