@@ -90,6 +90,7 @@ class UserProfile(AbstractUser):
         (0, "未验证"),
         (1, "已验证")
     )
+
     birthday = models.DateField(null=True, blank=True, verbose_name="出生年月")
     gender = models.CharField(max_length=6, choices=GENDER_TYPE, default="female", verbose_name="性别")
     location = models.CharField(max_length=30, null=True, blank=True, default="", verbose_name="所在城市")
@@ -179,9 +180,9 @@ class UserFollowing(models.Model):
         return UserFollowing.objects.filter(following=self, is_following=1).count()
 
 
-@receiver(post_save, sender=UserProfile)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        default_avatar_url = get_default_avatar_url()
-        UserProfile.objects.create(id=instance.id, avatar=default_avatar_url)
+# @receiver(post_save, sender=UserProfile)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         default_avatar_url = get_default_avatar_url()
+#         UserProfile.objects.create(id=instance.id, avatar=default_avatar_url)
 

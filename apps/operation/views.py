@@ -6,6 +6,9 @@ from django.http import Http404
 from django.db.models import F
 from django.views.generic import View
 from django.utils.decorators import method_decorator
+
+from apps.userinfo.forms import UserInfoForm, BodyForm
+from apps.workout.models import BodyManage
 from utils.auth_decorator import login_auth
 from .tasks import send_email_code
 from utils.pagination import Paginator
@@ -16,6 +19,7 @@ from .models import Topic, TopicVote, FavoriteNode, TopicCategory, UserDetails, 
 from .forms import TopicVoteForm, CheckTopicForm, CheckNodeForm, SettingsForm, PhoneSettingsForm, EmailSettingsForm, \
     AvatarSettingsForm, PasswordSettingsForm
 from apps.userinfo.models import UserFollowing, VerifyCode
+from django.contrib import messages
 
 User = get_user_model()
 
@@ -334,35 +338,46 @@ class EmailSettingView(View):
     def get(self, request):
         # 获取用户的Email
         user_obj = User.objects.filter(id=request.session.get('user_info')['uid']).first()
-        return render(request, 'user/setting_email.html', locals())
+        # return render(request, 'user/setting_email.html', locals())
+        return render(request, 'account/profile.html', locals())
 
     def post(self, request):
         has_error = True
         # 验证
         obj = EmailSettingsForm(request.POST)
-        user_obj = User.objects.filter(id=request.session.get('user_info')['uid']).first()
+        user = User.objects.filter(id=request.session.get('user_info')['uid']).first()
         if obj.is_valid():
             password = obj.cleaned_data['password']
             new_email = obj.cleaned_data['new_email']
-            if user_obj.check_password(password):
-                user_obj.email = new_email
-                user_obj.email_verify = 0
+            if user.check_password(password):
+                user.email = new_email
+                user.email_verify = 0
                 # 保存
-                user_obj.save()
-                # 发送验证信
-                random_code = gender_random_code()
-                # 异步发送 返回id
-                ret_obj = send_email_code.delay(to=new_email, code=random_code)
-                # 存入数据库
-                code_obj = VerifyCode.objects.create(to=new_email, code_type=0, code=random_code)
-                code_obj.code = random_code
-                code_obj.task_id = ret_obj.task_id
-                code_obj.save()
+                user.save()
+                # # 发送验证信
+                # random_code = gender_random_code()
+                # # # 异步发送 返回id
+                # ret_obj = send_email_code.delay(to=new_email, code=random_code)
+                # # # 存入数据库
+                # code_obj = VerifyCode.objects.create(to=new_email, code_type=0, code=random_code)
+                # code_obj.code = random_code
+                # code_obj.task_id = ret_obj.task_id
+                # code_obj.save()
                 has_error = False
             else:
                 password_error = "密码错误"
-        return render(request, 'user/setting_email.html', locals())
+                messages.add_message(request, messages.SUCCESS, '密码错误！')
+                return redirect('userinfo:detail')
 
+        # return render(request, 'user/setting_email.html', locals())
+        # form = UserInfoForm(instance=user)
+        # user_body_info = BodyManage.objects.get(user=user)
+        # body_form = BodyForm(instance=user_body_info)
+
+
+        # return render(request, 'account/profile.html', locals())
+        messages.add_message(request, messages.SUCCESS, '个人信息更新成功！')
+        return redirect('userinfo:detail')
 
 class ActivateEmailView(View):
     def get(self, request, code):

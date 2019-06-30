@@ -13,7 +13,7 @@ from django.db.models import Q
 from io import BytesIO
 from utils.check_code import create_validate_code
 from utils.auth_decorator import login_auth
-from django.contrib.auth import login
+from django.contrib.auth import login,authenticate
 
 
 from apps.topic.models import Topic
@@ -121,21 +121,55 @@ class UserIn222foView(EmailView):
     #     context.update(data)
     #
     #     return context
+
+# class UserInfoView(EmailView):
+#     """
+#     展示个人信息
+#     """
+#
+#     @method_decorator(login_auth)
+#     def dispatch(self, request, *args, **kwargs):
+#         sync_user_email_addresses(request.user)
+#         request.user=User.objects.filter(id=request.session.get('user_info')['uid']).first()
+#         return super(UserInfoView, self).dispatch(request, *args, **kwargs)
+#
+#     success_url = reverse_lazy('userinfo:detail')
+#     login_url = "/accounts/login"
+#
+#
+#     def get_context_data(self, **kwargs):
+#         """
+#         添加或新建userinfo上下文
+#         """
+#
+#         context = super(UserInfoView, self).get_context_data(**kwargs)
+#         user_id = self.request.user.id
+#
+#         try:
+#             userinfo = User.objects.get(user_id=user_id)
+#
+#         except:
+#             userinfo = User.objects.create(user_id=user_id)
+#
+#         if not userinfo.avatar:
+#             userinfo.avatar = get_default_avatar_url()
+#             userinfo.save()
+#
+#         userinfo_form = UserInfoForm()
+#         data = {
+#             'userinfo': userinfo,
+#             'userinfo_form': userinfo_form,
+#         }
+#         context.update(data)
+#
+#         return context
+
 class UserInfoView(EmailView):
     """
     展示个人信息
     """
-
-    @method_decorator(login_auth)
-    def dispatch(self, request, *args, **kwargs):
-        return super(UserInfoView, self).dispatch(request, *args, **kwargs)
-
     success_url = reverse_lazy('userinfo:detail')
     login_url = "/accounts/login"
-
-    def get(self, request):
-
-        user = User.objects.filter(id=request.session.get('user_info')['uid']).first()
 
     def get_context_data(self, **kwargs):
         """
@@ -145,10 +179,10 @@ class UserInfoView(EmailView):
         user_id = self.request.user.id
 
         try:
-            userinfo = User.objects.get(user_id=user_id)
+            userinfo = UserProfile.objects.get(user_id=user_id)
 
         except:
-            userinfo = User.objects.create(user_id=user_id)
+            userinfo = UserProfile.objects.create(user_id=user_id)
 
         if not userinfo.avatar:
             userinfo.avatar = get_default_avatar_url()
@@ -163,7 +197,6 @@ class UserInfoView(EmailView):
 
         return context
 
-
 class ProfileView(View):
     @method_decorator(login_auth)
     def dispatch(self, request, *args, **kwargs):
@@ -174,16 +207,16 @@ class ProfileView(View):
         user = User.objects.filter(id=request.session.get('user_info')['uid']).first()
 
         # print(user)
-        if not user.avatar:
-            user.avatar = get_default_avatar_url()
-            user.save()
+        # if not user.avatar:
+        #     user.avatar = get_default_avatar_url()
+        #     user.save()
 
 
         form = UserInfoForm(instance=user)
         user_body_info = BodyManage.objects.get(user=user)
         body_form = BodyForm(instance=user_body_info)
         return render(request, 'account/profile.html',
-                      context={'form': form, 'userinfo': user, 'body_form': body_form})
+                      context={'form': form, 'userinfo': user, 'body_form': body_form,'user':user})
 
 
 @login_required
@@ -229,6 +262,9 @@ class Crop_upload_handler(View):
             # user_id = request.user.id
             id = request.session.get('user_info')['uid']
             form.save(id=id)
+            user=User.objects.filter(id=self.request.session.get('user_info')['uid']).first()
+            # 上传新头像之后更新缓存中的头像地址
+            request.session['user_info']['avatar'] = user.avatar.url
 
         return redirect('userinfo:detail')
 
@@ -306,7 +342,7 @@ class Change_profile(View):
 
 class SignupView(View):
     def get(self, request):
-        return render(request, 'user/signup.html')
+        return render(request, 'account/signup.html')
 
     def post(self, request):
         has_error = True
@@ -318,31 +354,34 @@ class SignupView(View):
                 if obj.is_valid():
                     has_error = False
                     username = obj.cleaned_data['username']
-                    password = obj.cleaned_data['password']
+                    password = obj.cleaned_data['password1']
                     email = obj.cleaned_data['email']
-                    mobile = obj.cleaned_data['mobile']
+                    # mobile = obj.cleaned_data['mobile']
+                    default_avatar_url = get_default_avatar_url()
                     # 保存用户
+                    # user_obj = UserProfile.objects.create(username=username,password=password, avatar=default_avatar_url)
                     user_obj = UserProfile()
                     user_obj.username = username
                     user_obj.email = email
-                    user_obj.mobile = mobile
+                    user_obj.avatar = default_avatar_url
+                    # user_obj.mobile = mobile
                     user_obj.set_password(password)
                     user_obj.save()
                     # 注册成功，创建用户details 表
-                    UserDetails.objects.create(user_id=user_obj.id)
+                    UserDetails.objects.create(user=user_obj)
                     # 跳转到登录页
                     return redirect(reverse('signin'))
             else:
                 code_error = "验证码错误"
         else:
             code_error = "请输入验证码"
-        return render(request, 'account/login.html', locals())
+        return render(request, 'account/signup.html', locals())
 
 
 class SigninView(View):
     def get(self, request):
         next_url = request.GET.get('next', None)
-        return render(request, 'user/signin.html', locals())
+        return render(request, 'account/login.html', locals())
 
     def post(self, request):
         has_error = True
@@ -361,7 +400,7 @@ class SigninView(View):
                             user_obj.session = request.session.session_key
                             user_obj.save()
 
-                            # 用户详细信息表 注册时已经创建，这里是防止admin等用户未创建产生的BUG
+                                # 用户详细信息表 注册时已经创建，这里是防止admin等用户未创建产生的BUG
                             user_detail = UserDetails.objects.filter(user_id=user_obj.id).first()
                             if not user_detail:
                                 user_detail = UserDetails.objects.create(user_id=user_obj.id)
@@ -411,7 +450,6 @@ class SigninView(View):
                 code_error = "验证码错误"
         else:
             code_error = "请输入验证码"
-        login(request, user_obj)
         return render(request, 'account/login.html', locals())
 
 
