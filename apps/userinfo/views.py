@@ -300,22 +300,47 @@ def updata_view(request):
 
     # return render(request,'oauth/profile.html',context={'detailForm':detailForm,'form':form})
 
-# @login_required
-# def change_profile_view(request):
-#     if request.method == 'POST':
-#         user_id = request.user.id
-#         userinfo = UserProfile.objects.get(user_id=user_id)
-#         user_body_info = BodyManage.objects.get(user=request.user)
-#         body_form = BodyForm(instance=user_body_info)
-#         # 更新哪一个表单就一定要有  request.POST这个参数!!!
-#         form = UserInfoForm(request.POST,instance=userinfo)
-#         if form.is_valid():
-#             form.save()
-#             # 添加一条信息,表单验证成功就重定向到个人信息页面
-#             messages.add_message(request,messages.SUCCESS,'个人信息更新成功！')
-#             return redirect('userinfo:detail')
-#         else:
-#             return render(request, 'account/profile.html', context={'form':form,'body_form': body_form})
+class Update_bodyDate(View):
+    @method_decorator(login_auth)
+    def dispatch(self, request, *args, **kwargs):
+        return super(Update_bodyDate, self).dispatch(request, *args, **kwargs)
+
+    def post(self,request):
+        user = User.objects.filter(id=request.session.get('user_info')['uid']).first()
+        # user_id = request.user.id
+        # userinfo = UserProfile.objects.get(user_id=user_id)
+        user_body_info = BodyManage.objects.get(user=user)
+        # 更新哪一个表单就一定要有  request.POST这个参数!!!
+        body_form = BodyForm(request.POST, instance=user_body_info)
+        form = UserInfoForm(instance=user)
+        if body_form.is_valid():
+            body_form.save()
+            # 添加一条信息,表单验证成功就重定向到个人信息页面
+            messages.add_message(request, messages.SUCCESS, '身体数据更新成功！')
+            return redirect('userinfo:detail')
+        else:
+            return render(request, 'account/profile.html', context={'body_form': body_form, 'form': form, })
+
+
+def updata_view(request):
+    if request.method == 'POST':
+        user = User.objects.filter(id=request.session.get('user_info')['uid']).first()
+        user_id = request.user.id
+        userinfo = UserProfile.objects.get(user_id=user_id)
+        user_body_info = BodyManage.objects.get(user=request.user)
+        # 更新哪一个表单就一定要有  request.POST这个参数!!!
+        body_form = BodyForm(request.POST,instance=user_body_info)
+        form = UserInfoForm(instance=userinfo)
+        if body_form.is_valid():
+            body_form.save()
+            # 添加一条信息,表单验证成功就重定向到个人信息页面
+            messages.add_message(request,messages.SUCCESS,'身体数据更新成功！')
+            return redirect('userinfo:detail')
+        else:
+            return render(request, 'account/profile.html', context={'body_form': body_form,'form':form,})
+
+    # return render(request,'oauth/profile.html',context={'detailForm':detailForm,'form':form})
+
 
 class Change_profile(View):
     @method_decorator(login_auth)

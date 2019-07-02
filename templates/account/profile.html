@@ -10,149 +10,156 @@
     <link rel="stylesheet" href="{% static 'cropper/cropper.min.css' %}">
 
     <div class="container">
-        <br>
-        <br>
+    <br>
+    <br>
 
-        <div style="text-align: center" class="mb-4">
-            {% if user.socialaccount_set.all.0.get_avatar_url %}
-                <!-- 第三方头像 -->
-                <img src="{% translate_avatar_ssl user.socialaccount_set.all.0.get_avatar_url %}"
-                     alt=""
-                     style="max-width: 20%; border-radius: 20%"
-                >
-            {% else %}
-                {% if userinfo.avatar %}
-                    <!-- 本地头像 -->
-                    {% if 'static' in userinfo.avatar.url %}
-                        <img src="{{ userinfo.avatar }}"
-                             alt=""
-                             style="max-width: 20%; border-radius: 20%">
-                    {% else %}
-                        <img src="{{ userinfo.avatar.url }}"
-                             alt=""
-                             style="max-width: 20%; border-radius: 20%">
-                    {% endif %}
+    <div style="text-align: center" class="mb-4">
+        {% if user.socialaccount_set.all.0.get_avatar_url %}
+            <!-- 第三方头像 -->
+            <img src="{% translate_avatar_ssl user.socialaccount_set.all.0.get_avatar_url %}"
+                 alt=""
+                 style="max-width: 20%; border-radius: 20%"
+            >
+        {% else %}
+            {% if userinfo.avatar %}
+                <!-- 本地头像 -->
+                {% if 'static' in userinfo.avatar.url %}
+                    <img src="{{ userinfo.avatar }}"
+                         alt=""
+                         style="max-width: 20%; border-radius: 20%">
                 {% else %}
-                    <!-- 无头像 -->
-                    <img src="{% static 'default_avatar.jpg' %}"
+                    <img src="{{ userinfo.avatar.url }}"
                          alt=""
                          style="max-width: 20%; border-radius: 20%">
                 {% endif %}
+            {% else %}
+                <!-- 无头像 -->
+                <img src="{% static 'default_avatar.jpg' %}"
+                     alt=""
+                     style="max-width: 20%; border-radius: 20%">
             {% endif %}
-            <div class="text-muted">{{ user.username }}</div>
-
-        </div>
-
-        {% if not user.socialaccount_set.all.0.get_avatar_url %}
-            <!-- 第三方头像不能修改头像 -->
-            {% include 'account/handle_image_crop_upload.html' %}
         {% endif %}
-        <!-- 基础信息的表单 -->
-        {% crispy form %}
-        {{ emailaddress.email }}
-        <br>
-        <br>
-        <br>
-        <h5 class="alert alert-warning">{% trans "个人认证" %}</h5>
+        <div class="text-muted">{{ user.username }}</div>
 
-        <td width="120" align="right">电子邮件</td>
-        <td width="auto" align="left"><code>{{ user.email }}</code></td>
+    </div>
 
-        <div class="inner">
-            <form method="post" action="{% url 'settings_email' %}">
-                {% csrf_token %}
-                <table cellpadding="5" cellspacing="0" border="0" width="100%">
-                    <tbody>
+    {% if not user.socialaccount_set.all.0.get_avatar_url %}
+        <!-- 第三方头像不能修改头像 -->
+        {% include 'account/handle_image_crop_upload.html' %}
+    {% endif %}
+    <!-- 基础信息的表单 -->
+    {% crispy form %}
+    {{ emailaddress.email }}
+    <br>
+    <br>
+    <br>
+    <h5 class="alert alert-warning">{% trans "个人认证" %}</h5>
+
+    <td width="120" align="right">电子邮件</td>
+    <td width="auto" align="left"><code>{{ user.email }}</code></td>
+
+    <div class="inner">
+        <form method="post" action="{% url 'settings_email' %}">
+            {% csrf_token %}
+            <table cellpadding="5" cellspacing="0" border="0" width="100%">
+                <tbody>
+                <tr>
+                    <td width="120" align="right">当前邮箱</td>
+                    <td width="auto" align="left">{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td width="120" align="right">邮件地址验证</td>
+                    {% if user.email_verify == 0 %}
+                        <td width="auto" align="left"><span class="orange">邮件地址尚未完成验证</span></td>
+                    {% else %}
+                        <td width="auto" align="left"><span class="green">邮件地址已经验证</span></td>
+                    {% endif %}
+                </tr>
+                {% if user.email_verify == 0 %}
                     <tr>
-                        <td width="120" align="right">当前邮箱</td>
-                        <td width="auto" align="left">{{ user.email }}</td>
-                    </tr>
-                     <tr>
-                        <td width="120" align="right">邮件地址验证</td>
-                        {% if user_detail_obj.user.email_verify == 0 %}
-                            <td width="auto" align="left"><span class="orange">邮件地址尚未完成验证</span></td>
-                        {% else %}
-                            <td width="auto" align="left"><span class="green">邮件地址已经验证</span></td>
-                        {% endif %}
-                    </tr>
-                    <tr>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td width="120" align="right" valign="top"></td>
+                        <td width="120" align="right"></td>
                         <td width="auto" align="left">
+                            <button class="btn btn-sm"
+                                    onclick="if (confirm('你确认要向 {{ user.email }} 重新发送验证邮件？')) { resendVerificationEmail('{{ user_detail_obj.user.email }}'); }"
+                                    id="ButtonResendVerification" type="button">
+                                <li class="fa fa-refresh"></li>
+                                重发验证码
+                            </button> &nbsp; <span id="ResendResponse" class="gray"></span></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td width="120" align="right" valign="top"></td>
+                    <td width="auto" align="left">
                     <span class="f14">
                         如果你希望更改你的注册邮件地址，请在下方输入框中填入新的邮件地址。
                         <br><br>
                         然后我们会向此地址发送一封确认信，你需要在 8 小时内点击其中的链接，然后才能完成注册邮件地址更改。
                     </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="120" align="right" valign="top">
+                        <div class="sep5"></div>
+                        新邮箱
+                    </td>
+                    <td width="auto" align="left">
+                        <input type="email" class="sls" name="new_email" value="">
+                        <div class="sep5"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="120" align="right">账号密码</td>
+                    <td width="auto" align="left">
+                        <input type="password" class="sls" name="password" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="120" align="right"></td>
+                    <td width="auto" align="left">
+                        <input type="submit" class="btn btn-sm" value="更改邮箱">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+<div class="inner">
+            <form method="post" action="{% url 'settings_password' %}">
+                {% csrf_token %}
+                <table cellpadding="5" cellspacing="0" border="0" width="100%">
+                    <tbody>
+                    <tr>
+                        <td width="120" align="right">当前密码</td>
+                        <td width="auto" align="left">
+                            <input type="password" class="sl" name="password_current" value=""></td>
+                    </tr>
+                    <tr>
+                        <td width="120" align="right">新密码</td>
+                        <td width="auto" align="left">
+                            <input type="password" class="sl" name="password_new" value="">
                         </td>
                     </tr>
                     <tr>
-                        <td width="120" align="right" valign="top">
-                            <div class="sep5"></div>
-                            新邮箱
-                        </td>
+                        <td width="120" align="right">再次输入新密码</td>
                         <td width="auto" align="left">
-                            <input type="email" class="sls" name="new_email" value="">
-                            <div class="sep5"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="120" align="right">账号密码</td>
-                        <td width="auto" align="left">
-                            <input type="password" class="sls" name="password" value="">
+                            <input type="password" class="sl" name="password_again" value="">
                         </td>
                     </tr>
                     <tr>
                         <td width="120" align="right"></td>
                         <td width="auto" align="left">
-                            <input type="submit" class="btn btn-sm" value="更改邮箱">
-                        </td>
+                            <input type="submit" class="btn btn-sm" value="更改密码"></td>
                     </tr>
                     </tbody>
                 </table>
             </form>
         </div>
-        <tr>
-            <td width="120" align="right">电子邮件</td>
-            <td width="auto" align="left"><code>{{ user_detail_obj.user.email }}</code></td>
-        </tr>
-        <tr>
-            <td width="120" align="right"></td>
-            <td width="auto" align="left"><a href="{% url 'settings_email' %}">更改注册邮箱</a></td>
-        </tr>
-
-        <tr>
-            <td width="120" align="right">邮件地址验证</td>
-            {% if user.email_verify == 0 %}
-                <td width="auto" align="left"><span class="orange">邮件地址尚未完成验证</span></td>
-            {% else %}
-                <td width="auto" align="left"><span class="green">邮件地址已经验证</span></td>
-            {% endif %}
-        </tr>
-        {% if user.email_verify == 0 %}
-            <tr>
-                <td width="120" align="right"></td>
-                <td width="auto" align="left">
-                    <button class="btn btn-sm"
-                            onclick="if (confirm('你确认要向 {{ user.email }} 重新发送验证邮件？')) { resendVerificationEmail('{{ user_detail_obj.user.email }}'); }"
-                            id="ButtonResendVerification" type="button">
-                        <li class="fa fa-refresh"></li>
-                        重发验证码
-                    </button> &nbsp; <span id="ResendResponse" class="gray"></span></td>
-            </tr>
-        {% endif %}
 
 
-
-        <div class="box">
-            <div class="cell">
-                <div class="fr"><span class="fade">如果你不打算更改密码，请留空以下区域</span></div>
-                更改密码
-            </div>
-            <button name="action_add" class="btn btn-primary ml-2 mb-2" type="submit">确认</button>
-        </form>
         <br>
         <p class="text-muted">遇到问题请联系站长：
             <a href="mailto:beaock@gmail.com">beaock@gmail.com</a>
@@ -160,10 +167,9 @@
 
         <h5 class="alert alert-warning">{% trans "个人信息" %}</h5>
         {% crispy body_form %}
-    </div>
     <br>
 
-
+    </div>
     {% if user_detail_obj.user.email_verify == 0 %}
         <script>
             function resendVerificationEmail(email) {

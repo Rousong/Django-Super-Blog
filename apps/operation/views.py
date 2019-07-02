@@ -366,7 +366,7 @@ class EmailSettingView(View):
                 has_error = False
             else:
                 password_error = "密码错误"
-                messages.add_message(request, messages.SUCCESS, '密码错误！')
+                messages.add_message(request, messages.WARNING, '密码错误！')
                 return redirect('userinfo:detail')
 
         # return render(request, 'user/setting_email.html', locals())
@@ -461,8 +461,8 @@ class PasswordSettingView(View):
         return super(PasswordSettingView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        return redirect(reverse('settings'))
-
+        # return redirect(reverse('userinfo:detail'))
+        return redirect('userinfo:detail')
     def post(self, request):
         has_error = True
         user_obj = User.objects.filter(id=request.session.get('user_info')['uid']).first()
@@ -481,10 +481,15 @@ class PasswordSettingView(View):
                     has_password_error = False
                 else:
                     password_error = "两次输入的密码不一样"
+                    messages.add_message(request, messages.WARNING, '两次输入的密码不一样！')
+                    return redirect('userinfo:detail')
+
             else:
                 password_error = "您输入的当前密码不正确"
-        return render(request, 'user/setting_password.html', locals())
-
+                messages.add_message(request, messages.WARNING, '您输入的当前密码不正确！')
+                return redirect('userinfo:detail')
+        # return render(request, 'account/profile.html', locals())
+        return redirect('userinfo:detail')
 
 class DailyMissionView(View):
     @method_decorator(login_auth)

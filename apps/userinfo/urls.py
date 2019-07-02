@@ -10,5 +10,5 @@ urlpatterns = [
     path('profile/change/', views.Change_profile.as_view(),name='change_profile'), # 更新基本资料页面
     path('crop-upload-image/', views.Crop_upload_handler.as_view(), name='crop_upload_image'),
     path('user-signup-validate', views.user_signup_validate, name='user_signup_validate'),
-    path('detail/updata/',views.updata_view,name='updata'), # 更新身材信息
+    path('detail/updata/',views.Update_bodyDate.as_view(),name='updata'), # 更新身材信息
 ]
