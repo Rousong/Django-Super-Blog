@@ -6,13 +6,13 @@ from .models import Topic, TopicCategory, Comments, NodeLink
 
 class TopicAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'category', 'title', 'author', 'click_num', 'add_time')
+    list_display = ('id', 'category', 'title', 'author', 'click_num', 'create_time')
     # 可以搜索的字段
     search_fields = ('title', )
     # 列出可以编辑的字段
     list_editable = ('click_num', 'category',)
     # 右侧过滤条件
-    list_filter = ('add_time',)
+    list_filter = ('create_time',)
     # 根据某个字段排序
     ordering = ('id',)
     # 分页，每页显示多少条
@@ -26,7 +26,7 @@ class TopicAdmin(admin.ModelAdmin):
 
 class TopicCategoryAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'name', 'code', 'category_type', 'header_color', 'theme_color', 'add_time',)
+    list_display = ('id', 'name', 'code', 'category_type', 'header_color', 'theme_color', 'create_time',)
     # 可以搜索的字段
     search_fields = ('name', 'code')
     # 列出可以编辑的字段
@@ -39,7 +39,7 @@ class TopicCategoryAdmin(admin.ModelAdmin):
 
 class CommentsAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'topic', 'author', 'content', 'add_time',)
+    list_display = ('id', 'topic', 'author', 'content', 'create_time',)
     # 可以搜索的字段
     search_fields = ('content', 'topic')
     # 列出可以编辑的字段
@@ -52,7 +52,7 @@ class CommentsAdmin(admin.ModelAdmin):
 
 class NodeLinkAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'category', 'author', 'title', 'link', 'desc', 'add_time',)
+    list_display = ('id', 'category', 'author', 'title', 'link', 'desc', 'create_time',)
     # 可以搜索的字段
     search_fields = ('title', 'link')
     # 列出可以编辑的字段

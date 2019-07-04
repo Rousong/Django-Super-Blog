@@ -5,7 +5,7 @@ from .models import TopicVote, FavoriteNode, UserDetails, UserTopDu, BalanceInfo
 
 class TopicVoteAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'user', 'topic', 'vote', 'thanks', 'favorite', 'add_time',)
+    list_display = ('id', 'user', 'topic', 'vote', 'thanks', 'favorite', "create_time",)
     # 可以搜索的字段
     search_fields = ('user', 'topic')
     # 列出可以编辑的字段
@@ -18,7 +18,7 @@ class TopicVoteAdmin(admin.ModelAdmin):
 
 class FavoriteNodeAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'user', 'node', 'favorite', 'add_time',)
+    list_display = ('id', 'user', 'node', 'favorite', 'create_time',)
     # 可以搜索的字段
     search_fields = ('user', 'node')
     # 列出可以编辑的字段
@@ -31,7 +31,7 @@ class FavoriteNodeAdmin(admin.ModelAdmin):
 
 class UserDetailsAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'website', 'company', 'balance', 'add_time',)
+    list_display = ('id', 'website', 'company', 'balance', 'create_time',)
     # 可以搜索的字段
     search_fields = ('user', 'bio')
     # 列出可以编辑的字段
@@ -44,7 +44,7 @@ class UserDetailsAdmin(admin.ModelAdmin):
 
 class UserTopDuAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'top_du', 'add_time',)
+    list_display = ('id', 'top_du', 'create_time',)
     # 可以搜索的字段
     search_fields = ('user',)
     # 列出可以编辑的字段
@@ -57,7 +57,7 @@ class UserTopDuAdmin(admin.ModelAdmin):
 
 class BalanceInfoAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'balance_type', 'balance', 'marks', 'last_balance', 'add_time',)
+    list_display = ('id', 'balance_type', 'balance', 'marks', 'last_balance', 'create_time',)
     # 可以搜索的字段
     search_fields = ('user',)
     # 列出可以编辑的字段
@@ -70,7 +70,7 @@ class BalanceInfoAdmin(admin.ModelAdmin):
 
 class SignedInfoAdmin(admin.ModelAdmin):
     # 要列出的字段
-    list_display = ('id', 'user', 'status', 'date', 'signed_day', 'add_time',)
+    list_display = ('id', 'user', 'status', 'date', 'signed_day', 'create_time',)
     # 可以搜索的字段
     search_fields = ('user', 'date',)
     # 列出可以编辑的字段

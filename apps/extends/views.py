@@ -6,6 +6,6 @@ def latest_site_message(request):
     message = SiteMessage.objects.last()
     data = {
         'content': message.content.replace("\r\n", "<br/>"),
-        'created': message.created.strftime("%Y/%m/%d"),
+        'create_time': message.create_time.strftime("%Y/%m/%d"),
     }
     return JsonResponse(data, safe=True)

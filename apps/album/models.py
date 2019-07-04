@@ -6,7 +6,10 @@ from uuslug import slugify
 
 
 # Create your models here.
-class Album(models.Model):
+from db.base_model import BaseModel
+
+
+class Album(BaseModel):
     """
     照片墙
     """
@@ -23,12 +26,11 @@ class Album(models.Model):
     title = models.CharField(max_length=300, verbose_name="标题")
     description = models.TextField(blank=True, verbose_name='简介')
     image = models.ImageField(upload_to='image/album/%Y%m%d', blank=True, null=True)
-    created = models.DateField(auto_now_add=True, db_index=True)
     # 点赞功能。暂未使用
     total_likes = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('-create_time',)
         verbose_name_plural = '照片墙'
 
     def __str__(self):

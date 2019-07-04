@@ -385,7 +385,7 @@ class ActivateEmailView(View):
         code_obj = VerifyCode.objects.filter(code=code, code_type=0).last()
         current_time = datetime.now()
         # 判断发送的code是否是十分钟之内的
-        if code_obj and int((current_time - code_obj.add_time).total_seconds()) < 600:
+        if code_obj and int((current_time - code_obj.create_time).total_seconds()) < 600:
             user_obj = User.objects.filter(email=code_obj.to).first()
             if user_obj:
                 user_obj.email_verify = 1
@@ -413,7 +413,7 @@ class SendActivateCodeView(View):
             current_time = datetime.now()
             code_obj = VerifyCode.objects.filter(to=send_to, code_type=send_type).last()
             # 最后一条数据超过60秒，才可以发送验证码，防止频发发送
-            if not code_obj or int((current_time - code_obj.add_time).total_seconds()) > 60:
+            if not code_obj or int((current_time - code_obj.create_time).total_seconds()) > 60:
                 ret_obj = send_email_code.delay(to=send_to, code=random_code)
                 code_obj = VerifyCode.objects.create(to=send_to, code_type=send_type, code=random_code)
                 code_obj.code = random_code
@@ -577,7 +577,7 @@ class BalanceView(View):
         current_page = request.GET.get('p', '1')
         current_page = int(current_page)
         balance_info_obj = BalanceInfo.objects.filter(user_id=request.session.get('user_info')['uid']).order_by(
-            '-add_time')
+            '-create_time')
         page_obj = Paginator(current_page, balance_info_obj.count())
         balance_info_obj = balance_info_obj[page_obj.start:page_obj.end]
         page_str = page_obj.page_str(reverse('balance') + '?')

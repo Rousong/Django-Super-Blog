@@ -106,7 +106,7 @@
                     <li class="fa fa-chevron-down">&nbsp;{{ topic_obj.dislike_num }}</li>
                 </a>
             </div> &nbsp;
-            <small class="gray"><a href="{% url 'member' topic_obj.author.username  %}">{{ topic_obj.author.username }}</a> · {{ topic_obj.add_time }} · {{ topic_obj.click_num }} 次点击</small>
+            <small class="gray"><a href="{% url 'member' topic_obj.author.username  %}">{{ topic_obj.author.username }}</a> · {{ topic_obj.create_time }} · {{ topic_obj.click_num }} 次点击</small>
         </div>
         <div class="cell">
             <div class="topic_content">
@@ -169,7 +169,7 @@
                                 <div class="sep3"></div>
                                 <strong><a href="{% url 'member' obj.author.username %}"
                                            class="dark">{{ obj.author.username }}</a></strong>&nbsp; &nbsp;<span
-                                    class="ago">{{ obj.add_time }}</span>
+                                    class="ago">{{ obj.create_time }}</span>
                                 <div class="sep5"></div>
                                 <div class="reply_content">{{ obj.content|safe }}</div>
                             </td>

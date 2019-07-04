@@ -5,8 +5,10 @@ from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 
 from apps.comments.models import Comment
+from db.base_model import BaseModel
 
-class Vlog(models.Model):
+
+class Vlog(BaseModel):
     """
     vlog model
     """
@@ -33,12 +35,10 @@ class Vlog(models.Model):
     # 嵌入代码
     iframe = models.CharField(max_length=400,null=True, blank=True,verbose_name='嵌入代码')
 
-    created = models.DateTimeField(default=timezone.now)
-    updated = models.DateTimeField(auto_now=True)
     total_views = models.PositiveIntegerField(default=0, verbose_name='浏览量')
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('-create_time',)
         verbose_name_plural = '视频'
 
     def __str__(self):

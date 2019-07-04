@@ -4,9 +4,10 @@ from django.urls import reverse
 from apps.userinfo.models import UserProfile
 from django.contrib.contenttypes.fields import GenericRelation
 from apps.comments.models import Comment
+from db.base_model import BaseModel
 
 
-class BookColumn(models.Model):
+class BookColumn(BaseModel):
     title = models.CharField(max_length=100, blank=True, verbose_name='标题')
 
     class Meta:
@@ -16,7 +17,7 @@ class BookColumn(models.Model):
         return self.title
 
 
-class BookTag(models.Model):
+class BookTag(BaseModel):
     title = models.CharField(max_length=100, blank=True, verbose_name='标题')
 
     class Meta:
@@ -26,7 +27,7 @@ class BookTag(models.Model):
         return self.title
 
 
-class BookType(models.Model):
+class BookType(BaseModel):
     """
     article栏目
     """
@@ -40,7 +41,7 @@ class BookType(models.Model):
 
 
 # Create your models here.
-class ReadBook(models.Model):
+class ReadBook(BaseModel):
     author = models.ForeignKey(
         UserProfile,
         related_name='read_book_article',
@@ -56,8 +57,6 @@ class ReadBook(models.Model):
     url = models.URLField(blank=True)
 
     comments = GenericRelation(Comment)
-    created = models.DateTimeField(default=timezone.now)
-    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ('column', 'tag', 'type')

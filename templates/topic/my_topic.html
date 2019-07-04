@@ -37,7 +37,7 @@
                                 <a href="{% url 'member' obj.topic.author.username %}">{{ obj.topic.author.username }}</a>
                             </strong>
                             {% if obj.topic.last_comment %}
-                                &nbsp;•&nbsp; {{ obj.topic.last_comment.add_time }} &nbsp;•&nbsp; 最后回复来自
+                                &nbsp;•&nbsp; {{ obj.topic.last_comment.create_time }} &nbsp;•&nbsp; 最后回复来自
                                 <strong>
                                     <a href="{% url 'member' obj.topic.last_comment.author.username %}">{{ obj.topic.last_comment.author.username }}</a>
                                 </strong>

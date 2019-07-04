@@ -4,7 +4,7 @@ from .models import Comic, GithubRepo
 
 
 class ComicAdmin(admin.ModelAdmin):
-    list_display = ('title', 'id', 'created')
+    list_display = ('title', 'id', 'create_time')
     ordering = ('id',)
 
 

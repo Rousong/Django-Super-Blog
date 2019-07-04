@@ -3,13 +3,15 @@ from django.db import models
 from apps.userinfo.models import UserProfile
 from django.contrib.auth import get_user_model
 
+from db.base_model import BaseModel
+
 User = get_user_model()
 
 
 # Create your models here.
 
 
-class TopicCategory(models.Model):
+class TopicCategory(BaseModel):
     """
     Topic类别
     """
@@ -34,8 +36,6 @@ class TopicCategory(models.Model):
     theme_color = models.CharField(default="#001D25", max_length=30, verbose_name="主题颜色",
                                    help_text="主题颜色")
     count_topic = models.IntegerField(default=0, verbose_name="统计此节点下一共有多少个Topic")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
-    update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
         verbose_name = "Topic类别"
@@ -46,7 +46,7 @@ class TopicCategory(models.Model):
         return self.name
 
 
-class Topic(models.Model):
+class Topic(BaseModel):
     """
     Topic主表
     """
@@ -62,8 +62,6 @@ class Topic(models.Model):
     last_comment_time = models.DateTimeField(null=True, blank=True,  verbose_name="Topic 最后评论时间")
     title = models.TextField(max_length=120, verbose_name="Topic title")
     markdown_content = models.TextField(max_length=20000, null=True, blank=True, verbose_name="Topic 内容")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
-    update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
         verbose_name = 'Topic主表'
@@ -73,7 +71,7 @@ class Topic(models.Model):
         return self.title
 
 
-class NodeLink(models.Model):
+class NodeLink(BaseModel):
     """
     NodeLink主表
     """
@@ -82,8 +80,6 @@ class NodeLink(models.Model):
     title = models.CharField(default="", max_length=50, verbose_name="Link 标题")
     link = models.CharField(default="", max_length=50, unique=True, verbose_name="连接地址")
     desc = models.CharField(default="", max_length=120, verbose_name="Link 简介")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
-    update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
         verbose_name = 'NodeLink主表'
@@ -93,14 +89,13 @@ class NodeLink(models.Model):
         return self.author.username
 
 
-class Comments(models.Model):
+class Comments(BaseModel):
     """
     Comments 评论表
     """
     topic = models.ForeignKey(Topic, verbose_name="Go分类", on_delete=models.CASCADE)
     author = models.ForeignKey(User, verbose_name="Topic作者", on_delete=models.CASCADE)
     content = models.TextField(max_length=20000, null=True, blank=True, verbose_name="Topic 评论")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
         verbose_name = 'Comments 评论表'

@@ -62,7 +62,7 @@
                 <tbody>
                     {% for obj in balance_info_obj %}
                         <tr>
-                            <td>{{ obj.add_time }}</td>
+                            <td>{{ obj.create_time }}</td>
                             <td>{{ obj.balance_type }}</td>
                             {% if '-' in obj.balance|to_str %}
                                 <td class="negative">{{ obj.balance }}</td>

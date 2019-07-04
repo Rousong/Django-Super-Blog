@@ -4,8 +4,10 @@ from django.utils import timezone
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
+from db.base_model import BaseModel
 
-class GithubRepo(models.Model):
+
+class GithubRepo(BaseModel):
     """
     Github仓库数据的小卡片
     """
@@ -20,12 +22,11 @@ class GithubRepo(models.Model):
         return self.repo
 
 
-class Comic(models.Model):
+class Comic(BaseModel):
     """
     漫画模型
     """
     title = models.CharField(max_length=200, verbose_name='标题')
-    created = models.DateField(default=timezone.now)
     is_finished = models.BooleanField(default=False, verbose_name='已完结')
 
     # 漫画标题下面的Github小卡片
@@ -51,5 +52,5 @@ class Comic(models.Model):
         return self.title
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('create_time',)
         verbose_name_plural = '漫画'

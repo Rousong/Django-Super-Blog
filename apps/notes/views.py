@@ -21,9 +21,9 @@ class NotesView(View):
         return super(NotesView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, node_code):
-        note_obj = Notes.objects.filter(folder_id=1).order_by("-add_time")
+        note_obj = Notes.objects.filter(folder_id=1).order_by("-create_time")
         # 去除第一条，第一条是 /
-        note_folder_obj = NotesFolder.objects.all().exclude(id=1).order_by("-add_time")
+        note_folder_obj = NotesFolder.objects.all().exclude(id=1).order_by("-create_time")
         return render(request, 'note/note.html', locals())
 
 

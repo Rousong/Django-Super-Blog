@@ -27,11 +27,11 @@ class ArticleCreateUpdateSerializer(ModelSerializer):
             'comic_r',
             'comic_sequence',
             'body',
-            'created',
+            'create_time',
             'comments',
         ]
         read_only_fields = [
-            'created',
+            'create_time',
         ]
         extra_kwargs = {
             'comic_sequence': {'write_only': True},

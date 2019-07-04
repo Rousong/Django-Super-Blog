@@ -17,6 +17,9 @@ from imagekit.models import ProcessedImageField
 
 
 # 生成放置 avartar 的文件夹
+from db.base_model import BaseModel
+
+
 def user_directory_path(instance, filename):
     ext = filename.split('.')[-1]
     filename = '{}.{}'.format(uuid.uuid4().hex[:10], ext)
@@ -58,7 +61,7 @@ def get_default_avatar_url():
 
 
 
-class UserProfile(AbstractUser):
+class UserProfile(AbstractUser,BaseModel):
     """
     用户表
     """
@@ -112,8 +115,6 @@ class UserProfile(AbstractUser):
     )
     session = models.CharField(max_length=50, null=True, blank=True, default="",
                                verbose_name="用户登录时会写入当前session_key")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
-    update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
         verbose_name = "用户"
@@ -122,7 +123,7 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return self.username
 
-class VerifyCode(models.Model):
+class VerifyCode(BaseModel):
     """
     邮箱和手机验证码
     """
@@ -134,8 +135,6 @@ class VerifyCode(models.Model):
     to = models.CharField(max_length=30, verbose_name="发送给谁")
     code_type = models.IntegerField(choices=VERIFY_CODE_TYPE, default=0, verbose_name="验证码类型")
     task_id = models.CharField(max_length=37, null=True, blank=True, verbose_name="任务的返回id")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
-    update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
         verbose_name = "邮箱和手机验证码"
@@ -145,7 +144,7 @@ class VerifyCode(models.Model):
         return self.to
 
 
-class UserFollowing(models.Model):
+class UserFollowing(BaseModel):
     """
     用户的Following 和 Block 关系表
     """
@@ -160,8 +159,6 @@ class UserFollowing(models.Model):
                                   related_name="following")
     is_following = models.IntegerField(choices=CHOICES, default=CHOICES[0][0], verbose_name="是否Following")
     is_block = models.IntegerField(choices=CHOICES, default=CHOICES[0][0], verbose_name="是否Block")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
-    update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
         verbose_name = "用户的Following 和 Block 关系表"

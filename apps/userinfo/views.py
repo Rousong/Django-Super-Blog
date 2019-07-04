@@ -503,7 +503,7 @@ class MemberView(View):
                 _id=user_obj.id, _session=user_obj.session)
             online_status = cache.get(online_key)
             # 获取作者是连接中的用户的Topic主题
-            topic_obj = Topic.objects.filter(author=user_obj).select_related('category').order_by('-add_time')
+            topic_obj = Topic.objects.filter(author=user_obj).select_related('category').order_by('-create_time')
             if request.session.get('user_info', None):
                 # 获取当前用户是否following 此用户 根据此来调整页面显示信息
                 is_following = UserFollowing.objects.values_list('is_following').filter(is_following=1,

@@ -18,13 +18,14 @@ import emoji
 
 
 # Create your models here.
+from db.base_model import BaseModel
 
-class ArticlesColumn(models.Model):
+
+class ArticlesColumn(BaseModel):
     """
     article栏目
     """
     title = models.CharField(max_length=100, blank=True, verbose_name='标题')
-    created = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name_plural = '栏目'
@@ -33,7 +34,7 @@ class ArticlesColumn(models.Model):
         return self.title
 
 
-class ArticlesPost(models.Model):
+class ArticlesPost(BaseModel):
     """
     博客文章
     """
@@ -87,8 +88,6 @@ class ArticlesPost(models.Model):
     summary = models.CharField('文章摘要', max_length=200,
                                null=True, blank=True,default='显示在文章列表内的摘要,限制在100字内,不支持markdown')
     body = models.TextField(verbose_name='正文')
-    created = models.DateTimeField(default=timezone.now)
-    updated = models.DateTimeField(auto_now=True)
     total_views = models.PositiveIntegerField(default=0, verbose_name='浏览量')
 
     # 缩略图
@@ -105,7 +104,7 @@ class ArticlesPost(models.Model):
     url = models.URLField(blank=True, verbose_name='标题图url')
 
     class Meta:
-        ordering = ('-created',)
+        ordering = ('-create_time',)
         verbose_name_plural = '文章'
 
     def __str__(self):
@@ -139,7 +138,7 @@ class ArticlesPost(models.Model):
 
 
 # 幻灯片
-class Carousel(models.Model):
+class Carousel(BaseModel):
     number = models.IntegerField('编号', help_text='编号决定图片播放的顺序，图片不要多于5张')
     title = models.CharField('标题', max_length=20, blank=True, null=True, help_text='标题可以为空')
     content = models.CharField('描述', max_length=80)
@@ -165,7 +164,7 @@ class Carousel(models.Model):
 
 
 # 时间线
-class Timeline(models.Model):
+class Timeline(BaseModel):
     COLOR_CHOICE = (
         ('primary', '基本-蓝色'),
         ('success', '成功-绿色'),
@@ -189,13 +188,12 @@ class Timeline(models.Model):
     icon = models.CharField('图标', max_length=50, default='fa fa-pencil')
     icon_color = models.CharField('图标颜色', max_length=20, choices=COLOR_CHOICE, default='info')
     title = models.CharField('标题', max_length=100)
-    update_date = models.DateTimeField('更新时间')
     content = models.TextField('主要内容')
 
     class Meta:
         verbose_name = '时间线'
         verbose_name_plural = verbose_name
-        ordering = ['update_date']
+        ordering = ['update_time']
 
     def __str__(self):
         return self.title[:20]

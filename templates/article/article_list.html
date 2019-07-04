@@ -87,7 +87,7 @@
                                 <i class="fas fa-comments" style="color: grey;"></i>
                                 {{ article.comments.count }}
                                 <i class="fas fa-clock" style="color: grey;"></i>
-                                {{ article.created|date:"Y/m/d" }}
+                                {{ article.create_time|date:"Y/m/d" }}
                                 <!-- 漫画-->
                                 {% if article.comic_id %}
                                     <i class="fas fa-book" style="color: #f0c674;"></i>
