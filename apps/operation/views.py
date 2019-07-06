@@ -20,6 +20,7 @@ from .forms import TopicVoteForm, CheckTopicForm, CheckNodeForm, SettingsForm, P
     AvatarSettingsForm, PasswordSettingsForm
 from apps.userinfo.models import UserFollowing, VerifyCode
 from django.contrib import messages
+from datetime import datetime, timezone
 
 User = get_user_model()
 
@@ -354,15 +355,15 @@ class EmailSettingView(View):
                 user.email_verify = 0
                 # 保存
                 user.save()
-                # # 发送验证信
-                # random_code = gender_random_code()
-                # # # 异步发送 返回id
-                # ret_obj = send_email_code.delay(to=new_email, code=random_code)
-                # # # 存入数据库
-                # code_obj = VerifyCode.objects.create(to=new_email, code_type=0, code=random_code)
-                # code_obj.code = random_code
-                # code_obj.task_id = ret_obj.task_id
-                # code_obj.save()
+                # 发送验证信
+                random_code = gender_random_code()
+                # # 异步发送 返回id
+                # ret_obj = send_email_code.delay(to=new_email, code=random_code)                # # 存入数据库
+                ret_obj = send_email_code(to=new_email, code=random_code)                # # 存入数据库
+                code_obj = VerifyCode.objects.create(to=new_email, code_type=0, code=random_code)
+                code_obj.code = random_code
+                code_obj.task_id = ret_obj.task_id
+                code_obj.save()
                 has_error = False
             else:
                 password_error = "密码错误"
@@ -383,7 +384,8 @@ class ActivateEmailView(View):
     def get(self, request, code):
         # 获取
         code_obj = VerifyCode.objects.filter(code=code, code_type=0).last()
-        current_time = datetime.now()
+        # 这里加入时区才能在不同的时区验证邮件的有效时间20190706
+        current_time = datetime.now(timezone.utc)
         # 判断发送的code是否是十分钟之内的
         if code_obj and int((current_time - code_obj.create_time).total_seconds()) < 600:
             user_obj = User.objects.filter(email=code_obj.to).first()

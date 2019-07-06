@@ -382,8 +382,8 @@ CKEDITOR_CONFIGS = {
 SITE_END_TITLE = '钻研各种技术领域'
 SITE_DESCRIPTION = '钻研各种技术领域'
 SITE_KEYWORDS = '健身,养生,教程,塑性,肌肉,编程,代码,漫画'
-#DOMAIN = 'http://127.0.0.1:8000'
-DOMAIN = 'http://www.2zzy.com'
+DOMAIN = 'http://127.0.0.1:8000'
+# DOMAIN = 'http://www.2zzy.com'
 
 # 表单插件的配置
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

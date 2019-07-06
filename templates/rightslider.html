@@ -17,14 +17,67 @@
         </div>
     </div>
 </div>
+<!-- 用户登录框 -->
+<div class="card mb-4 mt-4">
 
+    <div class="card-body">
+        <p class="card-title text-muted">
+            {{ request.session.user_info.username }}
+        </p>
+
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tbody>
+            <tr class="no_hove_line">
+                <td width="33%" align="center"><a href="{% url 'my_nodes' %}" class="dark" style="display: block;"><span
+                        class="bigger">{{ request.session.user_info.favorite_node_num }}</span>
+                    <div class="sep3"></div>
+                    <span>节点收藏</span></a></td>
+                <td width="34%"
+                    style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);"
+                    align="center"><a href="{% url 'my_topics' %}" class="dark" style="display: block;"><span
+                        class="bigger">{{ request.session.user_info.favorite_topic_num }}</span>
+                    <div class="sep3"></div>
+                    <span>主题收藏</span></a></td>
+                <td width="33%" align="center"><a href="{% url 'my_following' %}" class="dark"
+                                                  style="display: block;"><span
+                        class="bigger">{{ request.session.user_info.following_user_num }}</span>
+                    <div class="sep3"></div>
+                    <span>特别关注</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="cell">
+        <div style="width: 250px; background-color: #f0f0f0; height: 3px; display: inline-block; vertical-align: middle;">
+            <div style="width: 40px; background-color: #ccc; height: 3px; display: inline-block;"></div>
+        </div>
+    </div>
+    <div class="cell" style="padding: 5px;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tbody>
+            <tr>
+                <td width="32"><a href="{% url 'new' %}"><img
+                        src="/static/img/flat_compose.png" width="32"
+                        border="0"></a></td>
+                <td width="10"></td>
+                <td width="auto" valign="middle" align="left"><a href="{% url 'index' %}">创作新主题</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="inner">
+        <div class="fr" id="money"><a href="{% url 'balance' %}" class="balance_area" style="">
+            {{ request.session.user_info.balance }}<img src="//cdn.v2ex.com/static/img/bronze.png" alt="B"
+                                                        align="absmiddle" border="0"></a></div>
+        <a href="/notifications">0 条未读提醒</a></div>
+</div>
 <!-- 工具箱 -->
 <div class="card mb-4 mt-4">
     <div class="card-body">
         <p class="card-title text-muted">
             <i class="fa fa-wrench" style="color: #5ecaff;"></i> Tools
         </p>
-   <div class="row text-center">
+        <div class="row text-center">
             <div class="col">
                 <a href="#" target="_blank" title="进入博主的Github查看博客源码">
                     <img style="max-width:40px" alt="博主的github" src="{% static 'img/build.png' %}">
@@ -32,13 +85,13 @@
                 </a>
             </div>
             <div class="col">
-                <a href="{% url 'timeline' %}"  title="查看网站建站历程">
+                <a href="{% url 'timeline' %}" title="查看网站建站历程">
                     <img style="max-width:40px" alt="网站的建站历程" src="{% static 'img/build.png' %}">
                     <p class="mt-2">Timeline</p>
                 </a>
             </div>
             <div class="col">
-{#                <a href="#" target="_blank" title="订阅博客">#}
+                {#                <a href="#" target="_blank" title="订阅博客">#}
                 <a href="#" class="cark-link" data-toggle="modal" data-target="#rss">
                     <img style="max-width:40px" alt="订阅博客RSS" src="{% static 'img/build.png' %}">
                     <p class="mt-2">RSS</p>
@@ -46,7 +99,7 @@
 
             </div>
         </div>
-</div>
+    </div>
 </div>
 <!-- 站点通知 -->
 {% include 'utils/notice_card.html' %}
@@ -58,7 +111,7 @@
         </p>
         <p class="card-text">
             <img src="#" alt=""
-                style="max-width: 12%; border-radius: 50%">
+                 style="max-width: 12%; border-radius: 50%">
             <a href="https://do1024.com/" target="_blank" class=" text-muted">
                 DO1024
             </a>
@@ -83,28 +136,28 @@
     <div class="card-body">
         <p class="card-text text-muted">
             <i class="fas fa-envelope" style="color: yellowgreen;"></i> 推广</p>
-{#        <p class="mb-0" style="text-align: center">#}
-{#            <a href="mailto:beaock@gmail.com" class="text-muted">赞助/友链</a>#}
-{#        </p>#}
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- 2zzy -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5936110306932801"
-     data-ad-slot="4845082741"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+        {#        <p class="mb-0" style="text-align: center">#}
+        {#            <a href="mailto:beaock@gmail.com" class="text-muted">赞助/友链</a>#}
+        {#        </p>#}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- 2zzy -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5936110306932801"
+             data-ad-slot="4845082741"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
         <!-- 谷歌推广 -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: "ca-pub-5936110306932801",
-          enable_page_level_ads: true
-     });
-</script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-5936110306932801",
+                enable_page_level_ads: true
+            });
+        </script>
     </div>
 </div>
 
@@ -126,15 +179,15 @@
 {#<br />#}
 
 {% block script %}
-<script>
-    $(() => {
+    <script>
+        $(() => {
 
-        $.get('{% url "article:get_columns_data" %}', (data) => {
-            for (let item in data) {
-                let context = "<a href='/all/rss/" + data[item] + "' class=\"btn btn-outline-dark btn-block\">" + item + "</a>";
-                $('#rss-columns').append(context)
-            }
+            $.get('{% url "article:get_columns_data" %}', (data) => {
+                for (let item in data) {
+                    let context = "<a href='/all/rss/" + data[item] + "' class=\"btn btn-outline-dark btn-block\">" + item + "</a>";
+                    $('#rss-columns').append(context)
+                }
+            })
         })
-    })
-</script>
+    </script>
 {% endblock %}

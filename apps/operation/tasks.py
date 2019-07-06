@@ -33,9 +33,9 @@ def print_hello():
     return 'hello django'
 
 
-@shared_task
+# @shared_task
 def send_email_code(to, code):
-    msg = ACTIVE_EMAIL.format(_url=settings.BASE_DOMAIN + reverse('activate_email', args=(code,)))
+    msg = ACTIVE_EMAIL.format(_url=settings.DOMAIN + reverse('activate_email', args=(code,)))
     ret = {'发送状态': '', 'to': '', 'code': '', 'msg': ''}
     try:
         send_mail('[FV2EX] 欢迎来到 假的V2EX',

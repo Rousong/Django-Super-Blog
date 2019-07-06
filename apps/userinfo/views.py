@@ -1,5 +1,7 @@
 from allauth.account.utils import sync_user_email_addresses
+from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import get_user_model
+from django.dispatch import receiver
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
@@ -14,6 +16,7 @@ from io import BytesIO
 from utils.check_code import create_validate_code
 from utils.auth_decorator import login_auth
 from django.contrib.auth import login,authenticate
+from allauth.account.signals import user_logged_in
 
 
 from apps.topic.models import Topic
@@ -25,7 +28,7 @@ from .forms import SignupForm, SigninForm
 from apps.operation.models import UserDetails, SignedInfo, FavoriteNode, TopicVote
 from django.core.cache import cache
 
-from allauth.account.views import EmailView
+from allauth.account.views import EmailView,LoginView
 from braces.views import LoginRequiredMixin
 
 from allauth.account.models import EmailAddress
@@ -439,6 +442,9 @@ class SigninView(View):
                                 signed_status = True
                             else:
                                 signed_status = False
+                            # 在seesion中加入一个是否是第三方登录的flg,以此来判断邮箱和密码验证采用哪一个系统
+                            # 这里是采用自定制的邮箱和密码修改 20190706
+                            socialAccountFlg = False
 
                             # 组装用户信息，并写入session中
                             user_info = {
@@ -454,6 +460,8 @@ class SigninView(View):
                                 'show_balance': user_detail.show_balance,
                                 'balance': user_detail.balance,
                                 'daily_mission': signed_status,
+                                'isSocialAccount':socialAccountFlg,
+
                             }
 
                             # 登陆后页面跳转
@@ -466,6 +474,7 @@ class SigninView(View):
                                 next_url = user_detail.my_home
                             resp = redirect(next_url)
                             request.session['user_info'] = user_info
+                            user = UserProfile.objects.get(username=username)
                             return resp
                         else:
                             user_error = '用户或密码错误'
@@ -475,6 +484,7 @@ class SigninView(View):
                 code_error = "验证码错误"
         else:
             code_error = "请输入验证码"
+
         return render(request, 'account/login.html', locals())
 
 
@@ -521,3 +531,43 @@ class MemberView(View):
 
 
 
+# 由于用户验证是自己定制的,allauth的社交账户登录就没有把用户信息加入session的处理
+# 于是这里加入一个接受第三方社交账号登录的信号,如果接收到这个信号就做余下处理20190706
+@receiver(user_logged_in)
+def login_social_user(sender, request, user, **kwargs):
+    username = SocialAccount.objects.filter(user=user)[0]
+    user_obj = UserProfile.objects.filter(Q(username=username) | Q(email=username)).first()
+
+    user_detail = UserDetails.objects.filter(user_id=user_obj.id).first()
+    if not user_detail:
+        user_detail = UserDetails.objects.create(user_id=user_obj.id)
+
+    # 获取签到状态
+    signed_obj = SignedInfo.objects.filter(user_id=user_obj.id,
+                                           date=datetime.now().strftime('%Y%m%d'),
+                                           status=True).first()
+    if signed_obj:
+        signed_status = True
+    else:
+        signed_status = False
+    # 在seesion中加入一个是否是第三方登录的flg,以此来判断邮箱和密码验证采用哪一个系统
+    # 这里是采用allauth的的邮箱和密码修改 20190706
+    socialAccountFlg = True
+    # here login success
+    # 组装用户信息，并写入session中
+    user_info = {
+        'username': username,
+        'uid': user_obj.id,
+        # 'avatar':,
+        'mobile': user_obj.mobile,
+        'email': user_obj.email,
+        'favorite_node_num': FavoriteNode.objects.filter(favorite=1, user=user_obj).count(),
+        'favorite_topic_num': TopicVote.objects.filter(favorite=1, user=user_obj).count(),
+        'following_user_num': UserFollowing.objects.filter(is_following=1,
+                                                           user=user_obj).count(),
+        'show_balance': user_detail.show_balance,
+        'balance': user_detail.balance,
+        'daily_mission': signed_status,
+        'isSocialAccount':socialAccountFlg,
+    }
+    request.session['user_info'] = user_info
