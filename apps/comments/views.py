@@ -12,9 +12,11 @@ import datetime
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
 
 from notifications.signals import notify
 
+from utils.auth_decorator import login_auth
 from .models import Comment
 from .forms import CommentForm
 
@@ -115,12 +117,16 @@ def comment_count_validate(request):
     return JsonResponse(comments_count, safe=False)
 
 
-class CommentCreateView(LoginRequiredMixin, CreateView):
+class CommentCreateView(CreateView):
     """
     发布博文、读书、vlog 的新评论的视图
     可处理get或post请求
     model设计问题导致代码臃肿
     """
+
+    @method_decorator(login_auth)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CommentCreateView, self).dispatch(request, *args, **kwargs)
     login_url = "/accounts/login"
     fields = [
         'body',

@@ -474,7 +474,6 @@ class SigninView(View):
                                 next_url = user_detail.my_home
                             resp = redirect(next_url)
                             request.session['user_info'] = user_info
-                            user = UserProfile.objects.get(username=username)
                             return resp
                         else:
                             user_error = '用户或密码错误'
@@ -556,7 +555,7 @@ def login_social_user(sender, request, user, **kwargs):
     # here login success
     # 组装用户信息，并写入session中
     user_info = {
-        'username': username,
+        'username': user_obj.username,
         'uid': user_obj.id,
         # 'avatar':,
         'mobile': user_obj.mobile,

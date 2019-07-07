@@ -94,6 +94,17 @@
             </li>
             <li class="
                 nav-item
+                {% if '/timeline' in request.path %}
+                active
+                {% endif %}
+                ">
+                <a class="nav-link mr-2" href="{% url 'index' %}">
+                    <i class="fas fa-feather-alt"></i>
+                    话题
+                </a>
+            </li>
+            <li class="
+                nav-item
                 {% if '/aboutme' in request.path %}
                 active
                 {% endif %}
