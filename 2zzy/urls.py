@@ -86,7 +86,7 @@ urlpatterns = [
     # 到某个节点下的实用节点链接
     path('go/<slug:node_code>/links', NodeLinkView.as_view(), name='node_link'),
     # 主题查看
-    path('t/<slug:topic_sn>', TopicView.as_view(), name='topic'),
+    path('article/detail/<article_id>', TopicView.as_view(), name='topic'),
     # 主题投票
     path('topic/vote', TopicVoteView.as_view(), name='topic_vote'),
     # 主题收藏

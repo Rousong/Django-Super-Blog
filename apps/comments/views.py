@@ -16,6 +16,8 @@ from django.utils.decorators import method_decorator
 
 from notifications.signals import notify
 
+from apps.topic.models import Topic
+from apps.userinfo.models import UserProfile
 from utils.auth_decorator import login_auth
 from .models import Comment
 from .forms import CommentForm
@@ -138,6 +140,8 @@ class CommentCreateView(CreateView):
         """
         if request.POST['article_type'] == 'article':
             article = get_object_or_404(ArticlesPost, id=article_id)
+        if request.POST['article_type'] == 'topic':
+            article = get_object_or_404(Topic, topic_sn=article_id)
         elif request.POST['article_type'] == 'readbook':
             article = get_object_or_404(ReadBook, id=article_id)
         else:
@@ -232,7 +236,7 @@ class CommentCreateView(CreateView):
             if not request.user.is_staff:
                 notify.send(
                     request.user,
-                    recipient=User.objects.filter(is_staff=1),
+                    recipient=UserProfile.objects.filter(is_staff=1),
                     verb='回复了你',
                     target=article,
                     description=article_type,

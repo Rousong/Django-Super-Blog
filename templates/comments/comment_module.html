@@ -10,7 +10,7 @@
 {#{% if user.is_authenticated %}#}
  {% if request.session.user_info %}
 <div>
-    <form id="comment_form" action="{% url 'comments:post_comment' article.id %}" method="post">
+    <form id="comment_form" action="{% url 'comments:post_comment' article.topic_sn %}" method="post">
         {% csrf_token %}
         <div>
             <h5>

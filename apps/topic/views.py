@@ -1,6 +1,8 @@
 from datetime import datetime
 import markdown
 import bleach
+
+from apps.comments.forms import CommentForm
 from extra.bleach_whitelist import markdown_tags, markdown_attrs
 from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
@@ -142,15 +144,28 @@ class NodeLinkView(View):
 
 
 class TopicView(View):
-    def get(self, request, topic_sn):
+    def get(self, request, article_id):
         try:
-            topic_obj = Topic.objects.get(topic_sn=topic_sn)
+            topic_obj = Topic.objects.get(topic_sn=article_id)
             # 添加其他属性
             topic_obj.like_num = TopicVote.objects.filter(vote=1, topic=topic_obj).count()
             topic_obj.dislike_num = TopicVote.objects.filter(vote=0, topic=topic_obj).count()
             topic_obj.favorite_num = TopicVote.objects.filter(favorite=1, topic=topic_obj).count()
             comments_obj = Comments.objects.select_related('author').filter(topic=topic_obj)
             now = datetime.now()
+            md = markdown.Markdown(
+                extensions=[
+                    'markdown.extensions.extra',
+                    'markdown.extensions.codehilite',
+                    'markdown.extensions.toc',
+                ]
+            )
+            topic_obj.body = md.convert(topic_obj.body)
+
+            # 传递给模板文章类型，用于评论表单区分
+            article_type = 'topic'
+            # 评论
+            comment_form = CommentForm()
             if request.session.get('user_info'):
                 topic_obj.thanks = TopicVote.objects.values_list('thanks').filter(topic=topic_obj,
                                                                                   user_id=
@@ -161,8 +176,18 @@ class TopicView(View):
                                                                                       request.session.get('user_info')[
                                                                                           'uid']).first()
             # 使用F 自增此字段 增加一次阅读数量
-            Topic.objects.filter(topic_sn=topic_sn).update(click_num=F('click_num') + 1)
-            return render(request, 'topic/topic.html', locals())
+            Topic.objects.filter(topic_sn=article_id).update(click_num=F('click_num') + 1)
+            context = {'article': topic_obj,
+                       'comment_form': comment_form,
+                       # 生成树形评论
+                       'comments': topic_obj.comments.all(),
+                       # 'comic_articles': comic_articles,
+                       # 'pre_article': pre_article,
+                       # 'next_article': next_article,
+                       'article_type': article_type,
+                       'toc': md.toc,
+                       }
+            return render(request, 'article/article_detail.html', context)
         except Topic.DoesNotExist:
             raise Http404("topic does not exist")
 

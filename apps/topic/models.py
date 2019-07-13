@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from apps.userinfo.models import UserProfile
 from django.contrib.auth import get_user_model
-
+from django.urls import reverse
 from db.base_model import BaseModel
 
 User = get_user_model()
@@ -45,6 +45,8 @@ class TopicCategory(BaseModel):
     def __str__(self):
         return self.name
 
+from django.contrib.contenttypes.fields import GenericRelation
+from apps.comments.models import Comment
 
 class Topic(BaseModel):
     """
@@ -62,6 +64,12 @@ class Topic(BaseModel):
     last_comment_time = models.DateTimeField(null=True, blank=True,  verbose_name="Topic 最后评论时间")
     title = models.TextField(max_length=120, verbose_name="Topic title")
     markdown_content = models.TextField(max_length=20000, null=True, blank=True, verbose_name="Topic 内容")
+    comments = GenericRelation(Comment)
+    body = models.TextField(verbose_name='正文')
+
+    # 获取文章地址
+    def get_absolute_url(self):
+        return reverse('topic', args=[self.topic_sn])
 
     class Meta:
         verbose_name = 'Topic主表'
