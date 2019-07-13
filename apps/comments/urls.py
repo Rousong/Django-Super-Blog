@@ -32,5 +32,5 @@ urlpatterns = [
         name='edit'
     ),
 
-    path('count-validate/', views.comment_count_validate, name='count_validate')
+    path('count-validate/', views.Comment_count_validate.as_view(), name='count_validate')
 ]

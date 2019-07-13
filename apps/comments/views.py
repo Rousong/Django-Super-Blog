@@ -8,7 +8,7 @@ from django.http import HttpResponse, JsonResponse
 
 from django.utils import timezone
 import datetime
-
+from django.views.generic import View
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -114,9 +114,24 @@ def comment_soft_delete(request):
 def comment_count_validate(request):
     """用户近期评论计数"""
     pub_date = timezone.now() - datetime.timedelta(minutes=10)
-    comments_count = request.user.comments_user.filter(
+    user = UserProfile.objects.filter(id=request.session.get('user_info')['uid']).first()
+    comments_count = user.comments_user.filter(
         created_time__gte=pub_date).count()
     return JsonResponse(comments_count, safe=False)
+
+class Comment_count_validate(View):
+
+    @method_decorator(login_auth)
+    def dispatch(self, request, *args, **kwargs):
+        return super(Comment_count_validate, self).dispatch(request, *args, **kwargs)
+
+    def get(self,request):
+        pub_date = timezone.now() - datetime.timedelta(minutes=10)
+        id = request.session.get('user_info')['uid']
+        user = UserProfile.objects.get(id=id)
+        comments_count = user.comments_user.filter(
+            created_time__gte=pub_date).count()
+        return JsonResponse(comments_count, safe=False)
 
 
 class CommentCreateView(CreateView):
@@ -185,6 +200,8 @@ class CommentCreateView(CreateView):
 
     def post(self, request, *args, **kwargs):
         """处理post请求"""
+        id = request.session.get('user_info')['uid']
+        user = UserProfile.objects.get(id=id)
         # 限制评论频率
         if int(comment_count_validate(request).content) >= 10:
             return HttpResponse('403 comment too frequently')
@@ -204,6 +221,7 @@ class CommentCreateView(CreateView):
             new_comment = comment_form.save(commit=False)
             article_type = request.POST['article_type']
 
+
             # 对二级评论，赋值root节点的id
             if self.kwargs.get('node_id'):
                 node_id = kwargs.get('node_id')
@@ -214,12 +232,12 @@ class CommentCreateView(CreateView):
                 new_comment.parent_id = parent_comment.get_root().id
                 new_comment.reply_to = parent_comment.user
                 new_comment.content_object = article
-                new_comment.user = request.user
+                new_comment.user = user
                 new_comment.save()
                 # 对不是staff的父级评论发送通知
                 if not parent_comment.user.is_superuser:
                     notify.send(
-                        request.user,
+                        user,
                         recipient=parent_comment.user,
                         verb='回复了你',
                         target=article,
@@ -229,13 +247,13 @@ class CommentCreateView(CreateView):
             else:
                 new_comment.reply_to = None
                 new_comment.content_object = article
-                new_comment.user = request.user
+                new_comment.user = user
                 new_comment.save()
 
             # 给staff发送通知
-            if not request.user.is_staff:
+            if not user.is_staff:
                 notify.send(
-                    request.user,
+                    user,
                     recipient=UserProfile.objects.filter(is_staff=1),
                     verb='回复了你',
                     target=article,

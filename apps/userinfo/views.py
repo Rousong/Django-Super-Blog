@@ -17,6 +17,7 @@ from utils.check_code import create_validate_code
 from utils.auth_decorator import login_auth
 from django.contrib.auth import login,authenticate
 from allauth.account.signals import user_logged_in
+from django.utils import timezone
 
 
 from apps.topic.models import Topic
@@ -552,6 +553,7 @@ def login_social_user(sender, request, user, **kwargs):
     # 在seesion中加入一个是否是第三方登录的flg,以此来判断邮箱和密码验证采用哪一个系统
     # 这里是采用allauth的的邮箱和密码修改 20190706
     socialAccountFlg = True
+
     # here login success
     # 组装用户信息，并写入session中
     user_info = {
