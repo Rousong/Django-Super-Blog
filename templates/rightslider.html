@@ -20,11 +20,12 @@
     </div>
 </div>
 <!-- 用户登录框 -->
+{% if request.session.user_info %}
 <div class="card mb-4 mt-4">
 
     <div class="card-body">
         <p class="card-title text-muted">
-            {{ request.session.user_info.username }}
+            {{ request.session.user_info.username }},欢迎回来~~
         </p>
 
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -33,7 +34,7 @@
                 <td width="33%" align="center"><a href="{% url 'my_nodes' %}" class="dark" style="display: block;"><span
                         class="bigger">{{ request.session.user_info.favorite_node_num }}</span>
                     <div class="sep3"></div>
-                    <span>节点收藏</span></a></td>
+                    <span>关注话题</span></a></td>
                 <td width="34%"
                     style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);"
                     align="center"><a href="{% url 'my_topics' %}" class="dark" style="display: block;"><span
@@ -62,7 +63,7 @@
                         src="/static/img/flat_compose.png" width="32"
                         border="0"></a></td>
                 <td width="10"></td>
-                <td width="auto" valign="middle" align="left"><a href="{% url 'index' %}">创作新主题</a></td>
+                <td width="auto" valign="middle" align="left"><a href="{% url 'new' %}">创作新主题</a></td>
             </tr>
             </tbody>
         </table>
@@ -75,6 +76,7 @@
             {{ unread_count }}
         {% endif %}条未读提醒</a></div>
 </div>
+{% endif %}
 <!-- 工具箱 -->
 <div class="card mb-4 mt-4">
     <div class="card-body">
