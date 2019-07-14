@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from apps.article.models import ArticlesPost
 from apps.readbook.models import ReadBook
+from apps.topic.models import Topic
 from apps.vlog.models import Vlog
 
 
@@ -41,6 +42,8 @@ def comments_notification_mark_as_read(request,
 
     elif article_type == 'readbook':
         article = ReadBook.objects.get(id=article_id)
+    elif article_type == 'topic':
+        article = Topic.objects.get(id=article_id)
 
     else:
         article = Vlog.objects.get(id=article_id)

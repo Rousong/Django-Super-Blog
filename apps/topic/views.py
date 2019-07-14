@@ -144,9 +144,9 @@ class NodeLinkView(View):
 
 
 class TopicView(View):
-    def get(self, request, article_id):
+    def get(self, request, topic_sn):
         try:
-            topic_obj = Topic.objects.get(topic_sn=article_id)
+            topic_obj = Topic.objects.get(topic_sn=topic_sn)
             # 添加其他属性
             topic_obj.like_num = TopicVote.objects.filter(vote=1, topic=topic_obj).count()
             topic_obj.dislike_num = TopicVote.objects.filter(vote=0, topic=topic_obj).count()
@@ -176,7 +176,7 @@ class TopicView(View):
                                                                                       request.session.get('user_info')[
                                                                                           'uid']).first()
             # 使用F 自增此字段 增加一次阅读数量
-            Topic.objects.filter(topic_sn=article_id).update(click_num=F('click_num') + 1)
+            Topic.objects.filter(topic_sn=topic_sn).update(click_num=F('click_num') + 1)
             context = {'article': topic_obj,
                        'comment_form': comment_form,
                        # 生成树形评论
@@ -187,7 +187,7 @@ class TopicView(View):
                        'article_type': article_type,
                        'toc': md.toc,
                        }
-            return render(request, 'article/article_detail.html', context)
+            return render(request, 'topic/topic_detail.html', context)
         except Topic.DoesNotExist:
             raise Http404("topic does not exist")
 

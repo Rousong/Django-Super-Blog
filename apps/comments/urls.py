@@ -13,10 +13,16 @@ urlpatterns = [
 
     # 发表二级回复
     path(
-        'reply-post-comment/<int:article_id>/<int:node_id>/<article_type>/',
+        'reply-post-comment/<article_id>/<int:node_id>/<article_type>/',
         views.CommentCreateView.as_view(),
         name='reply_post_comment'
     ),
+    # # 发表二级回复topic专用
+    # path(
+    #     'reply-post-comment_topic/<topic_sn>/<int:node_id>/<article_type>/',
+    #     views.CommentCreateView.as_view(),
+    #     name='reply_post_comment_topic'
+    # ),
 
     # 软删除
     path(

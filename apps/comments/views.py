@@ -149,18 +149,18 @@ class CommentCreateView(CreateView):
         'body',
     ]
 
-    def get_article(self, request, article_id):
+    def get_article(self, request, *args, **kwargs):
         """
         获取: 回复的文章种类、绑定的评论表单
         """
         if request.POST['article_type'] == 'article':
-            article = get_object_or_404(ArticlesPost, id=article_id)
-        if request.POST['article_type'] == 'topic':
-            article = get_object_or_404(Topic, topic_sn=article_id)
+            article = get_object_or_404(ArticlesPost, id=self.kwargs.get('article_id'))
+        elif request.POST['article_type'] == 'topic':
+            article = get_object_or_404(Topic, topic_sn=self.kwargs.get('article_id'))
         elif request.POST['article_type'] == 'readbook':
-            article = get_object_or_404(ReadBook, id=article_id)
+            article = get_object_or_404(ReadBook, id=self.kwargs.get('article_id'))
         else:
-            article = get_object_or_404(Vlog, id=article_id)
+            article = get_object_or_404(Vlog, id=self.kwargs.get('article_id'))
         return article
 
     def get(self, request, *args, **kwargs):
@@ -221,6 +221,17 @@ class CommentCreateView(CreateView):
             new_comment = comment_form.save(commit=False)
             article_type = request.POST['article_type']
 
+            # 消息通知
+            if user != article.author:
+                notify.send(
+                    user,
+                    recipient=article.author,
+                    verb='回复了你',
+                    target=article,
+                    description=article_type,
+                    action_object=new_comment,
+                )
+
 
             # 对二级评论，赋值root节点的id
             if self.kwargs.get('node_id'):
@@ -262,7 +273,7 @@ class CommentCreateView(CreateView):
                 )
 
             # 给博主发送通知邮件
-            send_email_to_user(recipient='beaock@gmail.com')
+            # send_email_to_user(recipient='beaock@gmail.com')
 
         # 输入不合法
         else:

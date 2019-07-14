@@ -1,4 +1,6 @@
 {% load staticfiles %}
+{% load notifications_tags %}
+{% notifications_unread as unread_count %}
 
 <!-- Modal -->
 <div class="modal fade" id="rss" tabindex="-1" role="dialog" aria-labelledby="rss" aria-hidden="true">
@@ -69,7 +71,9 @@
         <div class="fr" id="money"><a href="{% url 'balance' %}" class="balance_area" style="">
             {{ request.session.user_info.balance }}<img src="//cdn.v2ex.com/static/img/bronze.png" alt="B"
                                                         align="absmiddle" border="0"></a></div>
-        <a href="/notifications">0 条未读提醒</a></div>
+        <a href="{% url 'my_notifications:notify_box' %}"> {% if unread_count %}
+            {{ unread_count }}
+        {% endif %}条未读提醒</a></div>
 </div>
 <!-- 工具箱 -->
 <div class="card mb-4 mt-4">

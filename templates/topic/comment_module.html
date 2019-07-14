@@ -10,7 +10,7 @@
 {#{% if user.is_authenticated %}#}
  {% if request.session.user_info %}
 <div>
-    <form id="comment_form" action="{% url 'comments:post_comment' article.id %}" method="post">
+    <form id="comment_form" action="{% url 'comments:post_comment' article.topic_sn %}" method="post">
         {% csrf_token %}
         <div>
             <h5>
@@ -144,7 +144,7 @@
                 <!-- 附加信息 -->
                 <div style="color: #999999;">
                     <p>{{ node.created_time|date:"Y/m/d H:i" }}
-                        <a href="{% url 'comments:reply_post_comment' article.id node.id article_type %}"
+                        <a href="{% url 'comments:reply_post_comment' article.topic_sn node.id article_type %}"
                             style="color: #01a252">
                             回复
                         </a>

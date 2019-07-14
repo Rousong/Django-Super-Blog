@@ -34,13 +34,9 @@ urlpatterns = [
     url(r'comments/', include('apps.comments.urls', namespace='comments')),
     path('album/', include('apps.album.urls', namespace='album')),
     path('comic/', include('apps.comic.urls', namespace='comic')),
-
     path('book/', include('apps.readbook.urls', namespace='readbook')),
-
     path('imagesource/', include('apps.imagesource.urls', namespace='imagesource')),
-
     path('vlog/', include('apps.vlog.urls', namespace='vlog')),
-
     path('aboutme/', include('apps.aboutme.urls', namespace='aboutme')),
 
     path('my-notifications/', include('apps.mynotifications.urls', namespace='my_notifications')),
@@ -86,7 +82,7 @@ urlpatterns = [
     # 到某个节点下的实用节点链接
     path('go/<slug:node_code>/links', NodeLinkView.as_view(), name='node_link'),
     # 主题查看
-    path('article/detail/<article_id>', TopicView.as_view(), name='topic'),
+    path('topic/<topic_sn>', TopicView.as_view(), name='topic'),
     # 主题投票
     path('topic/vote', TopicVoteView.as_view(), name='topic_vote'),
     # 主题收藏
