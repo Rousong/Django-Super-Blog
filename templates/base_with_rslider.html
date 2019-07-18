@@ -59,6 +59,8 @@
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
 <script src="{% static 'layer/layer.js' %}"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/plugin/highlight/highlight.pack.js"></script>
 
 
 {% include "utils/back_top_func.html" %}
@@ -80,6 +82,28 @@
 </div>
 {% include "footer.html" %}
 
+<script>
+    /* Ajax 初始化请求操作*/
+    $(function () {
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader('X-CSRFtoken', $.cookie('csrftoken'));
+            }
+        });
+    });
+    /* title 变化 */
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            $('title').text('V2EX');
+        } else {
+            $('title').text('欢迎回来ヽ(✿ﾟ▽ﾟ)ノ');
+            setTimeout("$('title').text('V2EX');", 3000);
+        }
+    }, false);
+
+</script>
+<script>hljs.initHighlightingOnLoad();</script>
 {% block script %}{% endblock %}
+
 </body>
 </html>

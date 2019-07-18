@@ -157,6 +157,9 @@ class CommentCreateView(CreateView):
             article = get_object_or_404(ArticlesPost, id=self.kwargs.get('article_id'))
         elif request.POST['article_type'] == 'topic':
             article = get_object_or_404(Topic, topic_sn=self.kwargs.get('article_id'))
+            article.last_comment_user = request.session.get('user_info')['username']
+            article.last_comment_time = datetime.datetime.now()
+            article.save()
         elif request.POST['article_type'] == 'readbook':
             article = get_object_or_404(ReadBook, id=self.kwargs.get('article_id'))
         else:
