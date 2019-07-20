@@ -81,14 +81,14 @@ urlpatterns = [
     path('go/<slug:node_code>', NodeView.as_view(), name='node'),
     # 到某个节点下的实用节点链接
     path('go/<slug:node_code>/links', NodeLinkView.as_view(), name='node_link'),
-    # 主题查看
-    path('topic/<topic_sn>', TopicView.as_view(), name='topic'),
+    # 主题查看 这里的slug属性影响ajax的使用 卡主一下午 另外不能和下面3个url冲突 所以topic和t 加以区分
+    path('topic/<slug:topic_sn>', TopicView.as_view(), name='topic'),
     # 主题投票
-    path('topic/vote', TopicVoteView.as_view(), name='topic_vote'),
+    path('t/vote', TopicVoteView.as_view(), name='topic_vote'),
     # 主题收藏
-    path('topic/favorite', FavoriteTopicView.as_view(), name='favorite_topic'),
+    path('t/favorite', FavoriteTopicView.as_view(), name='favorite_topic'),
     # 主题感谢
-    path('topic/thanks', ThanksTopicView.as_view(), name='thanks_topic'),
+    path('t/thanks', ThanksTopicView.as_view(), name='thanks_topic'),
     # 节点收藏
     path('node/favorite', FavoriteNodeView.as_view(), name='favorite_node'),
     # 用户注册

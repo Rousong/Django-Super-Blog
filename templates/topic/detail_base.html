@@ -60,23 +60,55 @@
                 </a>
             </p>
         </div>
+         <div id="topic_votes" class="votes">
+                <a href="javascript:" onclick="upVoteTopic('{{ article.topic_sn }}');" class="vote">
+                    <li class="fa fa-chevron-up">&nbsp;{{ article.like_num }}</li>
+                </a> &nbsp;
+                <a href="javascript:" onclick="downVoteTopic('{{ article.topic_sn }}');" class="vote">
+                    <li class="fa fa-chevron-down">&nbsp;{{ article.dislike_num }}</li>
+                </a>
+            </div> &nbsp;
+
         <div id="article_body">
             {{ article.body|safe }}
         </div>
+         <div class="topic_content">
+                {{ article.markdown_content | safe }}
+            </div>
     </div>
+  {% if request.session.user_info %}
+            <div class="topic_buttons">
+                <div class="fr gray f11" style="line-height: 12px; padding-top: 3px; text-shadow: 0px 1px 0px #fff;">{{ article.click_num }} 次点击 &nbsp;∙&nbsp; {{ article.favorite_num }} 人收藏 &nbsp; </div>
+                <div class="action-buttons">
+                    {% if article.favorite.0 == 1 %}
+                        <a id="favorite" class="badge badge-pill badge-light tb" href="#;" onclick="favoriteTopic('{{ article.topic_sn }}')">&nbsp;取消收藏&nbsp;</a> &nbsp;
+                    {% else %}
+                        <a id="favorite" class="badge badge-pill badge-light tb" href="#;" onclick="favoriteTopic('{{ article.topic_sn }}')">&nbsp;加入收藏&nbsp;</a> &nbsp;
+                    {% endif %}
+                    {% if article.author_id != request.session.user_info.uid %}
+                        {% if article.thanks.0 == 1 %}
+                            <a id="thanks" href="#;" class="badge badge-pill badge-light tb" disabled="disabled">&nbsp;已经发送感谢&nbsp;</a>
+                        {% else %}
+                            <a id="thanks" href="#;" class="badge badge-pill badge-light tb"
+                               onclick="if (confirm('你确定要向本主题创建者发送谢意？')) { thankTopic('{{ article.topic_sn }}'); }">&nbsp;感谢&nbsp;</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
 
     <br/>
     <br/>
 
-    {% if pre_article %}
-        <a class="btn btn-info btn-sm"
-           href="{{ pre_article.get_absolute_url }}"><< {{ pre_article.comic_title }}</a>
-    {% endif %}
-    {% if next_article %}
-        <a class="btn btn-info btn-sm" style="float: right;"
-           href="{{ next_article.get_absolute_url }}">{{ next_article.comic_title }} >></a>
-        <br>
-    {% endif %}
+{#    {% if pre_article %}#}
+{#        <a class="btn btn-info btn-sm"#}
+{#           href="{{ pre_article.get_absolute_url }}"><< {{ pre_article.comic_title }}</a>#}
+{#    {% endif %}#}
+{#    {% if next_article %}#}
+{#        <a class="btn btn-info btn-sm" style="float: right;"#}
+{#           href="{{ next_article.get_absolute_url }}">{{ next_article.comic_title }} >></a>#}
+{#        <br>#}
+{#    {% endif %}#}
 
     <hr/>
 
@@ -98,4 +130,99 @@
             let progressBar = new ProgressIndicator({color: '#1e90ff'});
         })
     </script>
+<script>
+    function upVoteTopic(topic_sn) {
+        if ($.cookie('csrftoken')) {
+            $.ajax({
+                url: '/t/vote?t=' + $.cookie('csrftoken'),
+                type: 'post',
+                data: {'topic_sn': topic_sn, 'vote_action': 'up'},
+                success: function (recv) {
+                    recv = JSON.parse(recv);
+                    if (recv.changed) {
+                        console.log('成功');
+                        $('#topic_votes').html(recv.data);
+                        location.reload();
+                    } else {
+                        console.log('失败')
+                    }
+                },
+                error: function () {
+                    console.log('请求失败')
+                }
+            })
+        }
+
+    }
+
+    function downVoteTopic(topic_sn) {
+        if ($.cookie('csrftoken')) {
+            $.ajax({
+                url: '/t/vote?t=' + $.cookie('csrftoken'),
+                type: 'post',
+                data: {'topic_sn': topic_sn, 'vote_action': 'down'},
+                success: function (recv) {
+                    recv = JSON.parse(recv);
+                    if (recv.changed) {
+                        console.log('成功');
+                        $('#topic_votes').html(recv.data);
+                        location.reload();
+                    } else {
+                        console.log('失败')
+                    }
+                },
+                error: function () {
+                    console.log('请求失败')
+                }
+            })
+        }
+
+    }
+
+    function favoriteTopic(topic_sn) {
+        $.ajax({
+            url: '/t/favorite?t=' + $.cookie('csrftoken'),
+            type: 'post',
+            data: {'topic_sn': topic_sn},
+            success: function (recv) {
+                recv = JSON.parse(recv);
+                if (recv.changed) {
+                    console.log('成功');
+                    $('#favorite').html(recv.data);
+                    location.reload();
+                } else {
+                    console.log('失败')
+                }
+            },
+            error: function () {
+                console.log('请求失败')
+            }
+        })
+    }
+
+    function thankTopic(topic_sn) {
+        if($('#thanks').html() === '已经发送感谢'){
+            return
+        }
+        $.ajax({
+            url: '/t/thanks?t=' + $.cookie('csrftoken'),
+            type: 'post',
+            data: {'topic_sn': topic_sn},
+            success: function (recv) {
+                recv = JSON.parse(recv);
+                if (recv.changed) {
+                    console.log('成功');
+                    $('#thanks').html(recv.data).attr('onclick', '').addClass('gray');
+                    location.reload();
+                }
+            },
+            error: function () {
+                console.log('请求失败')
+            }
+        })
+    }
+
+
 {% endblock %}
+
+</script>

@@ -177,6 +177,8 @@ class TopicView(View):
                                                                                           'uid']).first()
             # 使用F 自增此字段 增加一次阅读数量
             Topic.objects.filter(topic_sn=topic_sn).update(click_num=F('click_num') + 1)
+            comments = topic_obj.comments.all()
+            toc=md.toc
             context = {'article': topic_obj,
                        'comment_form': comment_form,
                        # 生成树形评论
@@ -187,7 +189,7 @@ class TopicView(View):
                        'article_type': article_type,
                        'toc': md.toc,
                        }
-            return render(request, 'topic/topic_detail.html', context)
+            return render(request, 'topic/topic.html', context)
         except Topic.DoesNotExist:
             raise Http404("topic does not exist")
 
