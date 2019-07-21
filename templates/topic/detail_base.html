@@ -72,9 +72,10 @@
         <div id="article_body">
             {{ article.body|safe }}
         </div>
-         <div class="topic_content">
-                {{ article.markdown_content | safe }}
-            </div>
+{#        这里涉及是把转换好的markdown存入数据库 还是拿出来的时候转换的顺序问题 待优化#}
+{#         <div class="topic_content">#}
+{#                {{ article.markdown_content | safe }}#}
+{#            </div>#}
     </div>
   {% if request.session.user_info %}
             <div class="topic_buttons">

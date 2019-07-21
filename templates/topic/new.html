@@ -42,7 +42,7 @@
     <div class="row" style="margin: 10px">
         <div class="col-lg-6">
             {% if has_error %}
-                <div class="problem">请解决以下问题然后再提交：
+                <div class="danger">请解决以下问题然后再提交：
                     <ul>
                         {% if obj.errors.title.0 %}
                             <li>{{ obj.errors.title.0 }}</li>
@@ -92,27 +92,23 @@
                         </div>
                     </div>
                 {% endif %}
-                <div class="cell">
+                <div class="row" style="margin: 5px">
                     <div class="fr">
                         <button type="submit" class="btn btn-sm btn-secondary">
                             <li class="fa fa-paper-plane"></li> &nbsp;发布主题
                         </button>
                     </div>
-                    <button type="button" class="btn btn-sm btn-secondary" onclick="previewTopic();">
+                    <button type="button" class="btn btn-sm btn-secondary" style="margin-left:20px" onclick="previewTopic();">
                         <li class="fa fa-eye"></li> &nbsp;预览主题
                     </button>
                 </div>
             </form>
-            <div class="inner" id="topic_preview">
-                <div class="topic_content">
-                    <div class="markdown_body"></div>
-                </div>
-            </div>
+
         </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6 rounded" style="background-color: #0aa31c;">
                     <label for="name">预览</label>
 
-                    <div class="markdown_body" rows="20" id="editor" name="content" style="background-color: white"></div>
+        <div class="markdown_body" id="editor" name="content" ></div>
                </div>
     </div>
 {% endblock %}

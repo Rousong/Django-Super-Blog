@@ -1,27 +1,27 @@
 {% load staticfiles %}
 <nav class="bg-white py-5 mt-5 text-small text-muted" id="nav-footer">
-{#    <div class="row col justify-content-center">#}
-{#        <h3 class="mr-3">#}
-{#            <a href="mailto:beaock@gmail.com">#}
-{#                <i class="fas fa-envelope" style="color: lightskyblue;" id="layer_email"></i>#}
-{#            </a>#}
-{#        </h3>#}
-{#        <h3 class="mr-3">#}
-{#            <a href="https://github.com/Rousong" style="color: #f0c674;" target="_blank">#}
-{#                <i class="fab fa-github" id="layer_github"></i>#}
-{#            </a>#}
-{#        </h3>#}
-{#        <h3 class="mr-3">#}
-{#            <a href="http://weibo.com/40937117" style="color: indianred;" target="_blank">#}
-{#                <i class="fab fa-weibo" id="layer_weibo"></i>#}
-{#            </a>#}
-{#        </h3>#}
-{#        <h3>#}
-{#            <a href="{% url 'aboutme:footpoint' %}#wechart_qr" style="color: yellowgreen;">#}
-{#                <i class="fab fa-weixin" id="footer_wechart"></i>#}
-{#            </a>#}
-{#        </h3>#}
-{#    </div>#}
+    {#    <div class="row col justify-content-center">#}
+    {#        <h3 class="mr-3">#}
+    {#            <a href="mailto:beaock@gmail.com">#}
+    {#                <i class="fas fa-envelope" style="color: lightskyblue;" id="layer_email"></i>#}
+    {#            </a>#}
+    {#        </h3>#}
+    {#        <h3 class="mr-3">#}
+    {#            <a href="https://github.com/Rousong" style="color: #f0c674;" target="_blank">#}
+    {#                <i class="fab fa-github" id="layer_github"></i>#}
+    {#            </a>#}
+    {#        </h3>#}
+    {#        <h3 class="mr-3">#}
+    {#            <a href="http://weibo.com/40937117" style="color: indianred;" target="_blank">#}
+    {#                <i class="fab fa-weibo" id="layer_weibo"></i>#}
+    {#            </a>#}
+    {#        </h3>#}
+    {#        <h3>#}
+    {#            <a href="{% url 'aboutme:footpoint' %}#wechart_qr" style="color: yellowgreen;">#}
+    {#                <i class="fab fa-weixin" id="footer_wechart"></i>#}
+    {#            </a>#}
+    {#        </h3>#}
+    {#    </div>#}
 
     <div class="row col-12 justify-content-center">
         <div style="text-align: center; color: #858585;">
@@ -33,8 +33,11 @@
                 <a target="_blank" href="https://getbootstrap.com/">
                     Bootstrap
                 </a>
+                <strong>当前{{ request.online_member_count }} 人在线</strong>&nbsp;
+                <span  class="snow">·</span> &nbsp; <span>您的IP是: {{ request.current_visitor_ip }}</span></a>
                 <!-- 站长统计代码 -->
-                <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277680282'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1277680282%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+                <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+                document.write(unescape("%3Cspan id='cnzz_stat_icon_1277680282'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1277680282%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
             </p>
         </div>
     </div>

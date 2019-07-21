@@ -21,7 +21,7 @@
 </div>
 <!-- 用户登录框 -->
 {% if request.session.user_info %}
-<div class="card mb-4 mt-4">
+    <div class="card mb-4 mt-4">
 
     <div class="card-body">
         <p class="card-title text-muted">
@@ -52,31 +52,22 @@
     </div>
     <div class="cell">
         <div style="width: 250px; background-color: #f0f0f0; height: 3px; display: inline-block; vertical-align: middle;">
-            <div style="width: 40px; background-color: #ccc; height: 3px; display: inline-block;"></div>
         </div>
     </div>
-    <div class="cell" style="padding: 5px;">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tbody>
-            <tr>
-                <td width="32"><a href="{% url 'new' %}"><img
-                        src="/static/img/flat_compose.png" width="32"
-                        border="0"></a></td>
-                <td width="10"></td>
-                <td width="auto" valign="middle" align="left"><a href="{% url 'new' %}">发布新话题</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="inner">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tbody>
+        <i class="fas fa-feather-alt" style="padding-left: 10px"><a href="{% url 'new' %}">发布新话题</a></i>
+        </tbody>
+    </table>
+    <div class="inner" style="padding-left: 20px">
         <div class="fr" id="money"><a href="{% url 'balance' %}" class="balance_area" style="">
-            {{ request.session.user_info.balance }}<img src="//cdn.v2ex.com/static/img/bronze.png" alt="B"
-                                                        align="absmiddle" border="0"></a></div>
+            {{ request.session.user_info.balance }}<i class="fab fa-bitcoin"></i></div>
         <a href="{% url 'my_notifications:notify_box' %}"> {% if unread_count %}
-            {{ unread_count }}
-        {% endif %}条未读提醒</a></div>
-</div>
+            {{ unread_count }}条未读提醒
+        {% else %}没有未读提醒{% endif %}</a></div>
 {% endif %}
+</div>
+
 <!-- 工具箱 -->
 <div class="card mb-4 mt-4">
     <div class="card-body">

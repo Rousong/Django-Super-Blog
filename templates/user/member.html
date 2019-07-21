@@ -1,26 +1,25 @@
-{% extends 'user/master.html' %}
-{% block CSS %}
-<style>
-    a:active {
-        color: #778087;
-        text-decoration: none;
-        word-break: break-all;
-    }
-    .widgets {
-        display: flex;
-        flex-flow: row wrap;
-        padding: 5px;
-    }
-</style>
-{% endblock %}
-{% block main %}
-<div class="box">
-    <div class="cell">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tbody>
+{% extends 'base_with_rslider.html' %}
+
+{% block content %}
+    <br>
+    <div class="card">
+        <div class="card-body">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tbody>
                 <tr>
                     <td width="73" valign="top" align="center">
-                        <img src="{{ user_obj.avatar }}" class="rounded avatar" border="0" align="default">
+                        {#                        <img src="{{ user_obj.avatar }}" class="rounded avatar" border="0" align="default">#}
+                        {% if user_obj.socialaccount_set.all.0.get_avatar_url %}
+                            <img src="{{ user_obj.socialaccount_set.all.0.get_avatar_url }}" class="rounded"
+                                 alt="{{ user_obj.username }}"
+                                 width="48px" height="48px" border="0" align="default" style="margin-left: 10px">
+
+                        {% else %}
+                            <img src="{{ user_obj.avatar.url }}" class="rounded"
+                                 alt="{{ user_obj.username }}"
+                                 width="48px" height="48px" border="0" align="default" style="margin-left: 10px">
+                        {% endif %}
+
                         <div class="sep10"></div>
                         {% if online_status %}
                             <span class="badge badge-pill badge-success"> &nbsp; ONLINE &nbsp; </span>
@@ -58,50 +57,74 @@
                         <h1 style="margin-bottom: 5px;">{{ user_obj.username }}</h1>
                         <span class="bigger"></span>
                         <div class="sep10"></div>
-                        <span class="gray"><li class="fa fa-time"></li> &nbsp; V2EX 第 {{ user_obj.id }} 号会员，加入于 {{ user_obj.date_joined }}
+                        <span class="gray"><li
+                                class="fa fa-time"></li> &nbsp; 2ZZY 第 {{ user_obj.id }} 号会员，加入于 {{ user_obj.date_joined }}</span>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-        <div class="sep5"></div>
-    </div>
-    <div class="widgets">
-        {% if user_obj.location %}
-            <a href="http://www.google.com/maps?q={{ user_obj.location }}" class="social_label" target="_blank" rel="nofollow">
+                </tbody>
+            </table>
+            <div class="sep5"></div>
+
+            {% if user_obj.location %}
+                <a href="http://www.google.com/maps?q={{ user_obj.location }}" class="social_label" target="_blank"
+                   rel="nofollow">
             <span class="fa fa-map-pin"> &nbsp; &nbsp;
             </span>{{ user_obj.location }}</a>
-        {% else %}
-            <a href="#" class="social_label" target="_blank" rel="nofollow">
+            {% else %}
+                <a href="#" class="social_label" target="_blank" rel="nofollow">
             <span class="fa fa-map-pin"> &nbsp; &nbsp;
-            </span>火星</a>
-        {% endif %}
+            </span>二次元</a>
+            {% endif %}
+        </div>
+
+
     </div>
-</div>
-<div class="sep20"></div>
-<div class="box">
+<br>
+
     {% for obj in topic_obj %}
-        <div class="cell item">
-            <div class="row topic">
-                <div class="col-8">
-                    <div class="row topic-title">
-                        <div><a href="{% url 'topic' obj.topic_sn %}">{{ obj.title|safe }}</a></div>
-                    </div>
-                    <div class="row topic-info">
-                        <a href="{% url 'node' obj.category.code %}" class="badge badge-light">{{ obj.category.name }}</a>
-                        <a href="{% url 'member' user_obj.username %}">{{ user_obj.username }}</a> •
+        <div class="card mb-2">
+            <div class="row no-gutters align-items-center">
+                <a href="{% url 'member' obj.author.username %}">
+                    {% if obj.author.socialaccount_set.all.0.get_avatar_url %}
+                        <img src="{{ obj.author.socialaccount_set.all.0.get_avatar_url }}" class="rounded"
+                             alt="{{ obj.author.username }}"
+                             width="48px" height="48px" border="0" align="default" style="margin-left: 10px">
+
+                    {% else %}
+                        <img src="{{ obj.author.avatar.url }}" class="rounded"
+                             alt="{{ obj.author.username }}"
+                             width="48px" height="48px" border="0" align="default" style="margin-left: 10px">
+                    {% endif %}
+                </a>
+                <div class="col">
+
+                    <div class="card-body" style="height: 80px">
+                        <!-- 标题 -->
+                        <h3 class="mt-0">
+                            <a href="{% url 'topic' obj.topic_sn %}">{{ obj.title|safe }}</a>
+                        </h3>
+
+                        <a class="node"
+                           href="{% url 'node' obj.category.code %}">{{ obj.category.name }}</a> &nbsp;•&nbsp;
+                        <strong>
+                            <a href="{% url 'member' obj.author.username %}">{{ obj.author.username }}</a>
+                        </strong>
+                        <!-- 附加信息 -->
                         {% if obj.last_comment_user %}
                             &nbsp;•&nbsp; {{ obj.last_comment_time }} &nbsp;•&nbsp; 最后回复来自
                             <strong>
                                 <a href="{% url 'member' obj.last_comment_user %}">{{ obj.last_comment_user }}</a>
                             </strong>
                         {% endif %}
+
+                        <td width="70" align="right" valign="middle">
+                            <a href="{% url 'topic' obj.topic_sn %}"
+                               class="read_status badge badge-pill badge-secondary">&nbsp;{{ obj.comments.count }}&nbsp;</a>
+                        </td>
                     </div>
-                </div>
-                <div class="col-1  offset-2">
-                    <a href="{% url 'topic' obj.topic_sn %}" class="badge badge-pill badge-secondary">&nbsp;{{ obj.comment_num }}&nbsp;</a>
                 </div>
             </div>
         </div>
     {% endfor %}
-</div>
+
 {% endblock %}

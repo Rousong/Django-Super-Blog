@@ -72,9 +72,16 @@ class NewTopicView(View):
             title = bleach.clean(title)
             markdown_content = markdown.markdown(content, format="xhtml5", extensions=exts)
             markdown_content = bleach.clean(markdown_content, tags=markdown_tags, attributes=markdown_attrs)
+            '''
+            下面的代码 应该是body=markdown_content  
+            但是如果在这里进行了转换, 前端的markdown指向目录(左边栏)就无法生成toc了
+            所以这里决定把raw的数据content直接存入数据库  在取的时候进行转换
+            但是这样可能会影响性能,,,待优化
+            '''
             # 保存
             topic_obj = Topic.objects.create(author_id=request.session.get('user_info')['uid'], title=title,
-                                             markdown_content=markdown_content,
+                                             body
+                                             =content,
                                              category_id=topic_node,
                                              topic_sn=topic_sn)
 
@@ -177,8 +184,8 @@ class TopicView(View):
                                                                                           'uid']).first()
             # 使用F 自增此字段 增加一次阅读数量
             Topic.objects.filter(topic_sn=topic_sn).update(click_num=F('click_num') + 1)
-            comments = topic_obj.comments.all()
-            toc=md.toc
+            # comments = topic_obj.comments.all()
+            # toc=md.toc
             context = {'article': topic_obj,
                        'comment_form': comment_form,
                        # 生成树形评论
