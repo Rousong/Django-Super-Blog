@@ -12,9 +12,9 @@ def update_balance(request, update_type, obj=None):
         # 设置改变值
         change_balance = -20
         # 类型
-        balance_type = "创建主题"
+        balance_type = "创建话题"
         # 描述
-        marks = '创建了的主题 > <a href="{_uri}">{_title}</a>'.format(_uri=reverse('topic', args=(obj.topic_sn,)),
+        marks = '创建了新话题 > <a href="{_uri}">{_title}</a>'.format(_uri=reverse('topic', args=(obj.topic_sn,)),
                                                                 _title=obj.title)
 
         # 更新数据库中的用户余额
