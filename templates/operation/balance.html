@@ -1,6 +1,24 @@
 {% extends 'base_with_rslider.html' %}
 {% load custom_filter %}
 
+{% block CSS %}
+    <style>
+        a:active {
+            color: #778087;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .gray {
+            color: #999;
+        }
+        .positive {
+            color: #0aa31c;
+        }
+        .negative {
+            color: #ff3c00;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="box">
         <div class="cell">
@@ -24,7 +42,7 @@
             </div>
         {% endif %}
         <div class="cell">
-            <table class="table">
+            <table class="table table-striped table-hover table-bordered">
                 <thead>
                     <tr class="center">
                         <th scope="col">时间</th>

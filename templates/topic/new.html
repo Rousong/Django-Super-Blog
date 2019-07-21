@@ -71,7 +71,8 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="name">话题标题</label>
-                    <input id="topic_title" name="title" type="text" class="form-control" placeholder="请输入主题标题,不得超过120个字符">
+                    <input id="topic_title" name="title" type="text" class="form-control"
+                           placeholder="请输入主题标题,不得超过120个字符">
                 </div>
                 <div class="form-group">
                     <label for="name">正文</label>
@@ -98,18 +99,58 @@
                             <li class="fa fa-paper-plane"></li> &nbsp;发布主题
                         </button>
                     </div>
-                    <button type="button" class="btn btn-sm btn-secondary" style="margin-left:20px" onclick="previewTopic();">
+                    <button type="button" class="btn btn-sm btn-secondary" style="margin-left:20px"
+                            onclick="previewTopic();">
                         <li class="fa fa-eye"></li> &nbsp;预览主题
                     </button>
                 </div>
             </form>
 
         </div>
-    <div class="col-lg-6 rounded" style="background-color: #0aa31c;">
-                    <label for="name">预览</label>
+        <br>
+        <div class="col-lg-6 rounded" style="background-color: #edfff4;">
+            <h2 class="mt-3">[预览]</h2>
 
-        <div class="markdown_body" id="editor" name="content" ></div>
-               </div>
+            <div class="markdown_body">
+                <h4 class=""><i class="fa fa-question-circle"></i>&nbsp;Markdown语法提示</h4>
+                <div class="row">
+                    <div class="">
+                        <div class="col" style="margin: 20px">
+                            <div class="" >标题</div>
+                            <div class="rounded" style="background-color: #d3ffe2"># 一级标题<br>## 二级标题<br>### 三级标题</div>
+                        </div>
+                        <div class="col" style="margin: 20px">
+                            <div class="">字体加粗</div>
+                            <div class="rounded" style="background-color: #d3ffe2">**加粗**</div>
+                        </div>
+                        <div class="col" style="margin: 20px">
+                            <div class="">链接</div>
+                            <div class="rounded" style="background-color: #d3ffe2">[链接](http://...)</div>
+                        </div>
+                        <div class="col" style="margin: 20px">
+                            <div class="">代码块</div>
+                            <div class="rounded" style="background-color: #d3ffe2">```python:print("2zzy")<br>代码<br>```</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class=""style="margin: 20px;margin-left: 100px">
+                            <div class="" >列表</div>
+                            <div class=class="rounded" style="background-color: #d3ffe2">- 列表 1<br>- 列表 2<br>&nbsp;&nbsp;&nbsp;&nbsp;- 列表
+                                2-1
+                            </div>
+                            <div class=class="rounded" style="background-color: #d3ffe2">1. 序号列表 1<br>2. 序号列表 2<br>3. 序号列表 3</div>
+                            <div class=class="rounded" style="background-color: #d3ffe2">- [ ] 复选框 1<br>- [ ] 复选框 2<br>- [x]
+                                复选框 3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                        <div class=""><a href="https://guides.github.com/features/mastering-markdown/">学习更多Markdown语法</a>&nbsp;<i class="fa fa-ellipsis-v"></i>
+                        </div>
+            </div>
+
+        </div>
     </div>
 {% endblock %}
 

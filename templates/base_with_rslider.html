@@ -48,7 +48,8 @@
             s.parentNode.insertBefore(hm, s);
         })();
     </script>
-
+{% block top-file %}{% endblock %}
+{% block CSS %} {% endblock %}
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
@@ -92,10 +93,10 @@
     /* title 变化 */
     document.addEventListener("visibilitychange", function () {
         if (document.hidden) {
-            $('title').text('V2EX');
+            $('title').text('②ZZY');
         } else {
             $('title').text('欢迎回来ヽ(✿ﾟ▽ﾟ)ノ');
-            setTimeout("$('title').text('V2EX');", 3000);
+            setTimeout("$('title').text('②ZZY');", 3000);
         }
     }, false);
 
