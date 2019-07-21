@@ -23,50 +23,52 @@
 {% if request.session.user_info %}
     <div class="card mb-4 mt-4">
 
-    <div class="card-body">
-        <p class="card-title text-muted">
-            {{ request.session.user_info.username }},欢迎回来~~
-        </p>
+        <div class="card-body">
+            <p class="card-title text-muted">
+                {{ request.session.user_info.username }},欢迎回来~~
+            </p>
 
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tbody>
+                <tr class="no_hove_line">
+                    <td width="33%" align="center"><a href="{% url 'my_nodes' %}" class="dark"
+                                                      style="display: block;"><span
+                            class="bigger">{{ request.session.user_info.favorite_node_num }}</span>
+                        <div class="sep3"></div>
+                        <span>关注话题</span></a></td>
+                    <td width="34%"
+                        style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);"
+                        align="center"><a href="{% url 'my_topics' %}" class="dark" style="display: block;"><span
+                            class="bigger">{{ request.session.user_info.favorite_topic_num }}</span>
+                        <div class="sep3"></div>
+                        <span>主题收藏</span></a></td>
+                    <td width="33%" align="center"><a href="{% url 'my_following' %}" class="dark"
+                                                      style="display: block;"><span
+                            class="bigger">{{ request.session.user_info.following_user_num }}</span>
+                        <div class="sep3"></div>
+                        <span>特别关注</span></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="cell">
+            <div style="width: 250px; background-color: #f0f0f0; height: 3px; display: inline-block; vertical-align: middle;">
+            </div>
+        </div>
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tbody>
-            <tr class="no_hove_line">
-                <td width="33%" align="center"><a href="{% url 'my_nodes' %}" class="dark" style="display: block;"><span
-                        class="bigger">{{ request.session.user_info.favorite_node_num }}</span>
-                    <div class="sep3"></div>
-                    <span>关注话题</span></a></td>
-                <td width="34%"
-                    style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);"
-                    align="center"><a href="{% url 'my_topics' %}" class="dark" style="display: block;"><span
-                        class="bigger">{{ request.session.user_info.favorite_topic_num }}</span>
-                    <div class="sep3"></div>
-                    <span>主题收藏</span></a></td>
-                <td width="33%" align="center"><a href="{% url 'my_following' %}" class="dark"
-                                                  style="display: block;"><span
-                        class="bigger">{{ request.session.user_info.following_user_num }}</span>
-                    <div class="sep3"></div>
-                    <span>特别关注</span></a></td>
-            </tr>
+            <i class="fas fa-feather-alt" style="padding-left: 10px"><a href="{% url 'new' %}">发布新话题</a></i>
             </tbody>
         </table>
+        <div class="inner" style="padding-left: 20px">
+            <div class="fr" id="money"><a href="{% url 'balance' %}" class="balance_area" style="">
+                {{ request.session.user_info.balance }}<i class="fab fa-bitcoin"></i></div>
+            <a href="{% url 'my_notifications:notify_box' %}"> {% if unread_count %}
+                {{ unread_count }}条未读提醒
+            {% else %}没有未读提醒{% endif %}</a></div>
     </div>
-    <div class="cell">
-        <div style="width: 250px; background-color: #f0f0f0; height: 3px; display: inline-block; vertical-align: middle;">
-        </div>
-    </div>
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tbody>
-        <i class="fas fa-feather-alt" style="padding-left: 10px"><a href="{% url 'new' %}">发布新话题</a></i>
-        </tbody>
-    </table>
-    <div class="inner" style="padding-left: 20px">
-        <div class="fr" id="money"><a href="{% url 'balance' %}" class="balance_area" style="">
-            {{ request.session.user_info.balance }}<i class="fab fa-bitcoin"></i></div>
-        <a href="{% url 'my_notifications:notify_box' %}"> {% if unread_count %}
-            {{ unread_count }}条未读提醒
-        {% else %}没有未读提醒{% endif %}</a></div>
 {% endif %}
-</div>
+
 
 <!-- 工具箱 -->
 <div class="card mb-4 mt-4">
