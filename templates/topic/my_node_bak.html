@@ -1,4 +1,4 @@
-{% extends 'base_with_rslider.html' %}
+{% extends 'topic/master.html' %}
 {% block CSS %}
 <style>
     .f12 {
@@ -25,11 +25,9 @@
     }
 </style>
 {% endblock %}
-{% block content %}
-
-    <br>
-    <div class="card mb-2">
-        <div class="header"><a href="{% url 'index' %}">2ZZY</a> <span class="chevron">&nbsp;›&nbsp;</span> 我收藏的节点
+{% block main %}
+    <div class="box">
+        <div class="header"><a href="{% url 'index' %}">V2EX</a> <span class="chevron">&nbsp;›&nbsp;</span> 我收藏的节点
             <div class="fr f12"><span class="snow">节点总数&nbsp;</span> <strong class="gray">{{ user_info.favorite_node_num }}</strong></div>
         </div>
         <div style="text-align: left; background-color: #f9f9f9;" id="MyNodes">

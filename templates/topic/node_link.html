@@ -1,4 +1,4 @@
-{% extends 'topic/master.html' %}
+{% extends 'base_with_rslider.html' %}
 {% block CSS %}
 <style>
     .node_header {
@@ -50,7 +50,7 @@
     }
 </style>
 {% endblock %}
-{% block main %}
+{% block content %}
     <div class="box">
         <div class="node_header" style="background-color: {{ node_obj.header_color }};">
             <div class="node_avatar">
