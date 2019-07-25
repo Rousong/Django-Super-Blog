@@ -33,8 +33,8 @@ class TopicCategory(BaseModel):
                               verbose_name="头像")
     background_img = models.CharField(max_length=50, null=True, blank=True, default="/static/img/default-avatar.png",
                                       verbose_name="背景图片")
-    theme_color = models.CharField(default="#001D25", max_length=30, verbose_name="主题颜色",
-                                   help_text="主题颜色")
+    theme_color = models.CharField(default="#001D25", max_length=30, verbose_name="话题颜色",
+                                   help_text="话题颜色")
     count_topic = models.IntegerField(default=0, verbose_name="统计此节点下一共有多少个Topic")
 
     class Meta:

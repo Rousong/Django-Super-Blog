@@ -17,7 +17,7 @@ from crispy_forms.bootstrap import AppendedText
 class UserInfoForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['link','blood','gender','startWorkout']
+        fields = ['link','blood','gender','location','startWorkout']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -36,7 +36,10 @@ class UserInfoForm(forms.ModelForm):
                 Column('gender', css_class='form-group col-md-6 mb-0'),
                 Column('blood', css_class='form-group col-md-6 mb-0'),
             ),
-            'startWorkout',
+            Row(
+                Column('location', css_class='form-group col-md-6 mb-0'),
+                Column('startWorkout', css_class='form-group col-md-6 mb-0'),
+            ),
             Submit('save', '修改基础资料')
         )
 

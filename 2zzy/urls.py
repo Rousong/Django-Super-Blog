@@ -22,10 +22,10 @@ urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
 
-    path('topic/', IndexView.as_view(), name='index'),
+    path('', IndexView.as_view(), name='index'),
 
     path('admin/', admin.site.urls),
-    url(r'^$', ArticlePostView.as_view(), name='home'),
+    # url(r'^$', ArticlePostView.as_view(), name='home'),
     path('admiration/', TemplateView.as_view(template_name='utils/admiration.html'), name='admiration'),
 
     path('userinfo/', include('apps.userinfo.urls', namespace='userinfo')),
@@ -71,23 +71,23 @@ urlpatterns = [
     path('api/comments/', include('apps.comments.api.urls', namespace='api_comments')),
 
     path('recent', RecentView.as_view(), name='recent'),
-    # 发布新主题
+    # 发布新话题
     path('new', NewTopicView.as_view(), name='new'),
     # notes
     # path('n', NewTopicView.as_view(), name='new'),
     # 查看某个用户信息
     path('member/<slug:username>', MemberView.as_view(), name='member'),
-    # 到某个节点下的主题
+    # 到某个节点下的话题
     path('go/<slug:node_code>', NodeView.as_view(), name='node'),
     # 到某个节点下的实用节点链接
     path('go/<slug:node_code>/links', NodeLinkView.as_view(), name='node_link'),
-    # 主题查看 这里的slug属性影响ajax的使用 卡主一下午 另外不能和下面3个url冲突 所以topic和t 加以区分
+    # 话题查看 这里的slug属性影响ajax的使用 卡主一下午 另外不能和下面3个url冲突 所以topic和t 加以区分
     path('topic/<slug:topic_sn>', TopicView.as_view(), name='topic'),
-    # 主题投票
+    # 话题投票
     path('t/vote', TopicVoteView.as_view(), name='topic_vote'),
-    # 主题收藏
+    # 话题收藏
     path('t/favorite', FavoriteTopicView.as_view(), name='favorite_topic'),
-    # 主题感谢
+    # 话题感谢
     path('t/thanks', ThanksTopicView.as_view(), name='thanks_topic'),
     # 节点收藏
     path('node/favorite', FavoriteNodeView.as_view(), name='favorite_node'),
@@ -117,7 +117,7 @@ urlpatterns = [
     path('block/<slug:username>', BlockView.as_view(), name='block'),
     # 我收藏的节点
     path('my/nodes', MyFavoriteNodeView.as_view(), name='my_nodes'),
-    # 我收藏的主题
+    # 我收藏的话题
     path('my/topics', MyFavoriteTopicView.as_view(), name='my_topics'),
     # 我关注的人的信息
     path('my/following', MyFollowingView.as_view(), name='my_following'),

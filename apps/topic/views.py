@@ -29,14 +29,14 @@ exts = ['markdown.extensions.extra', 'markdown.extensions.codehilite', 'markdown
 
 class IndexView(View):
     def get(self, request):
-        current_tab = request.GET.get('tab', 'tech')
+        current_tab = request.GET.get('tab', 'test')
         category_obj = TopicCategory.objects.filter(category_type=1)
         if current_tab == 'hot':
             category_obj.hot = True
             topic_obj = Topic.objects.select_related('author', 'category').all().order_by('-comment_num')[0:30]
             return render(request, 'topic/index.html', locals())
         category_children_obj = TopicCategory.objects.filter(parent_category__code=current_tab)
-        if current_tab == 'tech':
+        if current_tab == 'test':
             topic_obj = Topic.objects.select_related('author', 'category').all().order_by('-create_time')[0:30]
         else:
             topic_obj = Topic.objects.select_related('author', 'category').filter(
@@ -216,7 +216,7 @@ class TopicView(View):
                 topic_obj.last_comment_time = comments_obj.create_time
                 topic_obj.last_comment_user = request.session.get('user_info')['username']
                 topic_obj.save()
-                # 发评论，对应余额变动 主题作者收到奖励，发回复者减去奖励
+                # 发评论，对应余额变动 话题作者收到奖励，发回复者减去奖励
                 # 不是当前topic作者才会有变动
                 if topic_obj.author_id != request.session.get('user_info')['uid']:
                     update_balance(request, update_type='reply', obj=topic_obj)
@@ -285,7 +285,7 @@ class MyFollowingView(View):
         # 把id 加入列表
         for obj in my_following_obj:
             following_user_id.append(obj.following.id)
-        # 使用in查询用户id在所关注的用户的主题
+        # 使用in查询用户id在所关注的用户的话题
         following_topic_obj = Topic.objects.select_related('category', 'author').filter(
             author_id__in=following_user_id).order_by('-create_time')
 
