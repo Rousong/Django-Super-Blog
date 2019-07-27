@@ -1,5 +1,5 @@
 {% load staticfiles %} {% load notifications_tags %} {% load weibo_utils %} {% load get_userinfo %} {% get_userinfo user.id as userinfo %} {% notifications_unread as unread_count %}
-<nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
+<nav class="navbar navbar-expand-lg bg-light navbar-light">
     <!-- 导航 -->
     <a class="navbar-brand" href="/">
     <img src="{% static 'img/navlogo.svg' %}"  style="max-width:100px;margin-top:-7px;" alt="Logo">
@@ -24,6 +24,17 @@
                 <a class="nav-link mr-2" href="/">
                     <i class="fa fa-home mr-1"></i>
                     首页
+                </a>
+            </li>
+            <li class="
+                nav-item
+                {% if '/timeline' in request.path %}
+                active
+                {% endif %}
+                ">
+                <a class="nav-link mr-2" href="{% url 'index' %}">
+                    <i class="fas fa-feather-alt"></i>
+                    话题
                 </a>
             </li>
             <li class="
@@ -90,17 +101,6 @@
                 <a class="nav-link mr-2" href="{% url 'timeline' %}">
                     <i class="fas fa-feather-alt"></i>
                     时间线
-                </a>
-            </li>
-            <li class="
-                nav-item
-                {% if '/timeline' in request.path %}
-                active
-                {% endif %}
-                ">
-                <a class="nav-link mr-2" href="{% url 'index' %}">
-                    <i class="fas fa-feather-alt"></i>
-                    话题
                 </a>
             </li>
             <li class="

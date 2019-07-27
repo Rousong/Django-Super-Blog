@@ -50,8 +50,7 @@
                 </tr>
                 </tbody>
             </table>
-        </div>
-        <div class="cell">
+            <div class="cell">
             <div style="width: 250px; background-color: #f0f0f0; height: 3px; display: inline-block; vertical-align: middle;">
             </div>
         </div>
@@ -66,6 +65,17 @@
             <a href="{% url 'my_notifications:notify_box' %}"> {% if unread_count %}
                 {{ unread_count }}条未读提醒
             {% else %}没有未读提醒{% endif %}</a></div>
+
+          {% if not request.session.user_info.daily_mission %}
+                    <span> <a class="btn btn-success" role="button" href="{% url 'daily_mission' %}" value="签到">签到 <li class="fa fa-gift" style="color: #f3fffa;"></li></a>  </span>
+               {% else %}
+               <span class="gray">
+                    <li class="fa fa-ok-sign" style="color: #0c0;"></li>
+                    &nbsp;每日签到奖励已领取
+                </span>
+            {% endif %}
+        </div>
+
     </div>
 {% endif %}
 

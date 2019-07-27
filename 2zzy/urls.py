@@ -22,10 +22,10 @@ urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
 
-    path('', IndexView.as_view(), name='index'),
+    path('topic/', IndexView.as_view(), name='index'),
 
     path('admin/', admin.site.urls),
-    # url(r'^$', ArticlePostView.as_view(), name='home'),
+    url(r'^$', ArticlePostView.as_view(), name='home'),
     path('admiration/', TemplateView.as_view(template_name='utils/admiration.html'), name='admiration'),
 
     path('userinfo/', include('apps.userinfo.urls', namespace='userinfo')),
