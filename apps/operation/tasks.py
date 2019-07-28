@@ -7,10 +7,7 @@ from django.conf import settings
 
 ACTIVE_EMAIL = '''
 <br>
-欢迎注册 假的 V2EX 社区。
-<br>
-<br>
-假的 V2EX 是一个创意工作者社区，注册并登录后，你将可以在这里和大家分享你的最新发现，讨论解决各种技术问题，寻找合作伙伴，展示你的作品，任意的奇思妙想，及更多等待你去发现的惊喜。
+欢迎注册 2ZZY 爱钻研。
 <br>
 <br>
 请点击下面的地址验证你的帐号：
@@ -21,7 +18,7 @@ ACTIVE_EMAIL = '''
 <br>
 如果你有任何疑问，可以回复这封邮件向我们提问。<br>
 <br>
-假的 V2EX</div>
+爱钻研(https://www.2zzy.com)</div>
 '''
 
 
@@ -38,7 +35,7 @@ def send_email_code(to, code):
     msg = ACTIVE_EMAIL.format(_url=settings.DOMAIN + reverse('activate_email', args=(code,)))
     ret = {'发送状态': '', 'to': '', 'code': '', 'msg': ''}
     try:
-        send_mail('[FV2EX] 欢迎来到 假的V2EX',
+        send_mail('[2ZZY] 欢迎来到 爱钻研',
                   '',
                   settings.EMAIL_FROM,
                   [to],

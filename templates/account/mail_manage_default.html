@@ -52,20 +52,20 @@
                         新邮箱
                     </td>
                     <td width="auto" align="left">
-                        <input type="email" class="sls" name="new_email" value="">
+                        <input type="email" class="form-control" name="new_email" value="">
                         <div class="sep5"></div>
                     </td>
                 </tr>
                 <tr>
                     <td width="120" align="right">账号密码</td>
                     <td width="auto" align="left">
-                        <input type="password" class="sls" name="password" value="">
+                        <input type="password" class="form-control" name="password" value="">
                     </td>
                 </tr>
                 <tr>
                     <td width="120" align="right"></td>
                     <td width="auto" align="left">
-                        <input type="submit" class="btn btn-sm" value="更改邮箱">
+                        <input type="submit" class="btn btn-success btn-sm" value="更改邮箱">
                     </td>
                 </tr>
                 </tbody>
@@ -74,34 +74,30 @@
     </div>
 
 <div class="inner">
-            <form method="post" action="{% url 'settings_password' %}">
+            <form class="form-horizontal" role="form" method="post" action="{% url 'settings_password' %}">
                 {% csrf_token %}
-                <table cellpadding="5" cellspacing="0" border="0" width="100%">
-                    <tbody>
                     <tr>
                         <td width="120" align="right">当前密码</td>
                         <td width="auto" align="left">
-                            <input type="password" class="sl" name="password_current" value=""></td>
+                            <input type="password" class="form-control" name="password_current" value=""></td>
                     </tr>
                     <tr>
                         <td width="120" align="right">新密码</td>
                         <td width="auto" align="left">
-                            <input type="password" class="sl" name="password_new" value="">
+                            <input type="password" class="form-control" name="password_new" value="">
                         </td>
                     </tr>
                     <tr>
                         <td width="120" align="right">再次输入新密码</td>
                         <td width="auto" align="left">
-                            <input type="password" class="sl" name="password_again" value="">
+                            <input type="password" class="form-control" name="password_again" value="">
                         </td>
                     </tr>
                     <tr>
                         <td width="120" align="right"></td>
                         <td width="auto" align="left">
-                            <input type="submit" class="btn btn-sm" value="更改密码"></td>
+                            <input type="submit" class="btn btn-success btn-sm" value="更改密码"></td>
                     </tr>
-                    </tbody>
-                </table>
             </form>
         </div>
 

@@ -16,15 +16,15 @@ EMAIL_TMPLATE = '''
 礼！ 
 
 假的V2EX社区——假的，假的，假的
-<a href="http://fv2ex.izhihu.me">http://fv2ex.izhihu.me</a>
+<a href="http://f2ZZY.izhihu.me">http://f2ZZY.izhihu.me</a>
 '''
 
 ACTIVE_EMAIL = '''
 <br>
-欢迎注册 假的 V2EX 社区。
+欢迎注册 假的 2ZZY 社区。
 <br>
 <br>
-假的 V2EX 是一个创意工作者社区，注册并登录后，你将可以在这里和大家分享你的最新发现，讨论解决各种技术问题，寻找合作伙伴，展示你的作品，任意的奇思妙想，及更多等待你去发现的惊喜。
+假的 2ZZY 是一个创意工作者社区，注册并登录后，你将可以在这里和大家分享你的最新发现，讨论解决各种技术问题，寻找合作伙伴，展示你的作品，任意的奇思妙想，及更多等待你去发现的惊喜。
 <br>
 <br>
 请点击下面的地址验证你的帐号：
@@ -35,14 +35,14 @@ ACTIVE_EMAIL = '''
 <br>
 如果你有任何疑问，可以回复这封邮件向我们提问。<br>
 <br>
-假的 V2EX</div>
+假的 2ZZY</div>
 '''
 
 
 def send_email_code(to, code):
     msg = ACTIVE_EMAIL.format(_url=BASE_DOMAIN + reverse('activate_email', args=(code,)))
     try:
-        send_mail('[FV2EX] 欢迎来到 假的V2EX',
+        send_mail('[F2ZZY] 欢迎来到 假的2ZZY',
                   '',
                   EMAIL_FROM,
                   [to],
