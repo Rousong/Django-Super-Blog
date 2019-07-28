@@ -98,12 +98,12 @@
 {% endblock %}
 
 {% block script %}
+<script src="{% static 'csrf.js' %}"></script>
         <script>
         $("#checkCode").click(function(){
             this.src += '?'
         });
     </script>
-<script src="{% static 'csrf.js' %}"></script>
 <script>
     // login提交验证
     const on_submit_login = $('#on_submit_login');

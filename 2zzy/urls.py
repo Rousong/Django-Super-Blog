@@ -115,7 +115,7 @@ urlpatterns = [
     path('following/<slug:username>', FollowingView.as_view(), name='following'),
     # Block 动作
     path('block/<slug:username>', BlockView.as_view(), name='block'),
-    # 我收藏的节点
+    # 我收藏的话题
     path('my/nodes', MyFavoriteNodeView.as_view(), name='my_nodes'),
     # 我收藏的话题
     path('my/topics', MyFavoriteTopicView.as_view(), name='my_topics'),

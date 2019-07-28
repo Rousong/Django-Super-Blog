@@ -1,4 +1,6 @@
-{% extends 'user/master.html' %}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}激活邮箱 - 2zzy 爱钻研{% endblock %}
 {% block CSS %}
     <style>
         a:active {
@@ -8,31 +10,21 @@
         }
     </style>
 {% endblock %}
-{% block main %}
-    <div class="box">
-        <div class="header"><a href="{% url 'index' %}">V2EX</a> <span class="chevron">&nbsp;›&nbsp;</span> <a
-                href="{% url 'settings' %}">设置</a> <span class="chevron">&nbsp;›&nbsp;</span> 邮箱管理
-        </div>
-        <div class="inner">
-            <table cellpadding="5" cellspacing="0" border="0" width="100%">
-                <tbody>
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td width="120" align="right" valign="top"></td>
-                    <td width="auto" align="left">
-                    <span class="f14">
-                        {% if user_obj %}
-                            您的邮箱已经成功激活！
-                        {% else %}
-                            验证码超时或不存在
-                        {% endif %}
-                    </span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-</div>
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'mystyle.css' %}">
+    <br/>
+    <br/>
+    <br/>
+    <div style="text-align: center">
+
+        {% if user_obj %}
+            <i class="fas fa-check mb-4" style="color: orange; font-size: 8em"></i>
+            <h5>您的邮箱已经成功激活！</h5>
+        {% else %}
+            <i class="fas fa-exclamation-triangle mb-4" style="color: orange; font-size: 8em"></i>
+            <h5>验证码超时或不存在!</h5>
+        {% endif %}
+    </div>
+    <br/>
 {% endblock %}
