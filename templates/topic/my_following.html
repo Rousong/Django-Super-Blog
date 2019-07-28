@@ -68,17 +68,86 @@
             {% endfor %}
         </div>
     <div class="col-lg-3 ">
-            {% include 'rightslider.html' %}
-             <div class="box">
+    {% if request.session.user_info %}
+    <div class="card mb-4 mt-4">
+
+        <div class="card-body">
+            <p class="card-title text-muted">
+                {{ request.session.user_info.username }},欢迎回来~~
+            </p>
+
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tbody>
+                <tr class="no_hove_line">
+                    <td width="33%" align="center"><a href="{% url 'my_nodes' %}" class="dark"
+                                                      style="display: block;"><span
+                            class="bigger">{{ request.session.user_info.favorite_node_num }}</span>
+                        <div class="sep3"></div>
+                        <span>关注话题</span></a></td>
+                    <td width="34%"
+                        style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);"
+                        align="center"><a href="{% url 'my_topics' %}" class="dark" style="display: block;"><span
+                            class="bigger">{{ request.session.user_info.favorite_topic_num }}</span>
+                        <div class="sep3"></div>
+                        <span>主题收藏</span></a></td>
+                    <td width="33%" align="center"><a href="{% url 'my_following' %}" class="dark"
+                                                      style="display: block;"><span
+                            class="bigger">{{ request.session.user_info.following_user_num }}</span>
+                        <div class="sep3"></div>
+                        <span>特别关注</span></a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="cell">
+            <div style="width: 250px; background-color: #f0f0f0; height: 3px; display: inline-block; vertical-align: middle;">
+            </div>
+        </div>
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tbody>
+            <i class="fas fa-feather-alt" style="padding-left: 10px"><a href="{% url 'new' %}">发布新话题</a></i>
+            </tbody>
+        </table>
+        <div class="inner" style="padding-left: 20px">
+            <div class="fr" id="money"><a href="{% url 'balance' %}" class="balance_area" style="">
+                {{ request.session.user_info.balance }}<i class="fab fa-bitcoin"></i></div>
+            <a href="{% url 'my_notifications:notify_box' %}"> {% if unread_count %}
+                {{ unread_count }}条未读提醒
+            {% else %}没有未读提醒{% endif %}</a></div>
+
+          {% if not request.session.user_info.daily_mission %}
+                    <span> <a class="btn btn-success" role="button" href="{% url 'daily_mission' %}" value="签到">签到 <li class="fa fa-gift" style="color: #f3fffa;"></li></a>  </span>
+               {% else %}
+               <span class="gray">
+                    <li class="fa fa-ok-sign" style="color: #0c0;"></li>
+                    &nbsp;每日签到奖励已领取
+                </span>
+            {% endif %}
+        </div>
+
+    </div>
+{% endif %}
+
+        <div class="card mb-4 mt-4">
+        <div class="card-body">
             <div class="cell"><span>我关注的人</span></div>
             {% for obj in my_following_obj %}
                 <div class="cell">
+
                     <a href="{% url 'member' obj.following.username %}">
-                        <img src="{{ obj.following.avatar }}" class="rounded" border="0" width="24" height="24"
-                             align="absmiddle">
+                        {% if obj.author.socialaccount_set.all.0.get_avatar_url %}
+                                    <img src="{{ obj.following.socialaccount_set.all.0.get_avatar_url }}" class="rounded"
+                                         alt="{{ obj.following.username }}"
+                                         width="30px" height="30px" border="0" align="default" style="margin-left: 10px">
+
+                                {% else %}
+                                    <img src="{{ obj.following.avatar.url }}" class="rounded"
+                                         alt="{{ obj.following.username }}"
+                                         width="30px" height="30px" border="0" align="default" style="margin-left: 10px">
+                                {% endif %}
                     </a>&nbsp; <a href="{% url 'member' obj.following.username %}">{{ obj.following.username }}</a>
                 </div>
             {% endfor %}
+        </div>
         </div>
         </div>
     </div>

@@ -14,7 +14,7 @@
         {% block main %}
             <div class="box">
                 <div class="inner"
-                     style="background-color: #f4f4f4; border-top-left-radius: 3px; border-top-right-radius: 3px;"
+                     style="background-color: transparent; border-top-left-radius: 3px; border-top-right-radius: 3px;"
                      id="Tabs">
             <br>
                     {% for obj in category_obj %}
@@ -28,7 +28,7 @@
                     {% endfor %}
                 </div>
                 {% if not category_obj.hot %}
-                    <div class="cell" style="background-color: #f9f9f9; padding: 10px 10px 10px 20px;">
+                    <div class="cell" style="background-color: transparent; padding: 10px 10px 10px 20px;">
                         {% for obj in category_children_obj %}
                             <a href="{% url 'node' obj.code %}" class="badge badge-dark">{{ obj.name }}aaa </a>
                         {% endfor %}

@@ -1,0 +1,366 @@
+{% extends 'base_with_rslider.html' %}
+{% load staticfiles %}
+
+{% block content %}
+        <style>
+        input {
+            outline-style: none;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 3px 0px;
+        }
+
+        input:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+        }
+
+        #fbuilder {
+            margin: 30px;
+        }
+    </style>
+
+<script>if( typeof fbuilderjQuery == 'undefined') var fbuilderjQuery = jQuery.noConflict( );</script> 
+
+<script type = 'text/javascript' >
+    var cp_calculatedfieldsf_fbuilder_config_1 = {
+        "obj": {
+            "pub": true,
+            "identifier": "_1",
+            "messages": {
+                "required": "This field is required.",
+                "email": "Please enter a valid email address.",
+                "datemmddyyyy": "Please enter a valid date with this format(mm\/dd\/yyyy)",
+                "dateddmmyyyy": "Please enter a valid date with this format(dd\/mm\/yyyy)",
+                "number": "Please enter a valid number.",
+                "digits": "Please enter only digits.",
+                "max": "Please enter a value less than or equal to {0}.",
+                "min": "Please enter a value greater than or equal to {0}.",
+                "previous": "Previous",
+                "next": "Next",
+                "pageof": "Page {0} of {0}",
+                "minlength": "Please enter at least {0} characters.",
+                "maxlength": "Please enter no more than {0} characters.",
+                "equalTo": "Please enter the same value again.",
+                "accept": "Please enter a value with a valid extension.",
+                "upload_size": "The file you've chosen is too big, maximum is {0} kB.",
+                "phone": "Invalid phone number.",
+                "currency": "Please enter a valid currency value."
+            }
+        }
+    }; </script>
+
+<form class="form-horizontal" role="form" name="cp_calculatedfieldsf_pform_1" id="cp_calculatedfieldsf_pform_1" action="?" method="post" enctype="multipart/form-data" class=""><input type="hidden" name="cp_calculatedfieldsf_id" value="15" /><pre style="display:none;"><!--noptimize-->
+
+<script> form_structure_1 = [
+    [{
+        "form_identifier": "",
+        "name": "separator1",
+        "shortlabel": "",
+        "index": 0,
+        "ftype": "fSectionBreak",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u8f38\u5165\u57fa\u672c\u8cc7\u6599",
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "form_identifier": "",
+        "name": "fieldname1",
+        "shortlabel": "",
+        "index": 1,
+        "ftype": "fnumber",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u5e74\u9f61",
+        "predefined": "",
+        "predefinedClick": false,
+        "required": true,
+        "readonly": false,
+        "size": "large",
+        "thousandSeparator": "",
+        "decimalSymbol": ".",
+        "min": "14",
+        "max": "100",
+        "formatDynamically": false,
+        "dformat": "digits",
+        "formats": ["digits", "number"],
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "form_identifier": "",
+        "name": "fieldname2",
+        "shortlabel": "",
+        "index": 2,
+        "ftype": "fradio",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u6027\u5225",
+        "layout": "side_by_side",
+        "required": true,
+        "toSubmit": "text",
+        "choiceSelected": "\u7537 - male",
+        "showDep": false,
+        "untickAccepted": true,
+        "choices": ["\u7537", "\u5973"],
+        "choicesVal": ["male", "female"],
+        "choicesDep": [
+            [],
+            []
+        ],
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "form_identifier": "",
+        "name": "fieldname3",
+        "shortlabel": "",
+        "index": 3,
+        "ftype": "fnumber",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u9ad4\u91cd\uff08\u516c\u65a4\uff09",
+        "predefined": "",
+        "predefinedClick": false,
+        "required": true,
+        "readonly": false,
+        "size": "large",
+        "thousandSeparator": "",
+        "decimalSymbol": ".",
+        "min": "0",
+        "max": "",
+        "formatDynamically": false,
+        "dformat": "number",
+        "formats": ["digits", "number"],
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "form_identifier": "",
+        "name": "fieldname4",
+        "shortlabel": "",
+        "index": 4,
+        "ftype": "fnumber",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u5fc3\u8df3\u5f8b\uff08\u6bcf\u5206\u9418\uff09",
+        "predefined": "",
+        "predefinedClick": false,
+        "required": true,
+        "readonly": false,
+        "size": "large",
+        "thousandSeparator": "",
+        "decimalSymbol": ".",
+        "min": "0",
+        "max": "250",
+        "formatDynamically": false,
+        "dformat": "number",
+        "formats": ["digits", "number"],
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "form_identifier": "",
+        "name": "fieldname11",
+        "shortlabel": "",
+        "index": 5,
+        "ftype": "fSectionBreak",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u8a08\u7b97\u7d50\u679c",
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "dependencies": [{
+            "rule": "",
+            "complex": false,
+            "fields": [""]
+        }],
+        "form_identifier": "",
+        "name": "fieldname5",
+        "shortlabel": "",
+        "index": 6,
+        "ftype": "fCalculated",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u6bcf\u5206\u9418\u71c3\u71d2\u5361\u8def\u91cc",
+        "predefined": "",
+        "required": false,
+        "size": "large",
+        "toolbar": "default|mathematical",
+        "eq": "IF(OR(fieldname1==\u0022\u0022, fieldname2==\u0022\u0022, fieldname3==\u0022\u0022, fieldname4==\u0022\u0022),\n\u0022\u0022,\n\nPREC(IF(fieldname2==\u0022male\u0022,\n\n((fieldname1*0.2017) - (fieldname3*0.09036*2.20462262) + (fieldname4*0.6309) - 55.0969) \/ 4.184,\n\n((fieldname1*0.074) - (fieldname3*0.05741*2.20462262) + (fieldname4*0.4472) - 20.4022) \/ 4.184\n), 2))",
+        "suffix": "",
+        "prefix": "",
+        "decimalsymbol": ".",
+        "groupingsymbol": "",
+        "readonly": true,
+        "hidefield": false,
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "dependencies": [{
+            "rule": "",
+            "complex": false,
+            "fields": [""]
+        }],
+        "form_identifier": "",
+        "name": "fieldname6",
+        "shortlabel": "",
+        "index": 7,
+        "ftype": "fCalculated",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u6bcf 15 \u5206\u9418\u71c3\u71d2\u5361\u8def\u91cc",
+        "predefined": "",
+        "required": false,
+        "size": "large",
+        "toolbar": "default|mathematical",
+        "eq": "IF(fieldname5==\u0022\u0022, \u0022\u0022, ROUND(fieldname5 * 15))",
+        "suffix": "",
+        "prefix": "",
+        "decimalsymbol": ".",
+        "groupingsymbol": "",
+        "readonly": true,
+        "hidefield": false,
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "dependencies": [{
+            "rule": "",
+            "complex": false,
+            "fields": [""]
+        }],
+        "form_identifier": "",
+        "name": "fieldname7",
+        "shortlabel": "",
+        "index": 8,
+        "ftype": "fCalculated",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u6bcf 30 \u5206\u9418\u71c3\u71d2\u5361\u8def\u91cc",
+        "predefined": "",
+        "required": false,
+        "size": "large",
+        "toolbar": "default|mathematical",
+        "eq": "IF(fieldname5==\u0022\u0022, \u0022\u0022, ROUND(fieldname5 * 30))",
+        "suffix": "",
+        "prefix": "",
+        "decimalsymbol": ".",
+        "groupingsymbol": "",
+        "readonly": true,
+        "hidefield": false,
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "dependencies": [{
+            "rule": "",
+            "complex": false,
+            "fields": [""]
+        }],
+        "form_identifier": "",
+        "name": "fieldname8",
+        "shortlabel": "",
+        "index": 9,
+        "ftype": "fCalculated",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u6bcf 45 \u5206\u9418\u71c3\u71d2\u5361\u8def\u91cc",
+        "predefined": "",
+        "required": false,
+        "size": "large",
+        "toolbar": "default|mathematical",
+        "eq": "IF(fieldname5==\u0022\u0022, \u0022\u0022, ROUND(fieldname5 * 45))",
+        "suffix": "",
+        "prefix": "",
+        "decimalsymbol": ".",
+        "groupingsymbol": "",
+        "readonly": true,
+        "hidefield": false,
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "dependencies": [{
+            "rule": "",
+            "complex": false,
+            "fields": [""]
+        }],
+        "form_identifier": "",
+        "name": "fieldname9",
+        "shortlabel": "",
+        "index": 10,
+        "ftype": "fCalculated",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u6bcf 60 \u5206\u9418\u71c3\u71d2\u5361\u8def\u91cc",
+        "predefined": "",
+        "required": false,
+        "size": "large",
+        "toolbar": "default|mathematical",
+        "eq": "IF(fieldname5==\u0022\u0022, \u0022\u0022, ROUND(fieldname5 * 60))",
+        "suffix": "",
+        "prefix": "",
+        "decimalsymbol": ".",
+        "groupingsymbol": "",
+        "readonly": true,
+        "hidefield": false,
+        "fBuild": {},
+        "parent": ""
+    }, {
+        "dependencies": [{
+            "rule": "",
+            "complex": false,
+            "fields": [""]
+        }],
+        "form_identifier": "",
+        "name": "fieldname10",
+        "shortlabel": "",
+        "index": 11,
+        "ftype": "fCalculated",
+        "userhelp": "",
+        "userhelpTooltip": false,
+        "csslayout": "",
+        "title": "\u6e1b\u91cd 1 \u78c5\u6240\u9700\u6642\u9593\uff08\u5c0f\u6642\uff09",
+        "predefined": "",
+        "required": false,
+        "size": "large",
+        "toolbar": "default|mathematical",
+        "eq": "IF(fieldname5==\u0022\u0022, \u0022\u0022, PREC(3500 \/ (fieldname5 * 60), 1))",
+        "suffix": "",
+        "prefix": "",
+        "decimalsymbol": ".",
+        "groupingsymbol": "",
+        "readonly": true,
+        "hidefield": false,
+        "fBuild": {},
+        "parent": ""
+    }], {
+        "0": {
+            "title": "\u71b1\u91cf\u6d88\u8017\u8a08\u7b97\u6a5f",
+            "description": "",
+            "formlayout": "top_aligned",
+            "formtemplate": "",
+            "evalequations": 1,
+            "autocomplete": 1,
+            "customstyles": "",
+            "persistence": 0,
+            "evalequationsevent": 2
+        },
+        "formid": "cp_calculatedfieldsf_pform_1"
+    }
+]; </script><!--/noptimize-->
+
+</pre><div id="fbuilder"><div id="fbuilder_1"><div id="formheader_1"></div><div id="fieldlist_1"></div></div></div><div class="clearer"></div></form>
+
+
+<script type="text/javascript" defer="" src="{% static 'js\autoptimize.js' %}"></script>
+{% endblock %}
