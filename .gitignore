@@ -1,6 +1,7 @@
 .vscode/
 .idea/
 .idea
+.venv/
 bin/
 whoosh_index/
 /env.json
@@ -13,3 +14,6 @@ media/image/
 media/user/
 logs/
 media/images/
+# 忽略所有应用的 migrations 目录（推荐方式）
+**/migrations/
+db.sqlite3

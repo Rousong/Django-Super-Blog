@@ -24,7 +24,7 @@ with open('env.json') as env:
 
 SECRET_KEY = ENV['SECRET_KEY']
 
-if ENV.get('ENV') == 'dev':
+if ENV.get('ENV') == 'debug':
     DEBUG = True
 else:
     DEBUG = False
@@ -78,11 +78,11 @@ LOGGING = {
             'level': 'WARNING',
             'propagate': True,
         },
-        'django.request': {
-            'handlers': ['file','mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
+        # 'django.request': {
+        #     'handlers': ['file','mail_admins'],
+        #     'level': 'ERROR',
+        #     'propagate': False,
+        # },
        'django.db.backends': {
             'handlers': ['console','file'], # 指定file handler处理器，表示只写入到文件
             'level':'DEBUG',
@@ -197,14 +197,20 @@ if DEBUG:
     # 开发环境
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'fittest',
-            'USER': 'root',
-            'PASSWORD': "",
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'NAME': 'fittest',
+    #         'USER': 'root',
+    #         'PASSWORD': "",
+    #         'HOST': '127.0.0.1',
+    #         'PORT': '3306',
+    #     }
+    # }
 else:
     # 生产环境
     MYSQL_PASSWORD = ENV.get('MYSQL_KEY')
