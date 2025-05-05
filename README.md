@@ -90,3 +90,4 @@ gunicorn -c gunicorn.conf 2zzy.wsgi
 ## 许可证
 
 本项目遵循MIT许可证 
+![image](https://github.com/user-attachments/assets/80efff9b-4eb3-4bb1-a852-4e5d0c47cbdf)
